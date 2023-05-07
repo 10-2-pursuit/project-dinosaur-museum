@@ -1,0 +1,2 @@
+- Implement higher-order native array methods within your functions.
+- Build helper functions that segment your code to make it more readable and understandable.

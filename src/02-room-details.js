@@ -7,6 +7,13 @@ const exampleDinosaurData = require("../data/dinosaurs");
 const exampleRoomData = require("../data/rooms");
 // Do not change the lines above.
 
+const {
+  returnSpecified,
+  returnObject,
+} = require("../src/01-dinosaur-facts");
+
+
+
 /**
  * getRoomByDinosaurName()
  * ---------------------
@@ -25,7 +32,42 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+
+const input = [
+  {
+    roomId: "xwG7O4wQl",
+    name: "Room A",
+    requiredTicketPermissions: [],
+    dinosaurs: [],
+    connectsTo: [
+      "GHPLI7EmD", // Room B
+      "eU46gvYUF", // Room C
+    ],
+  },
+];
+
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  const arrayPropDino = returnSpecified(dinosaurs, 'name');
+  const arrayPropRoom = returnSpecified(rooms,'dinosaurs');
+
+  const foundDino = returnObject(dinosaurs,arrayPropDino,dinosaurName);
+  let foundRoom = {};
+
+  //Check if name provided exists within list thats been compiled
+  if (arrayPropDino.includes(dinosaurName)) {
+    arrayPropRoom.forEach(room => {
+      if(room.includes(foundDino.dinosaurId)) {
+        foundRoom = rooms[arrayPropRoom.indexOf(room)];
+      }
+    })
+  } else {
+    // Cant find name, return statement
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  }
+  // The name exists but is not found in any of the rooms provided.
+  return foundRoom.name ? foundRoom.name : `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+}
+
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +91,36 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let arrayPropRoomId = returnSpecified(rooms, 'roomId');
+
+   //Finds the index of the id we're looking for 
+   let index = arrayPropRoomId.indexOf(id);
+  
+   //Perform check for valid id. Return error if not found.
+   if (index == -1) {
+     return `Room with ID of '${id}' could not be found.`;
+   }
+
+  let arrayPropConnectsTo = returnSpecified(rooms, 'connectsTo');
+  let arrayPropNames = returnSpecified(rooms,'name');
+  let connectedRooms = [];
+
+  //Goes through the connected rooms stored at that index and pushes them to a new array
+  for (roomId of arrayPropConnectsTo[index]) {
+    //Check if rooms provided in connected rooms exist. Throw if bad.
+    if (arrayPropRoomId.indexOf(roomId) != -1) {
+      connectedRooms.push(arrayPropNames[arrayPropRoomId.indexOf(roomId)]);
+    }
+    else {
+      return `Room with ID of '${roomId}' could not be found.`;
+    }
+  
+  }
+  return connectedRooms;
+}
+
+getConnectedRoomNamesById(exampleRoomData,`A6QaYdyKra`);
 
 module.exports = {
   getRoomByDinosaurName,

@@ -8,6 +8,18 @@
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
+//Returns an array of the elements with just that property.
+const returnSpecified = (array, property) => {
+  return array.map(element => element[property]);
+}
+
+/* Finds the index of the helperArray that matches the proerty given,
+then returns the corresponding object in the {origin} array
+*/
+const returnObject = (origin, helperArray, property) => {
+  return origin[helperArray.indexOf(property)];
+}
+
 /**
  * getLongestDinosaur()
  * ---------------------
@@ -22,7 +34,26 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+
+function getLongestDinosaur(dinosaurs) {
+  
+  // Grabs a list of all the dinosaurs and gets only their length
+  let arrayProperty = returnSpecified(dinosaurs, 'lengthInMeters');
+  let searchFor = Math.max(...arrayProperty);
+
+  let matchedValue = returnObject(dinosaurs,arrayProperty,searchFor);
+
+  // Define custom object for new key value pairs
+  let customObject = {};
+
+  // Checks if provided dinosaur, then assigns values to the new object
+  if(dinosaurs.length > 1) {  
+    customObject[matchedValue.name] = matchedValue.lengthInMeters * 3.281;
+  }  
+  return customObject;
+}
+
+
 
 /**
  * getDinosaurDescription()
@@ -44,7 +75,22 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  const arrayProperty = returnSpecified(dinosaurs, 'dinosaurId');
+  let matchedValue = returnObject(dinosaurs, arrayProperty, id);
+  
+  let foundObject = {};
+
+  // console.log(arrayProperty)
+  // console.log(matchedValue)
+
+  
+  return matchedValue ? 
+  `${matchedValue.name} (${matchedValue.pronunciation})\n${matchedValue.info} It lived in the ${matchedValue.period} period, over ${matchedValue.mya[matchedValue.mya.length-1]} million years ago.` 
+  : `A dinosaur with an ID of '${id}' cannot be found.`;
+}
+
+// console.log(getDinosaurDescription(exampleDinosaurData,`GGvO1X9Zeh`))
 
 /**
  * getDinosaursAliveMya()
@@ -71,10 +117,36 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // Establish comparing array that holds values in question
+  const arrayProperty = returnSpecified(dinosaurs, 'mya');
+  let filteredProperty = [];
+
+// Overwrite with default if key is invalid or not given
+  if (!dinosaurs[0][key]) {
+    key = 'dinosaurId';
+  }
+  
+// Loop through elements and push matches into new array
+  for (element of arrayProperty) {
+    if (element.length == 1 && element[0] >= mya && mya >= element[0]-1) { 
+      filteredProperty
+      .push(dinosaurs[arrayProperty.indexOf(element)][key]);
+     } 
+     else if(element[0] >= mya && mya >= element[1]){
+      filteredProperty
+      .push(dinosaurs[arrayProperty.indexOf(element)][key]);
+     }
+     
+  }
+  
+  return filteredProperty;
+}
 
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
   getDinosaursAliveMya,
+  returnSpecified,
+  returnObject
 };

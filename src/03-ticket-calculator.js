@@ -8,6 +8,11 @@
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
+const {
+  returnSpecified,
+  returnObject,
+} = require("../src/01-dinosaur-facts");
+
 /**
  * calculateTicketPrice()
  * ---------------------
@@ -54,7 +59,32 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let ticketType = ticketInfo['ticketType'];
+  let entrantType = ticketInfo['entrantType'];
+
+
+  //Ticket type error handling
+  if (ticketData[ticketType] == undefined) {
+    return `Ticket type '${ticketType}' cannot be found.`;
+  }
+  let totalPrice = ticketData[ticketType]['priceInCents'][entrantType];
+
+  //Entrant type error handling
+  if (totalPrice == undefined) {
+    return `Entrant type '${entrantType}' cannot be found.`;
+  }
+  
+  //Checks each extra for validity, adds to total if valid, throws if bad.
+  for (extra of ticketInfo.extras) {
+    if (ticketData['extras'][extra] == undefined) {
+      return `Extra type '${extra}' cannot be found.`;
+    } else {
+      totalPrice += ticketData['extras'][extra]['priceInCents'][entrantType];
+    }
+};
+  return totalPrice;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +139,47 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let totalPrice = 0;
+  let finalText = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+
+  for (ticket of purchases) {
+    
+    /* Will return the price of the ticket if valid, 
+    otherwise will store the error message as string*/
+    let ticketPrice = calculateTicketPrice(ticketData, ticket);
+
+    // Check for error message via string, returns if true
+    if (typeof ticketPrice == 'string') {
+      return ticketPrice;
+    }
+
+    totalPrice += ticketPrice;
+    
+    // Initialize storage for strings to be combined.
+    let comboText = [ticket['entrantType'],ticket['ticketType'],"admission:",`$${ticketPrice/100}.00`];
+    let comboExtras = '';
+
+    // Combine the strings in the first array, Capitalize properly.
+    comboText = comboText.map(text => { 
+     return text[0].toUpperCase()+ text.slice(1);
+    })
+
+    // Check for extra ticket things, combine and capilatize properly.
+    if (ticket.extras.length > 0) {
+      comboExtras = " (" + ticket.extras.map(text => {
+      return text[0].toUpperCase()+ text.slice(1) + " Access"
+    }).join(', ') + ")";
+    }
+    // Combine split strings.
+    finalText += comboText.join(' ') + comboExtras +`\n`;
+
+  }
+  //Append Final statement
+  finalText += `-------------------------------------------\nTOTAL: $${totalPrice/100}.00`;
+  return finalText;
+}
+
 
 // Do not change anything below this line.
 module.exports = {
