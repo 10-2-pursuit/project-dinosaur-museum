@@ -101,16 +101,24 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let livingDinos = [];
-  let dinoWithTwoMya = dinosaurs.filter(dino => dino.mya.length == 2);
-  let dinoWithOneMya = dinosaurs.filter(dino => dino.mya.length == 1);
-  
+
   for (let dino of dinosaurs) {
-    for(let i = 0; i <= dino.mya.length; i++) {
-      if (dino.mya[i] === mya) {
-      livingDinos.push(dino.dinosaurId) 
+    if (dino.mya.length == 2) {
+      for (let i = 0; i <= dino.mya.length; i++ ) {
+        if (dino.mya[i] > mya && mya < dino.mya[1+1]) {
+          livingDinos.push(dino.dinosaurId)
+        }
       }
     }
+    // if (dino.mya.length == 1) {
+    //   for(let i = 0; i <= dino.mya.length; i++) {
+    //     if (dino.mya[i] === mya) {
+    //     livingDinos.push(dino.dinosaurId) 
+    //     }
+    //   }
+    // }
   }
+
   return livingDinos;
 }
 
