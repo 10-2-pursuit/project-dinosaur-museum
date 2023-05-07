@@ -56,24 +56,34 @@ const exampleTicketData = require("../data/tickets");
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
   const {ticketType, entrantType, extras} = ticketInfo;
-  let extra = 0;
+  let extraTotal = 0;
   if(!Object.hasOwn(ticketData, ticketType)){
-    return `Ticket type '${ticketType}' cannot be found.`
+    return errorPrinter("Ticket", ticketType);
   }
   if(!Object.hasOwn(ticketData[ticketType].priceInCents, entrantType)){
-    return `Entrant type '${entrantType}' cannot be found.`
+    return errorPrinter("Entrant", entrantType);
   }
-  for(let string of extras){
-    if(!Object.hasOwn(ticketData.extras, string)){
-      return `Extra type '${string}' cannot be found.`
+  for(let extra of extras){
+    if(!Object.hasOwn(ticketData.extras, extra)){
+      return errorPrinter("Extra", extra);
     }
+    extraTotal += ticketData.extras[extra].priceInCents[entrantType];
   }
 
-  for (let string of extras){
-    extra += ticketData.extras[string].priceInCents[entrantType];
-  }
-  
-  return ticketData[ticketType].priceInCents[entrantType] + extra;
+  return ticketData[ticketType].priceInCents[entrantType] + extraTotal;
+}
+
+/**
+ * errorPrinter()
+ * --------------------
+ * purpose to print a single line of error message in the function calculateTicketPrice()
+ * 
+ * @param {string} type - A 'key' from the tickets object.
+ * @param {string} input - A inputted type from @param [ticketInfo]
+ * @returns {string} The single line of error message.
+ */
+function errorPrinter(type, input){
+  return `${type} type '${input}' cannot be found.`;
 }
 
 /**
@@ -129,7 +139,41 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let resultString = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  let totalP = 0;
+  for(let purchase of purchases){
+    let price = calculateTicketPrice(ticketData, purchase);
+    if(typeof(price) == "string"){
+      return price;
+    }
+    //console.log(purchasePrinter(price, purchase));
+    resultString = resultString.concat('',purchasePrinter(price, purchase));
+    totalP += price;
+  }
+  resultString = resultString.concat('',`-------------------------------------------\n`);
+  resultString = resultString.concat('',`TOTAL: \$${(totalP/100).toFixed(2)}`);
+  return resultString;
+}
+
+function purchasePrinter(price, purchase){
+  const {ticketType, entrantType, extras} = purchase;
+  let extraString = ` (`;
+  let resultBasic = `${entrantType.replace(entrantType[0],entrantType[0].toUpperCase())} ${ticketType.replace(ticketType[0],ticketType[0].toUpperCase())} Admission: \$${(price/100).toFixed(2)}`;
+  if(extras.length == 0){
+    return resultBasic + `\n`;
+  }
+  else{
+    for(let index = 0; index < extras.length; index++){
+      if(index == extras.length -1){
+        extraString = extraString.concat('',extras[index].replace(extras[index][0], extras[index][0].toUpperCase()) + ' Access)\n');
+        break;        
+      }
+      extraString = extraString.concat('',extras[index].replace(extras[index][0], extras[index][0].toUpperCase()) + ' Access, ');
+    }
+    return resultBasic.concat('',extraString);
+  }
+}
 
 // Do not change anything below this line.
 module.exports = {
