@@ -142,18 +142,16 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
   let totalPrice = 0;
-  let comboText = []
-
   let finalText = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
 
-  for(ticket of purchases){
+  for (ticket of purchases) {
     
     /* Will return the price of the ticket if valid, 
     otherwise will store the error message as string*/
     let ticketPrice = calculateTicketPrice(ticketData, ticket);
 
     // Check for error message via string, returns if true
-    if(typeof ticketPrice == 'string'){
+    if (typeof ticketPrice == 'string') {
       return ticketPrice
     }
 
@@ -163,25 +161,23 @@ function purchaseTickets(ticketData, purchases) {
     let comboText = [ticket['entrantType'],ticket['ticketType'],"admission:",`$${ticketPrice/100}.00`];
     let comboExtras = ''
 
-    //Combine the strings in the first array, Capitalize properly.
+    // Combine the strings in the first array, Capitalize properly.
     comboText = comboText.map(text => { 
      return text[0].toUpperCase()+ text.slice(1);
     })
 
-    //Check for 
+    // Check for extra ticket things, combine and capilatize properly.
     if (ticket.extras.length > 0) {
       comboExtras = " (" + ticket.extras.map(text => {
       return text[0].toUpperCase()+ text.slice(1) + " Access"
     }).join(', ') + ")"
     }
-
+    // Combine split strings.
     finalText += comboText.join(' ') + comboExtras +`\n`
-    console.log(ticket.extras)
-  }
 
+  }
   //Append Final statement
   finalText += `-------------------------------------------\nTOTAL: $${totalPrice/100}.00`
-
   return finalText
 }
 
