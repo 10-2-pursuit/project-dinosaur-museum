@@ -6,7 +6,7 @@
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
 const exampleDinosaurData = require("../data/dinosaurs");
-// Do not change the line above.
+// Do not change the line above. 
 
 /**
  * getLongestDinosaur()
@@ -22,7 +22,16 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {function getLongestDinosaur(dinosaurs) {
+  const comparisonOfLength = {name:lengthInMeters};
+  for (let length of dinosaurs[i].comparisonOfLengths); {
+    if (lengthInMeters > comparisonOfLength.lengthInMeters); {
+      comparisonOfLength = `${dinosaurs.js[i].name}:${dinosaurs.js[i].comparisonOfLength}`;
+    }
+  } 
+  return comparisonOfLength;
+  }
+}
 
 /**
  * getDinosaurDescription()
