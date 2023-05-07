@@ -29,14 +29,16 @@ function getLongestDinosaur(dinosaurs) {
       for (let dinosaur of dinosaurs){
         for (let i = 0; i < dinosaurs.lengthInMeters; i++){
           if (dinosaurs.lengthInMeters >= 30){
+            const 
             return longestDinosaur * 3.281;
-            return longestDinosaur.push(dinosaurs.name);
+            
           }
-          
+          return longestDinosaur.push(dinosaurs.name);
         }
       }
       return longestDinosaur;
 }
+
 
 /**
  * getDinosaurDescription()
@@ -58,7 +60,9 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+
+}
 
 /**
  * getDinosaursAliveMya()
@@ -85,9 +89,9 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+ function getDinosaursAliveMya(dinosaurs, mya, key) {}
 
-module.exports = {
+ module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
   getDinosaursAliveMya,
