@@ -24,7 +24,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getLongestDinosaur(dinosaurs) {
   let longestDinosaur = dinosaurs.find(dinosaur => dinosaur.lengthInMeters === Math.max(...dinosaurs.map(dinosaur => dinosaur.lengthInMeters)));
-  if(longestDinosaur) {
+  if (longestDinosaur) {
     return {[longestDinosaur.name]: longestDinosaur.lengthInMeters * 3.281};
   } else {
     return {};
@@ -51,7 +51,14 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let chosenDinosaur = dinosaurs.find(dinosaur => dinosaur.dinosaurId === id);
+  if (chosenDinosaur) {
+    return `${chosenDinosaur.name} (${chosenDinosaur.pronunciation})\n${chosenDinosaur.info} It lived in the ${chosenDinosaur.period} period, over ${Math.min(...chosenDinosaur.mya)} million years ago.`;
+  } else {
+    return `A dinosaur with an ID of '${id}' cannot be found.`;
+  }
+}
 
 /**
  * getDinosaursAliveMya()
