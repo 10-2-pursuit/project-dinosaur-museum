@@ -32,9 +32,10 @@ function getLongestDinosaur(dinosaurs) {
             return longestDinosaur * 3.281;
             return longestDinosaur.push(dinosaurs.name);
           }
+          
         }
       }
-      return null;
+      return longestDinosaur;
 }
 
 /**
