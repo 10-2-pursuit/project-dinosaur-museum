@@ -26,7 +26,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
 function getLongestDinosaur(dinosaurs) {
   let maxLength = 0;
   let dinoNameInFeet = {};
-  
+
   for (let dino of dinosaurs) {
     let dinoLength = dino.lengthInMeters;
       if (dinoLength > maxLength) {
@@ -60,6 +60,18 @@ function getLongestDinosaur(dinosaurs) {
  */
 function getDinosaurDescription(dinosaurs, id) {
 
+  for (let dino of dinosaurs) {
+    if (dino.dinosaurId === id) {
+      if (dino.mya.length === 2) {
+        let yearsInMill = dino.mya[1]
+        return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${yearsInMill} million years ago.`
+      } else {
+        let yearsInMill = dino.mya[0]
+        return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${yearsInMill} million years ago.`
+      }
+    }
+  }
+  return `A dinosaur with an ID of 'incorrect-id' cannot be found.`;
 }
 
 /**
@@ -87,7 +99,20 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let livingDinos = [];
+  let dinoWithTwoMya = dinosaurs.filter(dino => dino.mya.length == 2);
+  let dinoWithOneMya = dinosaurs.filter(dino => dino.mya.length == 1);
+  
+  for (let dino of dinosaurs) {
+    for(let i = 0; i <= dino.mya.length; i++) {
+      if (dino.mya[i] === mya) {
+      livingDinos.push(dino.dinosaurId) 
+      }
+    }
+  }
+  return livingDinos;
+}
 
 module.exports = {
   getLongestDinosaur,
