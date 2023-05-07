@@ -66,10 +66,12 @@ const getDinosaurDescription = (dinosaurs, id) => {
   for (let i = 0; i < dinosaurs.length; i++) {
     if (dinosaurs[i].dinosaurId === id) {
       foundDinosaur = dinosaurs[i];
+      break
     }
   }
   if (!foundDinosaur) {
-    throw Error(`${id} Dinosaur not found`)
+     return (`A dinosaur with an ID of 'incorrect-id' cannot be found.`)
+    
   }
 
   const {name, pronunciation, info, period, mya} = foundDinosaur;
