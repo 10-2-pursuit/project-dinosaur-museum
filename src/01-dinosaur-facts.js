@@ -43,6 +43,7 @@ function getLongestDinosaur(dinosaurs) {
   longestDinosaur[tempLongestDinosaurName] =
     Math.round(tempLongestDinosaurLength * 3.281 * 10) / 10;
 
+  //checks if there are duplicate names and returns the first one in the array
   for (let i = 0; i < dinosaurs.length; i++) {
     if (
       dinosaurs[i].lengthInMeters === tempLongestDinosaurLength &&
@@ -77,7 +78,15 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  
+  let dinosaurDescription = `A dinosaur with an ID of '${id}' cannot be found.`;
+
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (id == dinosaurs[i].dinosaurId && dinosaurs[i].mya.length === 1) {
+      dinosaurDescription = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[0]} million years ago.`
+    }
+  }
+
+  return dinosaurDescription;
 }
 
 /**
