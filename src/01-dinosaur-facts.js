@@ -19,6 +19,7 @@ then returns the corresponding object in the {origin} array
 const returnObject = (origin, helperArray, property) => {
   return origin[helperArray.indexOf(property)]
 }
+
 /**
  * getLongestDinosaur()
  * ---------------------
@@ -120,7 +121,32 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //Establish comparing array that holds values in question
+  const arrayProperty = returnSpecified(dinosaurs, 'mya')
+  let filteredProperty = []
+
+// Overwrite with default if key is invalid or not given
+  if(!dinosaurs[0][key]){
+    key = 'dinosaurId'
+    console.log(key)
+  }
+  
+//Loop through elements and push matches into new array
+  for(element of arrayProperty){
+    if(element.length == 1 && element[0] >= mya && mya >= element[0]-1) { 
+      filteredProperty
+      .push(dinosaurs[arrayProperty.indexOf(element)][key])
+     } 
+     else if(element[0] >= mya && mya >= element[1]){
+      filteredProperty
+      .push(dinosaurs[arrayProperty.indexOf(element)][key])
+     }
+     
+  }
+  
+  return filteredProperty
+}
 
 module.exports = {
   getLongestDinosaur,
