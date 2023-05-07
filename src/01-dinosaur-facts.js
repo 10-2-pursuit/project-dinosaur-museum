@@ -33,7 +33,7 @@ const getLongestDinosaur = (dinosaurs) => {
     if (currentDinosaur.lengthInMeters > longestDinosaur.lengthInMeters) {
       longestDinosaur = currentDinosaur;
     } else if (currentDinosaur.lengthInMeters === longestDinosaur.lengthInMeters) {
-      longestDinosaur = longestDinosaur.dinosaurId < currentDinosaur.dinosaurId ? longestDinosaur : currentDinosaur;
+      longestDinosaur = longestDinosaur
     }
   }
   const lengthInFeet = longestDinosaur.lengthInMeters * 3.281;
