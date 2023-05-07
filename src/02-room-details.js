@@ -61,7 +61,24 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let room = rooms.find(room => room.roomId.includes(id));
+  let connectedRoom = [];
+  if(!room){
+    return `Room with ID of '${id}' could not be found.`;
+  }
+  let manRoom = room.connectsTo.map(searchedID => { for(let rm of rooms){
+                                                if(rm.roomId == searchedID){
+                                                  return rm.name;
+                                                }
+                                              }
+                                              return `ERROR`;
+                                    });
+  if (manRoom.includes('ERROR')){
+    return `Room with ID of 'incorrect-id' could not be found.`;
+  }
+  return manRoom;
+}
 
 module.exports = {
   getRoomByDinosaurName,
