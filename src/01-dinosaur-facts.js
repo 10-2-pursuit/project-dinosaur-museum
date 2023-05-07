@@ -28,13 +28,11 @@ function getLongestDinosaur(dinosaurs) {
 
       for (let dinosaur of dinosaurs){
         for (let i = 0; i < dinosaurs.lengthInMeters; i++){
-          if (dinosaurs.lengthInMeters >= 30){
-            const longestDinosaur = dinosaurs.lengthInMeters.push(dinosaurs.name)
+          const dinosaursHeight = dinosaurs.lengthInMeters * 3.281
+           return dinosaursHeight.push(dinosaurs.name);
           }
-            return longestDinosaur * 3.281;
-          }
-      }
-      return longestDinosaur;
+        }
+        return longestDinosaur;
 }
 
 
