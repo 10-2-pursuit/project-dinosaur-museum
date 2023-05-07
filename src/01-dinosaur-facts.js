@@ -53,7 +53,6 @@ function getLongestDinosaur(dinosaurs) {
   let longestDino = { [longestDinoObj.name]: longestDinoInFeet };
   return longestDino;
 }
-
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -74,7 +73,18 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  // assign foundDino variable to the result of dinosaus.find() by id
+  const foundDino = dinosaurs.find(dino => dino.dinosaurId === id) 
+  if (foundDino) {
+    // return description of dinosaur
+    return `${foundDino.name} (${foundDino.pronunciation})\n${foundDino.info} It lived in the ${foundDino.period} period, over ${foundDino.mya[foundDino.mya.length-1]} million years ago.`
+  }
+  else {
+    // returns an error message if no dinosaur is found
+    return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+  }
+}
 
 /**
  * getDinosaursAliveMya()
