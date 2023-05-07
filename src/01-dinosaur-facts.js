@@ -25,6 +25,9 @@ const exampleDinosaurData = require("../data/dinosaurs");
 function getLongestDinosaur(dinosaurs) {
   let longest = 0;
   let longestDino = {};
+  if (!dinosaurs.length) {
+    return {};
+  }
   for (let dino of dinosaurs) {
     if (longest < dino.lengthInMeters) {
       longest = dino.lengthInMeters;
@@ -94,10 +97,26 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  return dinosaurs.filter((dino)=>{
-    if(dino.)
-  })
+  let dinoFilter = dinosaurs.filter((dino) => {
+    if (dino.mya.length === 2) {
+      if (dino.mya[1] == mya || dino.mya[0] == mya) {
+        return dino.dinosaurId;
+      } else {
+        if (dino.mya[0] == mya || dino.mya[0] - 1 == mya) {
+          return dino.dinosaurId;
+        }
+        if (key) {
+          if (Object.hasOwn(dinosaurs[0], key)) {
+            return dino.dinosaurId;
+          }
+        }
+      }
+    }
+  });
+  return dinoFilter;
 }
+
+
 
 module.exports = {
   getLongestDinosaur,
