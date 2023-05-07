@@ -8,6 +8,11 @@
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
+const {
+  returnSpecified,
+  returnObject,
+} = require("../src/01-dinosaur-facts");
+
 /**
  * calculateTicketPrice()
  * ---------------------
@@ -54,8 +59,41 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let ticketType = ticketInfo['ticketType']
+  let entrantType = ticketInfo['entrantType']
 
+
+  if(ticketData[ticketType] == undefined) {
+    return `Ticket type '${ticketType}' cannot be found.`
+  }
+
+  let totalPrice = ticketData[ticketType]['priceInCents'][entrantType]
+
+  if(totalPrice == undefined){
+    return `Entrant type '${entrantType}' cannot be found.`
+  }
+
+  
+  for (extra of ticketInfo.extras) {
+    if (ticketData['extras'][extra] == undefined) {
+      return `Extra type '${extra}' could not be found.`
+    } else {
+      totalPrice += ticketData['extras'][extra]['priceInCents'][entrantType]
+    }
+}
+  // console.log(ticketData.extras, ticketInfo)
+  // console.log(totalPrice)
+
+  return totalPrice
+}
+
+const ticketInfos = {
+  ticketType: "incorrect-type",
+  entrantType: "child",
+  extras: [],
+};
+console.log(calculateTicketPrice(exampleTicketData,ticketInfos))
 /**
  * purchaseTickets()
  * ---------------------
