@@ -129,7 +129,6 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
 // Overwrite with default if key is invalid or not given
   if(!dinosaurs[0][key]){
     key = 'dinosaurId'
-    console.log(key)
   }
   
 //Loop through elements and push matches into new array
@@ -152,4 +151,6 @@ module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
   getDinosaursAliveMya,
+  returnSpecified,
+  returnObject
 };
