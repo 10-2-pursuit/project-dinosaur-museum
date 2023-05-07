@@ -17,7 +17,7 @@ const returnSpecified = (array, property) => {
 then returns the corresponding object in the {origin} array
 */
 const returnObject = (origin, helperArray, property) => {
-  return origin[helperArray.indexOf(property)]
+  return origin[helperArray.indexOf(property)];
 }
 
 /**
@@ -38,23 +38,19 @@ const returnObject = (origin, helperArray, property) => {
 function getLongestDinosaur(dinosaurs) {
   
   // Grabs a list of all the dinosaurs and gets only their length
-  let arrayProperty = returnSpecified(dinosaurs, 'lengthInMeters')
-  let searchFor = Math.max(...arrayProperty)
+  let arrayProperty = returnSpecified(dinosaurs, 'lengthInMeters');
+  let searchFor = Math.max(...arrayProperty);
 
-  let matchedValue = returnObject(dinosaurs,arrayProperty,searchFor)
-  // Finds the entry that contains the max value
-  // let greatestValue = dinosaurs[arrayProperty.indexOf(Math.max(...arrayProperty))]
-  
+  let matchedValue = returnObject(dinosaurs,arrayProperty,searchFor);
+
   // Define custom object for new key value pairs
-  let customObject = {}
+  let customObject = {};
 
   // Checks if provided dinosaur, then assigns values to the new object
   if(dinosaurs.length > 1) {  
     customObject[matchedValue.name] = matchedValue.lengthInMeters * 3.281;
   }  
-
-  return customObject
-
+  return customObject;
 }
 
 
@@ -80,10 +76,10 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  const arrayProperty = returnSpecified(dinosaurs, 'dinosaurId')
-  let matchedValue = returnObject(dinosaurs, arrayProperty, id)
+  const arrayProperty = returnSpecified(dinosaurs, 'dinosaurId');
+  let matchedValue = returnObject(dinosaurs, arrayProperty, id);
   
-  let foundObject = {}
+  let foundObject = {};
 
   // console.log(arrayProperty)
   // console.log(matchedValue)
@@ -91,7 +87,7 @@ function getDinosaurDescription(dinosaurs, id) {
   
   return matchedValue ? 
   `${matchedValue.name} (${matchedValue.pronunciation})\n${matchedValue.info} It lived in the ${matchedValue.period} period, over ${matchedValue.mya[matchedValue.mya.length-1]} million years ago.` 
-  : `A dinosaur with an ID of '${id}' cannot be found.`
+  : `A dinosaur with an ID of '${id}' cannot be found.`;
 }
 
 // console.log(getDinosaurDescription(exampleDinosaurData,`GGvO1X9Zeh`))
@@ -122,29 +118,29 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  //Establish comparing array that holds values in question
-  const arrayProperty = returnSpecified(dinosaurs, 'mya')
-  let filteredProperty = []
+  // Establish comparing array that holds values in question
+  const arrayProperty = returnSpecified(dinosaurs, 'mya');
+  let filteredProperty = [];
 
 // Overwrite with default if key is invalid or not given
-  if(!dinosaurs[0][key]){
-    key = 'dinosaurId'
+  if (!dinosaurs[0][key]) {
+    key = 'dinosaurId';
   }
   
-//Loop through elements and push matches into new array
-  for(element of arrayProperty){
-    if(element.length == 1 && element[0] >= mya && mya >= element[0]-1) { 
+// Loop through elements and push matches into new array
+  for (element of arrayProperty) {
+    if (element.length == 1 && element[0] >= mya && mya >= element[0]-1) { 
       filteredProperty
-      .push(dinosaurs[arrayProperty.indexOf(element)][key])
+      .push(dinosaurs[arrayProperty.indexOf(element)][key]);
      } 
      else if(element[0] >= mya && mya >= element[1]){
       filteredProperty
-      .push(dinosaurs[arrayProperty.indexOf(element)][key])
+      .push(dinosaurs[arrayProperty.indexOf(element)][key]);
      }
      
   }
   
-  return filteredProperty
+  return filteredProperty;
 }
 
 module.exports = {

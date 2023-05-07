@@ -57,15 +57,15 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   if (arrayPropDino.includes(dinosaurName)) {
     arrayPropRoom.forEach(room => {
       if(room.includes(foundDino.dinosaurId)) {
-        foundRoom = rooms[arrayPropRoom.indexOf(room)]
+        foundRoom = rooms[arrayPropRoom.indexOf(room)];
       }
     })
   } else {
     // Cant find name, return statement
-    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
   }
   // The name exists but is not found in any of the rooms provided.
-  return foundRoom.name ? foundRoom.name : `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  return foundRoom.name ? foundRoom.name : `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
 }
 
 
@@ -102,9 +102,9 @@ function getConnectedRoomNamesById(rooms, id) {
      return `Room with ID of '${id}' could not be found.`;
    }
 
-  let arrayPropConnectsTo = returnSpecified(rooms, 'connectsTo')
-  let arrayPropNames = returnSpecified(rooms,'name')
-  let connectedRooms = []
+  let arrayPropConnectsTo = returnSpecified(rooms, 'connectsTo');
+  let arrayPropNames = returnSpecified(rooms,'name');
+  let connectedRooms = [];
 
   //Goes through the connected rooms stored at that index and pushes them to a new array
   for (roomId of arrayPropConnectsTo[index]) {
@@ -117,7 +117,7 @@ function getConnectedRoomNamesById(rooms, id) {
     }
   
   }
-  return connectedRooms
+  return connectedRooms;
 }
 
 getConnectedRoomNamesById(exampleRoomData,`A6QaYdyKra`);
