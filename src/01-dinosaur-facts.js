@@ -8,6 +8,11 @@
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
+//Returns an array of the elements with just that property.
+const returnSpecified = (array, property) => {
+  return array.map(element => element[property]);
+}
+
 /**
  * getLongestDinosaur()
  * ---------------------
@@ -22,7 +27,23 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+
+function getLongestDinosaur(dinosaurs) {
+  // Grabs a list of all the dinosaurs and gets only their length
+  let arrayProperty = returnSpecified(dinosaurs, 'lengthInMeters')
+  
+  // Finds the entry that contains the max value
+  let greatestValue = dinosaurs[arrayProperty.indexOf(Math.max(...arrayProperty))]
+  let foundObject = {}
+
+  // Checks if provided dinosaur, then assigns values to the new object
+  if(dinosaurs.length > 1) {  
+    foundObject[greatestValue.name] = greatestValue.lengthInMeters * 3.281;
+  }  
+
+  return foundObject
+
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +65,9 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let 
+}
 
 /**
  * getDinosaursAliveMya()
