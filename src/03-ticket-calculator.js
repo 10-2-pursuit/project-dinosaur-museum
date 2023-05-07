@@ -55,8 +55,11 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+  /** declare vars */
   const {ticketType, entrantType, extras} = ticketInfo;
   let extraTotal = 0;
+
+  /** validation for prop. */
   if(!Object.hasOwn(ticketData, ticketType)){
     return errorPrinter("Ticket", ticketType);
   }
@@ -76,7 +79,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 /**
  * errorPrinter()
  * --------------------
- * purpose to print a single line of error message in the function calculateTicketPrice()
+ * Purpose to print a single line of error message in the function calculateTicketPrice().
  * 
  * @param {string} type - A 'key' from the tickets object.
  * @param {string} input - A inputted type from @param [ticketInfo]
@@ -140,26 +143,45 @@ function errorPrinter(type, input){
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  /** declare vars w/ initial values */
   let resultString = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
   let totalP = 0;
+
+  /** validation, string means error */
   for(let purchase of purchases){
     let price = calculateTicketPrice(ticketData, purchase);
     if(typeof(price) == "string"){
       return price;
     }
-    //console.log(purchasePrinter(price, purchase));
+
+    /** concat each ticket details to [resultString] */
     resultString = resultString.concat('',purchasePrinter(price, purchase));
     totalP += price;
   }
+
+  /** concat total ticket price */
   resultString = resultString.concat('',`-------------------------------------------\n`);
   resultString = resultString.concat('',`TOTAL: \$${(totalP/100).toFixed(2)}`);
+
   return resultString;
 }
 
+/**
+ * purchasePrinter()
+ * ----------------------------------------
+ * Return a string about the details of the ticket purchases
+ * 
+ * @param {Number} price - receiving the ticket price to print
+ * @param {Object} purchase - receiving a single ticket from the purchases
+ * @returns {string} - return a string of the calculation
+ */
 function purchasePrinter(price, purchase){
+  /** declare vars */
   const {ticketType, entrantType, extras} = purchase;
   let extraString = ` (`;
   let resultBasic = `${entrantType.replace(entrantType[0],entrantType[0].toUpperCase())} ${ticketType.replace(ticketType[0],ticketType[0].toUpperCase())} Admission: \$${(price/100).toFixed(2)}`;
+  
+  /** validation for an extra */
   if(extras.length == 0){
     return resultBasic + `\n`;
   }
@@ -171,6 +193,7 @@ function purchasePrinter(price, purchase){
       }
       extraString = extraString.concat('',extras[index].replace(extras[index][0], extras[index][0].toUpperCase()) + ' Access, ');
     }
+    
     return resultBasic.concat('',extraString);
   }
 }
