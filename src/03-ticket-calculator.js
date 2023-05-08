@@ -61,14 +61,14 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 
   /** validation for prop. */
   if(!Object.hasOwn(ticketData, ticketType)){
-    return errorPrinter("Ticket", ticketType);
+    return _errorPrinter("Ticket", ticketType);
   }
   if(!Object.hasOwn(ticketData[ticketType].priceInCents, entrantType)){
-    return errorPrinter("Entrant", entrantType);
+    return _errorPrinter("Entrant", entrantType);
   }
   for(let extra of extras){
     if(!Object.hasOwn(ticketData.extras, extra)){
-      return errorPrinter("Extra", extra);
+      return _errorPrinter("Extra", extra);
     }
     extraTotal += ticketData.extras[extra].priceInCents[entrantType];
   }
@@ -77,7 +77,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 }
 
 /**
- * errorPrinter()
+ * _errorPrinter()
  * --------------------
  * Purpose to print a single line of error message in the function calculateTicketPrice().
  * 
@@ -85,7 +85,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  * @param {string} input - A inputted type from @param [ticketInfo]
  * @returns {string} The single line of error message.
  */
-function errorPrinter(type, input){
+function _errorPrinter(type, input){
   return `${type} type '${input}' cannot be found.`;
 }
 
@@ -155,7 +155,7 @@ function purchaseTickets(ticketData, purchases) {
     }
 
     /** concat each ticket details to [resultString] */
-    resultString = resultString.concat('',purchasePrinter(price, purchase));
+    resultString = resultString.concat('',_purchasePrinter(price, purchase));
     totalP += price;
   }
 
@@ -167,7 +167,7 @@ function purchaseTickets(ticketData, purchases) {
 }
 
 /**
- * purchasePrinter()
+ * _purchasePrinter()
  * ----------------------------------------
  * Return a string about the details of the ticket purchases
  * 
@@ -175,7 +175,7 @@ function purchaseTickets(ticketData, purchases) {
  * @param {Object} purchase - receiving a single ticket from the purchases
  * @returns {string} - return a string of the calculation
  */
-function purchasePrinter(price, purchase){
+function _purchasePrinter(price, purchase){
   /** declare vars */
   const {ticketType, entrantType, extras} = purchase;
   let extraString = ` (`;
@@ -193,7 +193,7 @@ function purchasePrinter(price, purchase){
       }
       extraString = extraString.concat('',extras[index].replace(extras[index][0], extras[index][0].toUpperCase()) + ' Access, ');
     }
-    
+
     return resultBasic.concat('',extraString);
   }
 }
