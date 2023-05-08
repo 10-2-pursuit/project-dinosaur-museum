@@ -105,13 +105,12 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   
   for (let dino of dinosaurs) {
     if (dino[addToArr] === undefined) {
-      addToArr = "dinosaurId"
+      addToArr = "dinosaurId";
     }
     if (dino.mya.length === 1 && (mya === dino.mya[0] || mya === (dino.mya[0] - 1)) ) {
-      livingDinos.push(dino[addToArr])
-    } 
-    else if (mya <= dino.mya[0] && mya >= dino.mya[1]) {
-      livingDinos.push(dino[addToArr])
+      livingDinos.push(dino[addToArr]);
+    } else if (mya <= dino.mya[0] && mya >= dino.mya[1]) {
+      livingDinos.push(dino[addToArr]);
     }
   }
   return livingDinos;
