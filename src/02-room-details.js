@@ -32,7 +32,7 @@ const getRoomByDinosaurName = (dinosaurs, rooms, dinosaurName) => {
 let noDinosaurFound = `Dinosaur with name '${dinosaurName}' cannot be found.`;
 // loop thru dino array 
   for (const dinosaur of dinosaurs) {
-    check if current name matches dinoName param
+  // check if current name matches dinoName param
     if (dinosaur.name === dinosaurName) {
 // code block{make empty string the value of found name dinoId}
       dinosaurRoom = dinosaur.dinosaurId;
@@ -82,10 +82,31 @@ let noDinosaurFound = `Dinosaur with name '${dinosaurName}' cannot be found.`;
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {
-  
+const getConnectedRoomNamesById = (rooms, id) => {
+  let connectedRoomsIdArray = [];
+  let connectedRoomName =[];
+  for (const room of rooms) {
+    if(room.roomId === id) {
+      connectedRoomsIdArray.push(room.connectsTo)
+    }
+  }
+  if (!connectedRoomsIdArray.length) {
+    return `Room with ID of '${id}' could not be found.`;
+  }
+  for (const connectedRoomId of connectedRoomsIdArray) {
+    let connectedRoom;
+    
+    for (const room of rooms) {
+      if (room.roomId === connectedRoomId) {
+        connectedRoom = room;
+      }
+      if (connectedRoom) {
+        connectedRoomName.push(connectedRoom.name)
+    }
+  }
 }
-
+return connectedRoomName
+}
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
