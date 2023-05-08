@@ -26,7 +26,7 @@ function getLongestDinosaur(dinosaurs) {
   if (dinosaurs.length === 0) {
     return {};
   }
-  
+
   let longestDinosaur = {
     heightInFeet: 0,
     name: ''
@@ -68,11 +68,10 @@ function getLongestDinosaur(dinosaurs) {
 function getDinosaurDescription(dinosaurs, id) {
   const foundDinosaur = dinosaurs.find((dinosaur) => dinosaur.dinosaurId === id);
   if (foundDinosaur) {
-    return `${foundDinosaur.name} (${foundDinosaur.pronunciation})\n${foundDinosaur.info}\nIt lived in the ${foundDinosaur.period} period, over ${foundDinosaur.mya[0]} million years ago.`;
+    return `${foundDinosaur.name} (${foundDinosaur.pronunciation})\n${foundDinosaur.info} It lived in the ${foundDinosaur.period} period, over ${foundDinosaur.mya[0]} million years ago.`;
   }
   return `A dinosaur with an ID of '${id}' cannot be found.`;
 }
-
 
 /**
  * getDinosaursAliveMya()
