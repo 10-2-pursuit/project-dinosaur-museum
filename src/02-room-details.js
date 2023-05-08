@@ -29,16 +29,15 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let dinosaur = dinosaurs.find((dinosaur) => dinosaur.name === dinosaurName);
 
   if (dinosaur === undefined) {
-    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`};
     let room = rooms.find((room) =>
       room.dinosaurs.includes(dinosaur.dinosaurId)
     );
-  }
+
 
   if (room === undefined) {
-    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`};
     return room.name;
-  }
 }
 /**
  * getConnectedRoomNamesById()
