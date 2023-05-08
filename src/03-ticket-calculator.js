@@ -136,7 +136,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ]
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
- */
+*/
 
     function purchaseTickets(ticketData, purchases) {
   // Define a function to format prices in cents as dollars
@@ -175,6 +175,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     receipt += `${entrantType.charAt(0).toUpperCase()}${entrantType.slice(1)} ${ticketDescription}: ${basePrice}`;
 
     // Process each extra and add it to the receipt
+    const extraPrices = [];
     for (const extraKey of extras) {
       // Make sure the extra exists in the ticket data
       if (!ticketData.extras[extraKey]) {
@@ -193,23 +194,27 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 
       // Add the description and price of the extra to the receipt
       const extraDescription = ticketData.extras[extraKey].description;
-      receipt += ` (${extraDescription} ${extraPrice})`;
+      extraPrices.push(`${extraDescription} ${extraPrice}`);
+    }
+
+    // Add extra prices to the receipt if there are any
+    if (extraPrices.length > 0) {
+      const extrasString = extraPrices.length > 1 ? ` (${extraPrices.join(", ")})` : ` (${extraPrices[0]})`;
+      receipt += extrasString;
+    } else {
+      receipt += " ()";
     }
 
     // Add a newline character after each ticket on the receipt
     receipt += "\n";
+  }
 
- 
-  // Add a newline character after each ticket on the receipt
-  receipt += "\n";
-  
   // Add a footer to the receipt with the total price
   receipt += "-------------------------------------------\n";
   receipt += `TOTAL: ${formatPrice(total)}`;
 
   return receipt;
 }
-
 
 // Do not change anything below this line.
 module.exports = {

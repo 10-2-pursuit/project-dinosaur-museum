@@ -96,20 +96,22 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  const validMya = mya - 1;
-  const dinos = dinosaurs.filter(d => {
-    if (d.mya.length === 1) {
-      return d.mya[0] === mya || d.mya[0] === validMya;
+  let dinosAliveDuringTheseEras = [];
+  if (!key || dinosaurs[0][key] === undefined) {
+    key = "dinosaurId"
+  } 
+  for (let dino of dinosaurs) {
+    if (dino.mya.length === 1) {
+      if (dino.mya[0] === mya || dino.mya[0] - 1 === mya) {
+        dinosAliveDuringTheseEras.push(dino[key])
+      }
     } else {
-      return d.mya.includes(mya) || d.mya.includes(validMya);
+      if (mya <= dino.mya[0] && mya >= dino.mya[1]) {
+        dinosAliveDuringTheseEras.push(dino[key])
+      }
     }
-  });
-  
-  if (key) {
-    return dinos.map(d => d[key] || d.dinosaurId);
-  } else {
-    return dinos.map(d => d.dinosaurId);
   }
+  return dinosAliveDuringTheseEras;
 }
 
 
