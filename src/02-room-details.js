@@ -83,28 +83,39 @@ let noDinosaurFound = `Dinosaur with name '${dinosaurName}' cannot be found.`;
     ]
  */
 const getConnectedRoomNamesById = (rooms, id) => {
-  const connectedRoomNames = [];
-  for (const room of rooms) {
-    if (room.roomId === id) {
-      const connectsToIds = room.connectsTo;
-      if (connectsToIds === 0) {
-        return `Room with ID of '${id}' could not be found.`
-      }
-      for (const connectsToId of connectsToIds) {
-        for (const connectedRoom of rooms) {
-          if (connectedRoom.roomId === connectsToId) {
-            connectedRoomFound = true;
-            connectedRoomNames.push(connectedRoom.name);
-          }
-        }
-        if (!connectedRoomFound) {
-          throw new Error(`Room with ID of 'incorrect-id' could not be found.`)
-        }
+    let connectsToRoomId = [];
+    let connectedRoomNames = [];
+    let errorMessage = null;
+  
+    for (let room of rooms) {
+      if (room.roomId === id) {
+        connectsToRoomId = room.connectsTo;
       }
     }
+  
+    if (connectsToRoomId.length === 0) {
+      errorMessage = `Room with ID of '${id}' could not be found.`;
+    } else {
+      for (let roomTag of connectsToRoomId) {
+        for (let room of rooms) {
+          if (roomTag === room.roomId) {
+            connectedRoomNames.push(room.name);
+          }
+        }
+      }
+  
+      if (connectsToRoomId.length !== connectedRoomNames.length) {
+        errorMessage = `Room with ID of 'incorrect-id' could not be found.`;
+      }
+    }
+  
+    if (errorMessage !== null) {
+      return errorMessage;
+    }
+  
+    return connectedRoomNames;
   }
-  return connectedRoomNames;
-}
+  
 
 
 module.exports = {
