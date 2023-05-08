@@ -75,7 +75,28 @@ return { [tallestDinosaur.name]: lengthInFeet };
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
+  // i used the find() method to search for the dinosaur object that has the same dinosaurId property as the given id parameter. If there's a match, dinosaur will hold the object, otherwise it will be undefined
+  const dinosaur = dinosaurs.find((dino) => dino.dinosaurId === id);
+
+  // If no dinosaur was found, return an error message
+  if (!dinosaur) {
+    return `A dinosaur with an ID of '${id}' cannot be found.`;
+  }
+
+  // Format the dinosaur's name, pronunciation, and description
+  const name = dinosaur.name;
+  const pronunciation = dinosaur.pronunciation;
+  const description = dinosaur.info;
+  const period = dinosaur.period;
+
+  // Construct the final description string with proper formatting '\n' - A newline character, which creates a line break in the final string.
+  const formattedDescription = `${name} (${pronunciation})\n${description} It lived in the ${period} period, over ${dinosaur.mya[dinosaur.mya.length - 1]} million years ago.`;
+
+  return formattedDescription;
 }
+
+
+
 
 
 
@@ -111,8 +132,32 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  
+  // Filter out the dinosaurs that were not alive during the specified time period
+  const validDinosaurs = dinosaurs.filter((dino) => {
+    // I Checked if the dinosaur's mya value is within the specified time period
+    const myaArray = dino.mya;
+    if (myaArray.length === 1) {
+      // If the dinosaur has only one mya value, allow for 1 MYA less than the amount
+      return myaArray[0] === mya || myaArray[0] - 1 === mya;
+    } else {
+      return mya >= myaArray[myaArray.length - 1] && mya <= myaArray[0];
+    }
+  });
+
+  // If a key is specified and there are valid dinosaurs, return an array of the values of the specified key
+  if (key && validDinosaurs.length > 0) {
+    return validDinosaurs.map((dino) => dino[key] || dino.dinosaurId);
+  } else {
+    // Otherwise, return an array of the IDs of the valid dinosaurs
+    return validDinosaurs.map((dino) => dino.dinosaurId);
+  }
+
+
 }
+
+  
+
+
 
 module.exports = {
   getLongestDinosaur,
