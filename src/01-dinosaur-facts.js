@@ -24,11 +24,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getLongestDinosaur(dinosaurs) {
   let longestDinosaur = dinosaurs.find(dinosaur => dinosaur.lengthInMeters === Math.max(...dinosaurs.map(dinosaur => dinosaur.lengthInMeters)));
-  if (longestDinosaur) {
-    return {[longestDinosaur.name]: longestDinosaur.lengthInMeters * 3.281};
-  } else {
-    return {};
-  }
+  return (longestDinosaur ? {[longestDinosaur.name]: longestDinosaur.lengthInMeters * 3.281} : {});
 }
 
 /**
@@ -85,7 +81,25 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinosaursAlive = dinosaurs.filter((dinosaur) => {
+    if (dinosaur.mya.length > 1) {
+      return dinosaur.mya[1] <= mya && dinosaur.mya[0] >= mya;
+    } else {
+      return dinosaur.mya[0] == mya || dinosaur.mya[0] - 1 == mya;
+    }
+  });
+  if (key) {
+    if (Object.hasOwn(dinosaursAlive[0], key)) {
+      return dinosaursAlive.map(dinosaur => {return dinosaur[key]});
+    }
+  }
+  return dinosaursAlive.map(dinosaur => dinosaur.dinosaurId);
+  //console.log(dinosaursAlive)
+  // let dinosaursAlive = dinosaurs.filter((dinosaur) => (Math.max(dinosaur.mya) > mya) && dinosaur.period));
+  // console.log(dinosaursAlive);
+}
+
 
 module.exports = {
   getLongestDinosaur,
