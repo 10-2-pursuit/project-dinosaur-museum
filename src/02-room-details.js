@@ -83,30 +83,30 @@ let noDinosaurFound = `Dinosaur with name '${dinosaurName}' cannot be found.`;
     ]
  */
 const getConnectedRoomNamesById = (rooms, id) => {
-  let connectedRoomsIdArray = [];
-  let connectedRoomName =[];
+  const connectedRoomNames = [];
   for (const room of rooms) {
-    if(room.roomId === id) {
-      connectedRoomsIdArray.push(room.connectsTo)
-    }
-  }
-  if (!connectedRoomsIdArray.length) {
-    return `Room with ID of '${id}' could not be found.`;
-  }
-  for (const connectedRoomId of connectedRoomsIdArray) {
-    let connectedRoom;
-    
-    for (const room of rooms) {
-      if (room.roomId === connectedRoomId) {
-        connectedRoom = room;
+    if (room.roomId === id) {
+      const connectsToIds = room.connectsTo;
+      if (connectsToIds === 0) {
+        return `Room with ID of '${id}' could not be found.`
       }
-      if (connectedRoom) {
-        connectedRoomName.push(connectedRoom.name)
+      for (const connectsToId of connectsToIds) {
+        for (const connectedRoom of rooms) {
+          if (connectedRoom.roomId === connectsToId) {
+            connectedRoomFound = true;
+            connectedRoomNames.push(connectedRoom.name);
+          }
+        }
+        if (!connectedRoomFound) {
+          throw new Error(`Room with ID of 'incorrect-id' could not be found.`)
+        }
+      }
     }
   }
+  return connectedRoomNames;
 }
-return connectedRoomName
-}
+
+
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
