@@ -67,7 +67,7 @@ function getLongestDinosaur(dinosaurs) {
  */
 function getDinosaurDescription(dinosaurs, id) {
   /** declare var */
-  let dino = dinosaurs.find(dino => dino.dinosaurId == id);
+  const dino = dinosaurs.find(dino => dino.dinosaurId == id);
 
   /** validation */
   if(dino == undefined){

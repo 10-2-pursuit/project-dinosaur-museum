@@ -34,7 +34,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   }
 
   /** validation for @param [rooms] contains @param [dinosaurName] */
-  let rmSearched = rooms.find(room => room.dinosaurs.includes(dino.dinosaurId));
+  const rmSearched = rooms.find(room => room.dinosaurs.includes(dino.dinosaurId));
   
   if(!rmSearched){
     return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
@@ -67,7 +67,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  */
 function getConnectedRoomNamesById(rooms, id) {
   /** declare a var, room to store searched result */
-  let room = rooms.find(room => room.roomId.includes(id));
+  const room = rooms.find(room => room.roomId.includes(id));
 
   /** validation */
   if(!room){
