@@ -97,7 +97,17 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let myaValues = dinosaurs.mya;
+ const closestMya = myaValues.reduce(
+    (prev, curr) => (Math.abs(curr - key) < Math.abs(prev - key) ? curr : prev),
+    myaValues[0]
+  );
+  const dinosaurIds = dinosaurs
+    .filter((dinosaur) => dinosaur.mya.includes(closestMya))
+    .map((dinosaur) => dinosaur.dinosaurId);
+  return dinosaurIds;
+}
 
 module.exports = {
   getLongestDinosaur,
