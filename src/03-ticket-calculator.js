@@ -54,14 +54,33 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {
-//  return error `ticketInfo.ticketType` !== ticketInfo
-//  return error `ticketInfo.entrantType` !== ticketInfo
-//  return error `ticketInfo.extras` !== ticketInfo
-
-
+const calculateTicketPrice = (ticketData, ticketInfo) => {
+  //checks if ticketdata has prop with key tickinfo.ticktyp 
+  if (!ticketData.hasOwnProperty(ticketInfo.ticketType)) {
+    //returns error if not found
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+// or checks if key of tickinfo.entrtype
+  } else if (!ticketData.general.priceInCents.hasOwnProperty(ticketInfo.entrantType)) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  // loops over the tickinfo.extras
+  for (const extra of ticketInfo.extras) {
+    // checks tickdata for matching keys returns error if not found
+    if (!Object.keys(ticketData.extras).includes(extra)) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+  }
+  //create variable for base price ticket
+  let regularTicket = ticketData[ticketInfo.ticketType]["priceInCents"][ticketInfo.entrantType];
+  // checks if array is empty (extras not available) skip for loop
+  if (ticketInfo.extras.length !== 0) {
+    // loops thru extras if found and adds price to regular ticket price
+    for(const extra of ticketInfo.extras) {
+      regularTicket += ticketData.extras[extra]["priceInCents"][ticketInfo.entrantType];
+    }
+  }
+  return regularTicket;
 }
-
 /**
  * purchaseTickets()
  * ---------------------
