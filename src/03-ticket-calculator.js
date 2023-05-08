@@ -54,35 +54,31 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {
-  const { ticketType, entrantType, extras } = ticketInfo;
-  const { general, membership, extras: extraTypes } = ticketData;
-
-  // Check if ticket type exists
-  if (!(ticketType in ticketData)) {
-    return `Ticket type '${ticketType}' cannot be found.`;
-  }
-
-  // Check if entrant type exists
-  const entrantPrices = ticketData[ticketType].priceInCents;
-  if (!(entrantType in entrantPrices)) {
-    return `Entrant type '${entrantType}' cannot be found.`;
-  }
-
-  // Check if extras are valid
-  const extraPrices = extraTypes || {};
-  const invalidExtras = extras.filter((extra) => !(extra in extraPrices));
-  if (invalidExtras.length > 0) {
-    return `Extra type '${invalidExtras.join("', '")}' cannot be found.`;
-  }
-
-  // Calculate ticket price
-  let ticketPrice = entrantPrices[entrantType];
-  extras.forEach((extra) => {
-    ticketPrice += extraPrices[extra].priceInCents[entrantType];
-  });
-  return ticketPrice;
-}
+    function calculateTicketPrice(ticketData, ticketInfo) {
+      const { ticketType, entrantType, extras } = ticketInfo;
+      const { general, membership, extras: extraTypes } = ticketData;
+      // Check if ticket type exists
+      if (!(ticketType in ticketData)) {
+        return `Ticket type '${ticketType}' cannot be found.`;
+      }
+      // Check if entrant type exists
+      const entrantPrices = ticketData[ticketType].priceInCents;
+      if (!(entrantType in entrantPrices)) {
+        return `Entrant type '${entrantType}' cannot be found.`;
+      }
+      // Check if extras are valid
+      const extraPrices = extraTypes || {};
+      const invalidExtras = extras.filter((extra) => !(extra in extraPrices));
+      if (invalidExtras.length > 0) {
+        return `Extra type '${invalidExtras.join("', '")}' cannot be found.`;
+      }
+      // Calculate ticket price
+      let ticketPrice = entrantPrices[entrantType];
+      extras.forEach((extra) => {
+        ticketPrice += extraPrices[extra].priceInCents[entrantType];
+      });
+      return ticketPrice;
+     }
 
 /**
  * purchaseTickets()
@@ -136,85 +132,41 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ]
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
-*/
-
-    function purchaseTickets(ticketData, purchases) {
-  // Define a function to format prices in cents as dollars
-  function formatPrice(priceInCents) {
-    const dollars = priceInCents / 100;
-    return `$${dollars.toFixed(2)}`;
-  }
-
-  // Initialize the receipt string with a header
-  let receipt = "Thank you for visiting the Dinosaur Museum!\n";
-  receipt += "-------------------------------------------\n";
-
-  // Process each purchase
-  let total = 0;
-  for (const purchase of purchases) {
-    const { ticketType, entrantType, extras } = purchase;
-
-    // Make sure the ticket type exists in the ticket data
-    const ticketKey = ticketType.toLowerCase();
-    if (!ticketData[ticketKey]) {
-      return `Ticket type '${ticketType}' cannot be found.`;
-    }
-
-    // Make sure the entrant type exists for the given ticket type
-    const priceInCents = ticketData[ticketKey].priceInCents[entrantType];
-    if (priceInCents === undefined) {
-      return `Entrant type '${entrantType}' cannot be found for ticket type '${ticketType}'.`;
-    }
-
-    // Calculate the base price and add it to the total
-    const basePrice = formatPrice(priceInCents);
-    total += priceInCents;
-
-    // Add the description and price for the base ticket to the receipt
-    const ticketDescription = ticketData[ticketKey].description;
-    receipt += `${entrantType.charAt(0).toUpperCase()}${entrantType.slice(1)} ${ticketDescription}: ${basePrice}`;
-
-    // Process each extra and add it to the receipt
-    const extraPrices = [];
-    for (const extraKey of extras) {
-      // Make sure the extra exists in the ticket data
-      if (!ticketData.extras[extraKey]) {
-        return `Extra '${extraKey}' cannot be found.`;
+ */
+function purchaseTickets(ticketData, purchases) {
+    let total = 0;
+    let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  
+    for (let purchase of purchases) {
+      let ticket = calculateTicketPrice(ticketData, purchase);
+  
+      total += ticket;
+  
+      if (typeof(ticket) === 'string') {
+        return ticket;
       }
-
-      // Make sure the extra is valid for the given ticket type
-      const extraPriceInCents = ticketData.extras[extraKey].priceInCents[entrantType];
-      if (extraPriceInCents === undefined) {
-        return `Extra '${extraKey}' cannot be added to ticket type '${ticketType}' with entrant type '${entrantType}'.`;
+  
+      let extras = purchase.extras;
+  
+      let altReceipt = '';
+      for (let extra of extras) {
+        altReceipt += ticketData.extras[extra].description;
+        if (extras[extras.length - 1] !== extra) {
+          altReceipt += ", ";
+        }
       }
-
-      // Calculate the price of the extra and add it to the total
-      const extraPrice = formatPrice(extraPriceInCents);
-      total += extraPriceInCents;
-
-      // Add the description and price of the extra to the receipt
-      const extraDescription = ticketData.extras[extraKey].description;
-      extraPrices.push(`${extraDescription} ${extraPrice}`);
+  
+      receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(ticket / 100).toFixed(2)}`;
+  
+      if (extras.length) {
+        receipt += ` (${altReceipt})\n`;
+      } else {
+        receipt += `\n`;
+      }
     }
-
-    // Add extra prices to the receipt if there are any
-    if (extraPrices.length > 0) {
-      const extrasString = extraPrices.length > 1 ? ` (${extraPrices.join(", ")})` : ` (${extraPrices[0]})`;
-      receipt += extrasString;
-    } else {
-      receipt += " ()";
-    }
-
-    // Add a newline character after each ticket on the receipt
-    receipt += "\n";
+  
+    return `${receipt}-------------------------------------------\nTOTAL: $${(total / 100).toFixed(2)}`;
   }
-
-  // Add a footer to the receipt with the total price
-  receipt += "-------------------------------------------\n";
-  receipt += `TOTAL: ${formatPrice(total)}`;
-
-  return receipt;
-}
 
 // Do not change anything below this line.
 module.exports = {
