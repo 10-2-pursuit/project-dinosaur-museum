@@ -63,9 +63,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   if(!Object.hasOwn(ticketData, ticketType)){
     return _errorPrinter("Ticket", ticketType);
   }
+
   if(!Object.hasOwn(ticketData[ticketType].priceInCents, entrantType)){
     return _errorPrinter("Entrant", entrantType);
   }
+  
   for(let extra of extras){
     if(!Object.hasOwn(ticketData.extras, extra)){
       return _errorPrinter("Extra", extra);
