@@ -26,6 +26,9 @@ function getLongestDinosaur(dinosaurs) {
   let tempDinosaur = {};
   let longestDinosaur = {};
   let dinosaurMeasurement = 0;
+  if (!dinosaurs.length) {
+    return {};
+  }
   for (let dinosaur of dinosaurs) {
     if (dinosaur.lengthInMeters > dinosaurMeasurement) {
       dinosaurMeasurement = dinosaur.lengthInMeters;
@@ -33,8 +36,6 @@ function getLongestDinosaur(dinosaurs) {
     }
   }
   longestDinosaur[tempDinosaur.name] = tempDinosaur.lengthInMeters * 3.281;
-
-  console.log(longestDinosaur, "<------ this");
   return longestDinosaur;
 }
 
