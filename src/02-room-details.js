@@ -26,16 +26,16 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  /** validation for @param [dinosaurName] exist in @param [dinosaurs] */
-  if(!dinosaurs.some(dino => dino.name == dinosaurName)){
+  /** validation & finding for @param [dinosaurName] exist in @param [dinosaurs] */
+  let dino = dinosaurs.find(dino => dino.name == dinosaurName);
+  
+  if(!dino){
     return `Dinosaur with name '${dinosaurName}' cannot be found.`;
   }
 
-  /** declare vars */
-  let dino = dinosaurs.find(dino => dino.name == dinosaurName);
+  /** validation for @param [rooms] contains @param [dinosaurName] */
   let rmSearched = rooms.find(room => room.dinosaurs.includes(dino.dinosaurId));
   
-  /** validation for @param [rooms] contains @param [dinosaurName] */
   if(!rmSearched){
     return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
   }
