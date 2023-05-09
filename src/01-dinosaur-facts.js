@@ -104,24 +104,21 @@ const getDinosaurDescription = (dinosaurs, id) => {
  *  //> ["WHQcpcOj0G"]
  */
 const getDinosaursAliveMya = (dinosaurs, mya, key) => {
-  const result = [];
-
-  for (let i = 0; i < dinosaurs.length; i++) {
-    const dino = dinosaurs[i];
+  return dinosaurs.filter(dino => {
     const myaArr = dino.mya;
-    
     if (myaArr.length === 1) {
-      if (myaArr[0] === mya || myaArr[0] === mya - 1 || myaArr[0] === mya + 1) {
-        result.push(key ? (dino[key] || dino.dinosaurId) : dino.dinosaurId);
-      }
+      return [myaArr[0], myaArr[0] - 1, myaArr[0] + 1].includes(mya);
     } else {
-      if (mya >= myaArr[myaArr.length - 1] && mya <= myaArr[0]) {
-        result.push(key ? (dino[key] || dino.dinosaurId) : dino.dinosaurId);
-      }
+      return mya >= myaArr[myaArr.length - 1] && mya <= myaArr[0];
     }
-  }
-  return result;
+    
+  }).map(dino => key ? (dino[key] || dino.dinosaurId) : dino.dinosaurId);
 }
+
+
+
+
+
 
 module.exports = {
   getLongestDinosaur,
