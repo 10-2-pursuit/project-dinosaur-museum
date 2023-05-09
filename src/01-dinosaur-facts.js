@@ -23,21 +23,22 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
-  let lengthOfDino = 0;
-  let longestDino = {};
+  let lengthOfDinosaur = 0;
+  let longestDinosaur = {};
+
   if (!dinosaurs.length) {
-    return longestDino;
+    return longestDinosaur;
   }
   for (let dinosaur of dinosaurs) {
-    if (lengthOfDino < dinosaur.lengthInMeters) {
+    if (lengthOfDinosaur < dinosaur.lengthInMeters) {
       
-      lengthOfDino = dinosaur.lengthInMeters;
+      lengthOfDinosaur = dinosaur.lengthInMeters;
       nameOfDinosaur = dinosaur.name;
 
     }
   }
-  longestDino[nameOfDinosaur] = lengthOfDino * 3.281;
-  return longestDino;
+  longestDinosaur[nameOfDinosaur] = lengthOfDinosaur * 3.281;
+  return longestDinosaur;
 }
 
     
@@ -78,7 +79,7 @@ function getDinosaurDescription(dinosaurs, id) {
     }
     
     return `${identifiedDinosaur.name} (${identifiedDinosaur.pronunciation})\n${identifiedDinosaur.info} It lived in the ${identifiedDinosaur.period} period, over ${identifiedDinosaur.mya.length > 1 ? identifiedDinosaur.mya[1] : identifiedDinosaur.mya[0]} million years ago.`;
-    
+
   }                 
 
 
