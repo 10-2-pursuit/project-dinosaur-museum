@@ -27,7 +27,7 @@ const exampleRoomData = require("../data/rooms");
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   
-  let doesDinoExist = dinosaurs.some(dino => dinosaurName === dino.name)
+  let doesDinoExist = dinosaurs.find(dino => dinosaurName === dino.name)
   if(!doesDinoExist) {
     return `Dinosaur with name '${dinosaurName}' cannot be found.`
   }
@@ -73,17 +73,18 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  */
 function getConnectedRoomNamesById(rooms, id) {
   let roomNames = [];
-
-  let doesIdExist = rooms.some(room => id === room.dinosaurId)
-  if(!doesIdExist) {
-    return `Room with ID of '${id}' could not be found.`
+  let foundRoom = rooms.find((room) => room.roomId === id);
+  if (!foundRoom) {
+    return `Room with ID of 'incorrect-id' could not be found.`;
   }
-  let foundRoom = rooms.find(room => room.roomId === id)
-  let foundRoomWithConnection = rooms.find(room => room.connectsTo.includes(foundRoom.roomId))
-  if(!foundRoomWithConnection) {
-    return `Room with ID of 'incorrect-id' could not be found.`
+  let foundRoomWithConnection = rooms.filter((room) =>
+    room.connectsTo.includes(foundRoom.roomId)
+  );
+  if (!foundRoomWithConnection) {
+    return `Room with ID of 'incorrect-id' could not be found.`;
   }
-  return roomNames.push(foundRoom.connectsTo)
+  foundRoomWithConnection.forEach((room) => roomNames.push(room.name));
+  return roomNames;
 }
 
 module.exports = {
