@@ -23,36 +23,17 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
-if (!dinosaurs.length) { // check if the dinosaurs array is empty
-  return {}; //if it's empty, return an empty object
-}
-
-// declare the variable tallestDinosaur to the value of the first dinosaur in the array using [0]
-let tallestDinosaur = dinosaurs[0];
-
-// loop through the rest of the dinosaurs in the array NOTE: i started i = 1 because the variable tallesDinosaur has the value of the index 0;
-for (let i = 1; i < dinosaurs.length; i++) {
-  // if the length of the current dinosaur is greater than the length of the tallest dinosaur we've seen so far
-  if (dinosaurs[i].lengthInMeters > tallestDinosaur.lengthInMeters) {
-    // update the tallestDinosaur variable to the new value of the current dinosaur
-    tallestDinosaur = dinosaurs[i];
+  if (!dinosaurs.length) {
+    return {};
   }
+  let tallestDinosaur = dinosaurs[0];
+  for (let i = 1; i < dinosaurs.length; i++)
+    if (dinosaurs[i].lengthInMeters > tallestDinosaur.lengthInMeters) {
+      tallestDinosaur = dinosaurs[i];
+    }
+  let lengthInFeet = tallestDinosaur.lengthInMeters * 3.281;
+  return { [tallestDinosaur.name]: lengthInFeet };
 }
-
-// declare a variable in this case lengthInFeet to the value of the multiply tallestDinosaur.lengthInMeters  * 3.281;
-let lengthInFeet = tallestDinosaur.lengthInMeters * 3.281;
-
-// return an object with the name of the tallest dinosaur and its length in feet
-return { [tallestDinosaur.name]: lengthInFeet };
-}
-
-
-
-
-
-
-
-
 
 /**
  * getDinosaurDescription()
@@ -75,36 +56,22 @@ return { [tallestDinosaur.name]: lengthInFeet };
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  // i used the find() method to search for the dinosaur object that has the same dinosaurId property as the given id parameter. If there's a match, dinosaur will hold the object, otherwise it will be undefined
   const dinosaur = dinosaurs.find((dino) => dino.dinosaurId === id);
 
-  // If no dinosaur was found, return an error message
   if (!dinosaur) {
     return `A dinosaur with an ID of '${id}' cannot be found.`;
   }
-
-  // Format the dinosaur's name, pronunciation, and description
   const name = dinosaur.name;
   const pronunciation = dinosaur.pronunciation;
   const description = dinosaur.info;
   const period = dinosaur.period;
 
-  // Construct the final description string with proper formatting '\n' - A newline character, which creates a line break in the final string.
-  const formattedDescription = `${name} (${pronunciation})\n${description} It lived in the ${period} period, over ${dinosaur.mya[dinosaur.mya.length - 1]} million years ago.`;
+  const formattedDescription = `${name} (${pronunciation})\n${description} It lived in the ${period} period, over ${
+    dinosaur.mya[dinosaur.mya.length - 1]
+  } million years ago.`;
 
   return formattedDescription;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * getDinosaursAliveMya()
@@ -151,13 +118,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     // Otherwise, return an array of the IDs of the valid dinosaurs
     return validDinosaurs.map((dino) => dino.dinosaurId);
   }
-
-
 }
-
-  
-
-
 
 module.exports = {
   getLongestDinosaur,
