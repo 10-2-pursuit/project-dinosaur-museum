@@ -134,7 +134,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let ticketPricePurch = 0;
+  let ticketPrice = 0;
   let extraSum = 0;
   let totalTickPrice = 0;
   let grandTotal = 0
@@ -170,25 +170,21 @@ function purchaseTickets(ticketData, purchases) {
 
     ticketPrice = ticketData[tickType].priceInCents[entrant] / 100;
     totalTickPrice = ticketPrice + extraSum;
-    
-    for (let i = 0; i <= purchases.length; i++) {
-    ticketPricePurch += totalTickPrice
-    }
 
     ticketStr += `\n${entrantStr} ${ticketData[tickType].description}: $${totalTickPrice}.00`
   }
   ticketStr = ticketStr.replace("\n", "");
 
   if(!extraStr){
-    receipt += `${ticketStr}`;
+    receipt = `${ticketStr}`;
   } else {
-    receipt += `${ticketStr} (${extraStr})`;
+    receipt = `${ticketStr} (${extraStr})`;
   }
 
-  grandTotal += totalTickPrice;
+  grandTotal = totalTickPrice;
 
 
-  console.log(`${headLine} ${receipt}${endLine}\nTOTAL: $${grandTotal}.00`)
+  console.log(`${headLine}${receipt}${endLine}\nTOTAL: $${grandTotal}.00`)
   return `${headLine} ${receipt}${endLine}\nTOTAL: $${grandTotal}.00`;
 
 }
