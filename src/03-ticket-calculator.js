@@ -135,6 +135,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
   let extraSum = 0;
+  let ticketPrice = 0;
+  let grandTotal = 0
+  let receipt = "";
+  let headLine = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let endLine = "\n-------------------------------------------\n"
 
   for (let ticket of purchases) {
     let tickType = ticket.ticketType;
@@ -155,10 +160,13 @@ function purchaseTickets(ticketData, purchases) {
       }
     }
 
-    let ticketPrice = ticketData[tickType].priceInCents[entrant] / 100;
+    ticketPrice = ticketData[tickType].priceInCents[entrant] / 100;
 
-    return ticketPrice + extraSum;
+    grandTotal = ticketPrice + extraSum
+  
   }
+
+  return `${headLine} ${endLine}\nTOTAL: $${grandTotal}.00`;
 }
 
 // Do not change anything below this line.
