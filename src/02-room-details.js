@@ -64,15 +64,15 @@ function getConnectedRoomNamesById(rooms, id) {
   if (!room) {
     return `Room with ID of '${id}' could not be found.`;
   }
-  let invalidRoom = '';
+  let invalidRoom = "";
   let finalRooms = room.connectsTo.map((searchedRoom) => {
     for (let rom of rooms) {
       if (rom.roomId === searchedRoom) {
         return rom.name;
       }
     }
-      invalidRoom = searchedRoom;
-      return `invalid`;
+    invalidRoom = searchedRoom;
+    return `invalid`;
   });
   if (finalRooms.includes(`invalid`)) {
     return `Room with ID of '${invalidRoom}' could not be found.`;
