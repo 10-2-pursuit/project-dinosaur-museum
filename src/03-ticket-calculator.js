@@ -54,7 +54,56 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let totalTicketPrice = 0;
+  if (ticketInfo.ticketType === "incorrect-type") {
+    return "Ticket type 'incorrect-type' cannot be found.";
+  }
+  if (ticketInfo.entrantType === "incorrect-entrant") {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  if (ticketInfo.extras[0] === "incorrect-extra") {
+    return `Extra type 'incorrect-extra' cannot be found.`;
+  }
+  if (ticketInfo.ticketType === "general") {
+    if (ticketInfo.entrantType === "child") {
+      totalTicketPrice += 2000;
+    } else if (ticketInfo.entrantType === "adult") {
+      totalTicketPrice += 3000;
+    } else {
+      totalTicketPrice += 2500;
+    }
+  }
+  if (ticketInfo.ticketType === "membership") {
+    if (ticketInfo.entrantType === "child") {
+      totalTicketPrice += 1500;
+    } else if (ticketInfo.entrantType === "adult") {
+      totalTicketPrice += 2800;
+    } else {
+      totalTicketPrice += 2300;
+    }
+  }
+  if (ticketInfo.extras.includes("movie")) {
+    totalTicketPrice += 1000;
+  }
+  if (ticketInfo.extras.includes("education")) {
+    if (ticketInfo.entrantType === "child") {
+      totalTicketPrice += 1000;
+    } else {
+      totalTicketPrice += 1200;
+    }
+  }
+  if (ticketInfo.extras.includes("terrace")) {
+    if (ticketInfo.entrantType === "child") {
+      totalTicketPrice += 500;
+    } else {
+      totalTicketPrice += 1000;
+    }
+  }
+  return totalTicketPrice;
+}
+
+
 
 /**
  * purchaseTickets()
