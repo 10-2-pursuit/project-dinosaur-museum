@@ -70,7 +70,7 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-    let identifiedDinosaur = dinosaurs.find(identifiedDinosaur => identifiedDinosaur.dinosaurId == id);
+    let identifiedDinosaur = dinosaurs.find(dinosaur => dinosaur.dinosaurId == id);
 
     if(identifiedDinosaur == undefined){
       
@@ -111,6 +111,17 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let filteredDinosaurArray = dinosaurs.filter(dinosaur => dinosaur.mya.length > 1 ? (dinosaur.mya[1] <= mya && dinosaur.mya[0] >= mya ) : (dinosaur.mya[0] == mya || dinosaur.mya[0] - 1 == mya
+    
+    
+  ));
+  
+    let ourMappedArray= filteredDinosaurArray.map(dinosaur => dinosaur.dinosaurId, key);
+
+
+    return ourMappedArray
+  
+  
   
 }
 

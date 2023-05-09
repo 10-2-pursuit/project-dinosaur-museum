@@ -75,10 +75,10 @@ function getConnectedRoomNamesById(rooms, id) {
     }
     
     let connectedRooms = ourRoom.connectsTo.map(roomIDCheck => { 
-      for(let rm of rooms) {
+      for(let room of rooms) {
 
-        if(rm.roomId == roomIDCheck) {
-          return rm.name;
+        if(room.roomId == roomIDCheck) {
+          return room.name;
         }
       }
           return `ERROR`;
