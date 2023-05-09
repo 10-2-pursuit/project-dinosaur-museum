@@ -134,50 +134,39 @@ const calculateTicketPrice = (ticketData, ticketInfo) => {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-const purchaseTickets = (ticketData, purchases) => {
-  // default price variable set to 0
-  let totalPrice = 0;
-  // default receipt message
-  let receipt = `Thank you for visiting the Dinosaur Museuem!\n-----------------------------------------\n;`
-  // loop thru purchase array
-  for (let i = 0; i < purchaseTickets.length; i++) {
-    // set purchase var to current element/item
-    const purchase = purchases[i];
-  }
-  // access ticktype set var to tickprice
-  const ticketPrice = ticketData[purchase.ticketType].price;
-  // access extras create extras var
-  const extras = purchase.extras;
-  // loop thru extras and access extrasprice create variable add to tickprice
-  for (const extra of purchase.extras) {
-    const extraPrice = ticketData.extras[extra].price;
-    // add up extras to tickprice
-    ticketPrice += extraPrice;
-  }
-  // create extrasAddOnreceipt var empty string
-  const extrasReceipt = "";
-
-  // loop thru extrasdata assign description to extras addon
-  for (const extra of extras) {
-    extrasReceipt += ticketData.extras[extras].description;
-    // check if extras have more than 1 
-    if (extra !== extras[extras.length - 1]) {
-      extrasReceipt += ", ";
+    const purchaseTickets = (ticketData, purchases) => {
+      let totalPrice = 0;
+      let receipt = `Thank you for visiting the Dinosaur Museum!\n-----------------------------------------\n`;
+    
+      for (let i = 0; i < purchases.length; i++) {
+        const purchase = purchases[i];
+        let ticketPrice = ticketData[purchase.ticketType].priceInCents;
+        totalPrice += ticketPrice;
+        const extras = purchase.extras;
+        let extrasReceipt = "";
+    
+        for (const extra of extras) {
+          const extraPrice = ticketData.extras[extra].priceInCents;
+          ticketPrice += extraPrice;
+          extrasReceipt += ticketData.extras[extra].description;
+    
+          if (extra !== extras[extras.length - 1]) {
+            extrasReceipt += ", ";
+          }
+        }
+    
+        const purchaseType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+    
+        if (extras.length > 0) {
+          receipt += `${purchase.quantity} ${purchaseType} Ticket (${extrasReceipt}) - $${ticketPrice / 100}.00\n`;
+        } else {
+          receipt += `${purchase.quantity} ${purchaseType} Ticket - $${ticketPrice / 100}.00\n`;
+        }
+      }
+    
+      return receipt + `-----------------------------------------------\nTotal: $${totalPrice/100}.00`
     }
-    // access purchase object and capitilize first char ticktype prop and create a var with 
-    // receipt purchase description string var
-    const purchaseType = purchase.entrantType[0].ToUpperCase() + purchaseTickets.entrantType.slice(1);
-    // check if there are any extras  + format receipt and add
-    if (extras.length > 0) {
-      receipt += ` (${extrasReceipt})\n`;
-      //or add a new line
-    } else {
-      receipt += `\n`;
-    }
-  }  
-  // return receipt
-  return receipt + `-----------------------------------------------\nTotal: $${totalPrice/100}.00`
-}
+    
 
 // Do not change anything below this line.
 module.exports = {
