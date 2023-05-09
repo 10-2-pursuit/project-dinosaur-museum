@@ -25,20 +25,18 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-//return the name of the room where dino can be found
-// create an if statement to check if the dino is in a room or list
-// if dino cannot be found create an error message state such
+
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let dinoId = "";
   let dinoRoom = "";
 
-  for (let i = 0; i < dinosaurs.length; i++) {
+  for (const i = 0; i < dinosaurs.length; i++) {
     if (dinosaurs[i].name === dinosaurName) {
       dinoId = dinosaurs[i].dinosaurId;
     }
   }
 
-  for (let j = 0; j < rooms.length; j++) {
+  for (const j = 0; j < rooms.length; j++) {
     if (rooms[j].dinosaurs.includes(dinoId)) {
       dinoRoom = rooms[j].name;
     }
