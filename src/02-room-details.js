@@ -26,21 +26,24 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  for (let i = 0; i < rooms.length; i++) {
-    const room = rooms[i];
-    const roomConnections = room.coonectsTo;
-    for (let j = 0; j < roomConnections.length; j++) {
-      const hallway = roomConnections[j];
-      console.log(hallway)
-      for (let k = 0; k < dinosaurs.length; k++) {
-        const dinosaur = dinosaurs[k];
-        if (dinosaur.name === dinosaurName && hallway === dinosaur.dinosaurId) {
-          return room.name
-        }
+  let dinoRoom = '';
+  let dinoId = '';
+    for (let dinosaur of dinosaurs) {
+      if (dinosaurName === dinosaur.name) {
+        dinoId = dinosaur.dinosaurId
       }
+    }  
+    for (let room of rooms) {
+      if (room.dinosaurs.includes(dinoId))
+       dinoRoom = room.name
     }
-    return `Dinosaur with name '${dinosaurName}' cannot be found.`
-  }
+    if (dinoRoom) {
+      return dinoRoom
+    }else if (!dinoId) {
+      return `Dinosaur with name '${dinosaurName}' cannot be found.`
+    } else if (!dinoRoom) {
+      return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+    }
 }
 
 /**
@@ -65,7 +68,22 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  const room = rooms.find((room) => room.roomId === id);
+  if (!room) {
+    return `Room with ID of '${id}' could not be found.`
+  }
+  const connectedRoomIds = room.connectsTo
+  const connectedRooms = [];
+  for (let roomId of connectedRoomIds) {
+    const connectedRoom = rooms.find((room) => room.roomId === roomId);
+    if (!connectedRoom) {
+      return `Room with ID of '${roomId}' could not be found.`
+    }
+    connectedRooms.push(connectedRoom.name)
+  }
+  return connectedRooms
+}
 
 module.exports = {
   getRoomByDinosaurName,
