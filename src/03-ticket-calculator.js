@@ -136,14 +136,26 @@ const calculateTicketPrice = (ticketData, ticketInfo) => {
  */
 const purchaseTickets = (ticketData, purchases) => {
   // default price variable set to 0
+  let totalPrice = 0;
   // default receipt message
+  let receipt = `Thank you for visiting the Dinosaur Museuem!\n-----------------------------------------\n;`
   // loop thru purchase array
-  // set purchase var to current element/item
+  for (let i = 0; i < purchaseTickets.length; i++) {
+    // set purchase var to current element/item
+    const purchase = purchase[i];
+  }
   // access ticktype set var to tickprice
+  const ticketPrice = tickedtData[purchase.ticketType].price;
   // access extras create extras var
+  const extras = purchse.extras;
   // loop thru extras and access extrasprice create variable add to tickprice
-  // add up shoppingCart to tickprice
+  for (const extra of purchase.extras) {
+    const extraPrice = ticketData.extras[extra].price;
+    // add up extras to tickprice
+    ticketPrice += extraPrice;
+  }
   // create extrasAddOnreceipt var empty string
+
   // loop thru extrasdata assign description to extras addon
   // check if extras have more than 1 
   // access ticktype prop and create a var 
