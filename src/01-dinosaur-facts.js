@@ -27,10 +27,6 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-//What I'm about to do!
-// create an empty object
-// use .reduce() to find the largest lengthInMeters from dinosaurs array of objects
-// convert lengthInMeters key to feet
 
 function getLongestDinosaur(dinosaurs) {
   if (dinosaurs.length < 1) {
