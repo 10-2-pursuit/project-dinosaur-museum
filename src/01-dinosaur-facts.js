@@ -109,11 +109,23 @@ const getDinosaurDescription = (dinosaurs, id) => {
  *  //> ["WHQcpcOj0G"]
  */
 const getDinosaursAliveMya = (dinosaurs, mya, key) => {
-  return dinosaurs.filter((dinosaur) => {
-    return dinosaur.mya[0] <= mya && (dinosaur.mya.length === 1 ? dinosaur.mya[0] + 1 >= mya : dinosaur.mya[1])>= mya}).map((dinosauer) => {
-      return key ? dinosauer[key] : dinosauer.id
-    });
-   
+  const result = [];
+
+  for (let i = 0; i < dinosaurs.length; i++) {
+    const dino = dinosaurs[i];
+    const myaArr = dino.mya;
+    
+    if (myaArr.length === 1) {
+      if (myaArr[0] === mya || myaArr[0] === mya - 1 || myaArr[0] === mya + 1) {
+        result.push(key ? (dino[key] || dino.dinosaurId) : dino.dinosaurId);
+      }
+    } else {
+      if (mya >= myaArr[myaArr.length - 1] && mya <= myaArr[0]) {
+        result.push(key ? (dino[key] || dino.dinosaurId) : dino.dinosaurId);
+      }
+    }
+  }
+  return result;
 }
 
 module.exports = {
