@@ -155,11 +155,19 @@ const purchaseTickets = (ticketData, purchases) => {
     ticketPrice += extraPrice;
   }
   // create extrasAddOnreceipt var empty string
+  const extrasReceipt = "";
 
   // loop thru extrasdata assign description to extras addon
-  // check if extras have more than 1 
-  // access ticktype prop and create a var 
-  // receipt purchase description string var
+  for (const extra of extras) {
+    extrasReceipt += ticketData.extras[extras].description;
+    // check if extras have more than 1 
+    if (extra !== extras[extras.length - 1]) {
+      extrasReceipt += ", ";
+    }
+    // access case insensitive ticktype prop and create a var with 
+    const purchaseType = purchase.entrantType[0].ToUpperCase
+    // receipt purchase description string var
+  }  
   // check if there are any extras format receipt and add
   //or add a new line
   // return receipt
