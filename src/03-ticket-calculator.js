@@ -135,27 +135,30 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
   let extraSum = 0;
-  let tickType = purchases.ticketType;
-  let entrant = purchases.entrantType;
-  let extraFeat = purchases.extras;
 
-  if (ticketData[tickType] === undefined){
-    return "Ticket type 'incorrect-type' cannot be found.";
-  } else if (ticketData[tickType].priceInCents[entrant] === undefined) {
+  for (let ticket of purchases) {
+    let tickType = ticket.ticketType;
+    let entrant = ticket.entrantType;
+    let extraFeat = ticket.extras;
+
+    if (ticketData[tickType] === undefined){
+      return "Ticket type 'incorrect-type' cannot be found.";
+    } else if (ticketData[tickType].priceInCents[entrant] === undefined) {
     return "Entrant type 'incorrect-entrant' cannot be found.";
-  }
-
-  for (let extra of extraFeat) {
-    if (ticketData.extras[extra] === undefined) {
-      return "Extra type 'incorrect-extra' cannot be found.";
-    } else if (ticketData.extras[extra].priceInCents[entrant]) {
-      extraSum += ticketData.extras[extra].priceInCents[entrant];
     }
+
+    for (let extra of extraFeat) {
+      if (ticketData.extras[extra] === undefined) {
+        return "Extra type 'incorrect-extra' cannot be found.";
+      } else if (ticketData.extras[extra].priceInCents[entrant]) {
+        extraSum += ticketData.extras[extra].priceInCents[entrant] / 100;
+      }
+    }
+
+    let ticketPrice = ticketData[tickType].priceInCents[entrant] / 100;
+
+    return ticketPrice + extraSum;
   }
-
-  let ticketPrice = ticketData[tickType].priceInCents[entrant];
-
-  return ticketPrice + extraSum;
 }
 
 // Do not change anything below this line.
