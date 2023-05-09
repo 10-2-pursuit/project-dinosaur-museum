@@ -134,38 +134,39 @@ const calculateTicketPrice = (ticketData, ticketInfo) => {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-    const purchaseTickets = (ticketData, purchases) => {
-      let totalPrice = 0;
-      let receipt = `Thank you for visiting the Dinosaur Museum!\n-----------------------------------------\n`;
-    
-      for (let i = 0; i < purchases.length; i++) {
-        const purchase = purchases[i];
-        let ticketPrice = ticketData[purchase.ticketType].priceInCents;
-        totalPrice += ticketPrice;
-        const extras = purchase.extras;
-        let extrasReceipt = "";
-    
-        for (const extra of extras) {
-          const extraPrice = ticketData.extras[extra].priceInCents;
-          ticketPrice += extraPrice;
-          extrasReceipt += ticketData.extras[extra].description;
-    
-          if (extra !== extras[extras.length - 1]) {
-            extrasReceipt += ", ";
-          }
-        }
-    
-        const purchaseType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
-    
-        if (extras.length > 0) {
-          receipt += `${purchase.quantity} ${purchaseType} Ticket (${extrasReceipt}) - $${ticketPrice / 100}.00\n`;
-        } else {
-          receipt += `${purchase.quantity} ${purchaseType} Ticket - $${ticketPrice / 100}.00\n`;
-        }
-      }
-    
-      return receipt + `-----------------------------------------------\nTotal: $${totalPrice/100}.00`
+const purchaseTickets = (ticketData, purchases) => {
+  let totalPrice = 0;
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  
+  for (let i = 0; i < purchases.length; i++) {
+    let purchase = purchases[i];
+    let shoppingCart = calculateTicketPrice(ticketData, purchase);
+    if (typeof shoppingCart === 'string') {
+      return shoppingCart;
     }
+    totalPrice += shoppingCart;
+    let extras = purchase.extras;
+    let extra = '';
+    
+    for (let j = 0; j < extras.length; j++) {
+      extra += ticketData.extras[extras[j]].description;
+      if (j !== extras.length - 1) {
+        extra += ', ';
+      }
+    }
+    let purchaseType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+    
+    receipt += `${purchaseType} ${ticketData[purchase.ticketType].description}: $${shoppingCart/100}.00`;
+    
+    if (extras.length > 0) {
+      receipt += ` (${extra})\n`;
+    } else {
+      receipt += `\n`;
+    }
+  }
+  return receipt + `-------------------------------------------\nTOTAL: $${totalPrice/100}.00`;
+};
+    
     
 
 // Do not change anything below this line.
