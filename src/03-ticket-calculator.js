@@ -142,12 +142,12 @@ const purchaseTickets = (ticketData, purchases) => {
   // loop thru purchase array
   for (let i = 0; i < purchaseTickets.length; i++) {
     // set purchase var to current element/item
-    const purchase = purchase[i];
+    const purchase = purchases[i];
   }
   // access ticktype set var to tickprice
-  const ticketPrice = tickedtData[purchase.ticketType].price;
+  const ticketPrice = ticketData[purchase.ticketType].price;
   // access extras create extras var
-  const extras = purchse.extras;
+  const extras = purchase.extras;
   // loop thru extras and access extrasprice create variable add to tickprice
   for (const extra of purchase.extras) {
     const extraPrice = ticketData.extras[extra].price;
@@ -165,12 +165,18 @@ const purchaseTickets = (ticketData, purchases) => {
       extrasReceipt += ", ";
     }
     // access purchase object and capitilize first char ticktype prop and create a var with 
-    const purchaseType = purchase.entrantType[0].ToUpperCase() + purchaseTickets.entrantType.slice(1);
     // receipt purchase description string var
+    const purchaseType = purchase.entrantType[0].ToUpperCase() + purchaseTickets.entrantType.slice(1);
+    // check if there are any extras  + format receipt and add
+    if (extras.length > 0) {
+      receipt += ` (${extrasReceipt})\n`;
+      //or add a new line
+    } else {
+      receipt += `\n`;
+    }
   }  
-  // check if there are any extras format receipt and add
-  //or add a new line
   // return receipt
+  return receipt + `-----------------------------------------------\nTotal: $${totalPrice/100}.00`
 }
 
 // Do not change anything below this line.
