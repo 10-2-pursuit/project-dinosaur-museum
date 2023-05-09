@@ -83,7 +83,29 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let connectedRooms = [];
+  let listOfConnectedRooms = [];
+
+  for (let i = 0; i < rooms.length; i++) {
+    if (id === rooms[i].roomId) {
+    for (let j = 0; j < rooms[i].connectsTo.length; j++) {
+      listOfConnectedRooms.push(rooms[i].connectsTo[j]);
+    }
+   }
+  }
+
+  for (let i = 0; i < listOfConnectedRooms.length; i++) {
+    for (let j = 0; j < rooms.length; j++) {
+      if (listOfConnectedRooms[i] === rooms[j].roomId) {
+        connectedRooms.push(rooms[j].name)
+      }
+    }
+  }
+
+  return connectedRooms;
+
+}
 
 module.exports = {
   getRoomByDinosaurName,
