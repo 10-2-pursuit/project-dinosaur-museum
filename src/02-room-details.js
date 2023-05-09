@@ -71,23 +71,29 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  let connectedRooms = [];
-  let initialRoom = null;
-  for (let room of rooms)
-  {
-    if(room.roomId == id) 
-    {
-      initialRoom = room
-    }
-    if(room.connectsTo.includes(id)) {
-      connectedRooms.push(room.name);
-    }
-  }
-  if (initialRoom == null || connectedRooms.length == 0)
-  {
+  const initialRoom = some(rooms, 'roomId', id);
+  if (initialRoom == null) {
     return `Room with ID of '${id}' could not be found.`
   }
-  return connectedRooms;
+  const invalid = 'invalid';
+  const connectedRooms = {};
+  for (let i = 0; i < initialRoom.connectsTo.length; i++){
+    connectedRooms[initialRoom.connectsTo[i]] = invalid;
+  }
+  for (const room of rooms) {
+    if(initialRoom.connectsTo.includes(room.roomId)) {
+      connectedRooms[room.roomId] = room.name;
+    }
+  }
+  const connectedRoomNames = []
+  for (const roomId in connectedRooms) {
+    console.log (`Checking ${roomId}`);
+    if (connectedRooms[roomId] === invalid){
+      return `Room with ID of '${roomID}' could not be found.`;
+    }
+    connectedRoomNames.push(connectedRooms[roomId])
+  }
+  return connectedRoomNames;
 }
 //need to write loop to check to see if incorrect ID is anywhere in file and return "Room with ID of 'incorrect-id' could not be found."
 module.exports = {
