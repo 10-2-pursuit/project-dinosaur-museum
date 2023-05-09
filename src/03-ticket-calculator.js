@@ -136,7 +136,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 function purchaseTickets(ticketData, purchases) {
   let ticketPrice = 0;
   let extraSum = 0;
-  let totalTickPrice = 0;
+  let singleTickPrice = 0;
   let grandTotal = 0
   let extraStr = "";
   let ticketStr = "";
@@ -169,9 +169,10 @@ function purchaseTickets(ticketData, purchases) {
     let entrantStr = entrant.charAt(0).toUpperCase() + entrant.slice(1);
 
     ticketPrice = ticketData[tickType].priceInCents[entrant] / 100;
-    totalTickPrice = ticketPrice + extraSum;
+    
+    singleTickPrice = ticketPrice + extraSum;
 
-    ticketStr += `\n${entrantStr} ${ticketData[tickType].description}: $${totalTickPrice}.00`
+    ticketStr += `\n${entrantStr} ${ticketData[tickType].description}: $${singleTickPrice}.00`
   }
   ticketStr = ticketStr.replace("\n", "");
 
@@ -181,7 +182,7 @@ function purchaseTickets(ticketData, purchases) {
     receipt = `${ticketStr} (${extraStr})`;
   }
 
-  grandTotal = totalTickPrice;
+  grandTotal = 0;
 
 
   console.log(`${headLine}${receipt}${endLine}\nTOTAL: $${grandTotal}.00`)
