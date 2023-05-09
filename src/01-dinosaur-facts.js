@@ -74,7 +74,7 @@ function getDinosaurDescription(dinosaurs, id) {
 
     if(identifiedDinosaur == undefined){
       
-      return `A dinosaur with an ID of '${id}' cannot be found.`;
+      return "A dinosaur with an ID of " + id + " cannot be found.";
 
     }
     
@@ -111,15 +111,16 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let filteredDinosaurArray = dinosaurs.filter(dinosaur => dinosaur.mya.length > 1 ? (dinosaur.mya[1] <= mya && dinosaur.mya[0] >= mya ) : (dinosaur.mya[0] == mya || dinosaur.mya[0] - 1 == mya
+  let filteredDinosaurArray = dinosaurs.filter(dinosaur => dinosaur.mya.length > 1 ? 
+    (dinosaur.mya[1] <= mya && dinosaur.mya[0] >= mya ) : (dinosaur.mya[0] == mya || dinosaur.mya[0] - 1 == mya
     
     
   ));
   
     let ourMappedArray= filteredDinosaurArray.map(dinosaur => dinosaur.dinosaurId);
 
-
-    return ourMappedArray
+    console.log(ourMappedArray)
+  return ourMappedArray
   
   
   
