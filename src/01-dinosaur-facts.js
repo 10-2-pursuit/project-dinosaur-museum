@@ -62,27 +62,21 @@ const getLongestDinosaur = (dinosaurs) => {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 const getDinosaurDescription = (dinosaurs, id) => {
-  let foundDinosaur = null;
+  const foundDinosaur = dinosaurs.find(dinosaur => dinosaur.dinosaurId === id);
   
-  for (let i = 0; i < dinosaurs.length; i++) {
-    if (dinosaurs[i].dinosaurId === id) {
-      foundDinosaur = dinosaurs[i];
-      break
-    }
-  }
   if (!foundDinosaur) {
-     return (`A dinosaur with an ID of 'incorrect-id' cannot be found.`)
-    
+    return (`A dinosaur with an ID of '${id}' cannot be found.`);
   }
 
   const {name, pronunciation, info, period, mya} = foundDinosaur;
-  let defaultMya = `${mya[0]}`;
-  if (mya.length === 2) {
-    defaultMya = `${mya[1]}`
-  } 
+  let defaultMya = foundDinosaur.mya?.[0];
+  if (foundDinosaur.mya?.length === 2) {
+    defaultMya = `${foundDinosaur.mya[1]}`;
+  }
 
-  return `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${defaultMya} million years ago.`
-}
+  return `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${defaultMya} million years ago.`;
+};
+
 
 /**
  * getDinosaursAliveMya()
