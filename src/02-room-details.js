@@ -26,37 +26,17 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 const getRoomByDinosaurName = (dinosaurs, rooms, dinosaurName) => {
-  // empty string to return
-  let dinosaurRoom = "";
-// error message for empty list
-let noDinosaurFound = `Dinosaur with name '${dinosaurName}' cannot be found.`;
-// loop thru dino array 
-  for (const dinosaur of dinosaurs) {
-  // check if current name matches dinoName param
-    if (dinosaur.name === dinosaurName) {
-// code block{make empty string the value of found name dinoId}
-      dinosaurRoom = dinosaur.dinosaurId;
-    }
+  const targetDinosaurRoom = dinosaur.find(dinosaur => dinosaur.name === dinosaurName);
+  if(!targetDinosaur) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
   }
-  // if empty string val is still empty
-  if (dinosaurRoom === "") {
-    // execute code block{error message}
-    return noDinosaurFound;
+  const targetRoom = rooms.find(room => room.dinosaurs.includes(targetDinosaur.dinosaurId));
+
+  if (!target) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any room.`;
   }
-  // loop thru rooms 
-  for (const room of rooms) {
-    // loop thru dino in rooms
-    for (const dino of room.dinosaurs) {
-      // if there is a dino room and dino match
-      if (dinosaurRoom === dino) {
-        // execute code block return rm name
-        return room.name;
-      }
-    }
-  }
-  // if above conditions are not met return default error mess
-  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
-}
+  return targetRoom.name
+};
 
 
 
