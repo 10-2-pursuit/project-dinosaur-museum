@@ -84,25 +84,20 @@ let noDinosaurFound = `Dinosaur with name '${dinosaurName}' cannot be found.`;
  */
 const getConnectedRoomNamesById = (rooms, id) => {
   const connectedRoom = rooms.find(room => room.roomId === id);
-    let connectedRoomNames = [];
   
     if (!connectsToRoomId) {
       return `Room with ID of '${id}' could not be found.`;
-    } else {
-      for (let roomTag of connectsToRoomId) {
-        for (let room of rooms) {
-          if (roomTag === room.roomId) {
-            connectedRoomNames.push(room.name);
-          }
-        }
-      }
+    } 
+    
+    const connectedRoomNames = rooms.filter(room => {connectedRoomIds.includes(room.roomId)
+    }).map(room => room.name);
   
       if (connectsToRoomId.length !== connectedRoomNames.length) {
         errorMessage = `Room with ID of 'incorrect-id' could not be found.`;
       }
+      return connectedRoomNames;
     }
-    return connectedRoomNames;
-  }
+  
   
 
 
