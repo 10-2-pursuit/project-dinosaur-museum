@@ -70,8 +70,26 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
-
+function getConnectedRoomNamesById(rooms, id) {
+  let connectedRooms = [];
+  let initialRoom = null;
+  for (let room of rooms)
+  {
+    if(room.roomId == id) 
+    {
+      initialRoom = room
+    }
+    if(room.connectsTo.includes(id)) {
+      connectedRooms.push(room.name);
+    }
+  }
+  if (initialRoom == null || connectedRooms.length == 0)
+  {
+    return `Room with ID of '${id}' could not be found.`
+  }
+  return connectedRooms;
+}
+//need to write loop to check to see if incorrect ID is anywhere in file and return "Room with ID of 'incorrect-id' could not be found."
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
