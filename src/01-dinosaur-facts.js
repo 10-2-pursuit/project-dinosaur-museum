@@ -63,11 +63,11 @@ function getDinosaurDescription(dinosaurs, id) {
   for (let dino of dinosaurs) {
     if (dino.dinosaurId === id) {
       if (dino.mya.length === 2) {
-        let yearsInMill = dino.mya[1]
-        return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${yearsInMill} million years ago.`
+        let yearsInMill = dino.mya[1];
+        return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${yearsInMill} million years ago.`;
       } else {
-        let yearsInMill = dino.mya[0]
-        return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${yearsInMill} million years ago.`
+        let yearsInMill = dino.mya[0];
+        return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${yearsInMill} million years ago.`;
       }
     }
   }
@@ -102,12 +102,13 @@ function getDinosaurDescription(dinosaurs, id) {
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let addToArr = key;
   let livingDinos = [];
-  
+
   for (let dino of dinosaurs) {
     if (dino[addToArr] === undefined) {
       addToArr = "dinosaurId";
     }
-    if (dino.mya.length === 1 && (mya === dino.mya[0] || mya === (dino.mya[0] - 1)) ) {
+    if (
+      dino.mya.length === 1 && (mya === dino.mya[0] || mya === dino.mya[0] - 1)) {
       livingDinos.push(dino[addToArr]);
     } else if (mya <= dino.mya[0] && mya >= dino.mya[1]) {
       livingDinos.push(dino[addToArr]);
