@@ -6,6 +6,7 @@
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
 const exampleDinosaurData = require("../data/dinosaurs");
+
 // Do not change the line above.
 
 /**
@@ -20,26 +21,27 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *
  * EXAMPLE:
  *  getLongestDinosaur(dinosaurs);
- *  //> { Brachiosaurus: 98.43 }
+ *  //> { Brachiosaurus: 98.43 }cd
  */
-const getLongestDinosaur = (dinosaurs) => {
-  if (dinosaurs.length === 0) {
-    return {};
-  }
-  let longestDinosaur = dinosaurs[0];
+function getLongestDinosaur(dinosaurs) {
+  let object = {};
 
-  for (let i = 0; i < dinosaurs.length; i++) {
-    const currentDinosaur = dinosaurs[i];
-    const {lengthInMeters} = currentDinosaur;
-    const {lengthInMeters: longestLength} = longestDinosaur;
-    if (lengthInMeters > longestLength) {
-      longestDinosaur = currentDinosaur;
-    } 
+  let longLength = 30;
+  
+  if (dinosaurs.length === 0) {
+    return object
   }
-  const {name, lengthInMeters} = longestDinosaur;
-  const lengthInFeet = lengthInMeters * 3.281;
-  return {[name]: lengthInFeet};
-}
+  for (let i = 0; i < dinosaurs[i].lengthInMeters; i++) {
+    
+    if (longLength <= dinosaurs[i].lengthInMeters) {
+      
+      longLength = dinosaurs[i].lengthInMeters * 3.281;
+      object[dinosaurs[i].name] = longLength
+    }
+  }
+  return object
+  }
+
 
 /**
  * getDinosaurDescription()
@@ -61,22 +63,18 @@ const getLongestDinosaur = (dinosaurs) => {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-const getDinosaurDescription = (dinosaurs, id) => {
-  const foundDinosaur = dinosaurs.find(dinosaur => dinosaur.dinosaurId === id);
-  
-  if (!foundDinosaur) {
-    return (`A dinosaur with an ID of '${id}' cannot be found.`);
-  }
+function getDinosaurDescription(dinosaurs, id) {
 
-  const {name, pronunciation, info, period, mya} = foundDinosaur;
-  let defaultMya = foundDinosaur.mya?.[0];
-  if (foundDinosaur.mya?.length === 2) {
-    defaultMya = `${foundDinosaur.mya[1]}`;
-  }
-
-  return `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${defaultMya} million years ago.`;
-};
-
+let error = `A dinosaur with an ID of '${id}' cannot be found.`
+for (const dino of dinosaurs) {
+  if (dino.dinosaurId === id) {
+    return`${dino.name} (${dino.pronunciation})
+${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`
+     
+  } 
+} 
+return error
+}
 
 /**
  * getDinosaursAliveMya()
@@ -103,21 +101,27 @@ const getDinosaurDescription = (dinosaurs, id) => {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-const getDinosaursAliveMya = (dinosaurs, mya, key) => {
-  return dinosaurs.filter(dino => {
-    const myaArr = dino.mya;
-    if (myaArr.length === 1) {
-      return [myaArr[0], myaArr[0] - 1, myaArr[0] + 1].includes(mya);
-    } else {
-      return mya >= myaArr[myaArr.length - 1] && mya <= myaArr[0];
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+    const result = [];
+  
+    for (let i = 0; i < dinosaurs.length; i++) {
+      const dino = dinosaurs[i];
+      const myaArr = dino.mya;
+  
+      if (myaArr.length === 1) {
+        if (myaArr[0] === mya || myaArr[0] === mya - 1 || myaArr[0] === mya + 1) {
+          result.push(key ? (dino[key] || dino.dinosaurId) : dino.dinosaurId);
+        }
+      } else {
+        if (mya >= myaArr[myaArr.length - 1] && mya <= myaArr[0]) {
+          result.push(key ? (dino[key] || dino.dinosaurId) : dino.dinosaurId);
+        }
+      }
     }
-    
-  }).map(dino => key ? (dino[key] || dino.dinosaurId) : dino.dinosaurId);
-}
-
-
-
-
+  
+    return result;
+  }
+  
 
 
 module.exports = {

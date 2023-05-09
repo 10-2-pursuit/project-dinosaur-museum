@@ -26,17 +26,19 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 const getRoomByDinosaurName = (dinosaurs, rooms, dinosaurName) => {
-  const targetDinosaur = dinosaurs.find(dinosaur => dinosaur.name === dinosaurName);
-  if(!targetDinosaur) {
+  const dinosaur = dinosaurs.find(dino => dino.name === dinosaurName);
+  if (!dinosaur) {
     return `Dinosaur with name '${dinosaurName}' cannot be found.`;
   }
-  const targetRoom = rooms.find(room => room.dinosaurs.includes(targetDinosaur.dinosaurId));
-
-  if (!target) {
-    return `Dinosaur with name '${dinosaurName}' cannot be found in any room.`;
+  
+  const room = rooms.find(room => room.dinosaurs.includes(dinosaur.dinosaurId));
+  if (!room) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
   }
-  return targetRoom.name
-};
+  
+  return room.name;
+}
+
 
 
 
@@ -62,21 +64,26 @@ const getRoomByDinosaurName = (dinosaurs, rooms, dinosaurName) => {
       "Kit Hopkins Education Wing"
     ]
  */
-const getConnectedRoomNamesById = (rooms, id) => {
-  const connectedRoom = rooms.find(room => room.roomId === id);
-  
-    if (!connectsToRoomId) {
-      return `Room with ID of '${id}' could not be found.`;
-    } 
+    const getConnectedRoomNamesById = (rooms, id) => {
+      const connectedRoom = rooms.find(room => room.roomId === id);
     
-    const connectedRoomNames = rooms.filter(room => {connectedRoomIds.includes(room.roomId)
-    }).map(room => room.name);
-  
-      if (connectsToRoomId.length !== connectedRoomNames.length) {
-        errorMessage = `Room with ID of 'incorrect-id' could not be found.`;
+      if (!connectedRoom) {
+        return `Room with ID of '${id}' could not be found.`;
       }
+    
+      const connectedRoomIds = connectedRoom.connectsTo;
+    
+      const connectedRoomNames = rooms
+        .filter(room => connectedRoomIds.includes(room.roomId))
+        .map(room => room.name);
+    
+      if (connectedRoomNames.length !== connectedRoomIds.length) {
+        return `Room with ID of 'incorrect-id' could not be found.`;
+      }
+    
       return connectedRoomNames;
     }
+    
   
   
 
