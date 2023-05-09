@@ -55,25 +55,34 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  const {ticketType, entrantType, extras} = ticketInfo;
-  let extra = 0;
+  let {ticketType, entrantType, extras} = ticketInfo;
+  let addedCost = 0;
+  
   if(!Object.hasOwn(ticketData, ticketType)) {
+    
     return `Ticket type '${ticketType}' cannot be found.`
-  }
-  if(!Object.hasOwn(ticketData[ticketType].priceInCents, entrantType)){
+
+  };
+  if(!Object.hasOwn(ticketData[ticketType].priceInCents, entrantType)) {
+
     return `Entrant type '${entrantType}' cannot be found.`
-  }
+
+  };
   for(let element of extras) {
-    if(!Object.hasOwn(ticketData.extras, string)){
-      return `Extra type '${string}' cannot be found.`
-    }
-  }
+    if(!Object.hasOwn(ticketData.extras, element)) {
 
-  for (let string of extras){
-    extra += ticketData.extras[string].priceInCents[entrantType];
-  }
+      return `Extra type '${element}' cannot be found.`
 
-  return ticketData[ticketType].priceInCents[entrantType] + extra;
+    };
+  };
+
+  for (let feature of extras) {
+
+    addedCost += ticketData.extras[feature].priceInCents[entrantType];
+
+  };
+
+  return ticketData[ticketType].priceInCents[entrantType] + addedCost;
 }
 
 /**
@@ -130,6 +139,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {}
+
+
+
 
 // Do not change anything below this line.
 module.exports = {

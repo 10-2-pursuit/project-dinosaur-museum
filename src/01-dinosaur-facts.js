@@ -116,7 +116,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     
   ));
   
-    let ourMappedArray= filteredDinosaurArray.map(dinosaur => dinosaur.dinosaurId, key);
+    let ourMappedArray= filteredDinosaurArray.map(dinosaur => dinosaur.dinosaurId);
 
 
     return ourMappedArray
