@@ -23,14 +23,14 @@
  */
 function getLongestDinosaur(dinosaurs) {
   let longestDino = {}
-  
+  let noDinosaurMatch = {}
   let longestLength = 0
   let dinoName = ""
   for (let dinosaur of dinosaurs) {
     if(dinosaur.lengthInMeters > longestLength) {
       (longestLength = dinosaur.lengthInMeters);
       (dinoName = dinosaur.name);
-   } 
+   }
   }
 longestDino[dinoName] = longestLength * 3.281
 return longestDino
@@ -59,7 +59,6 @@ return longestDino
  */
 function getDinosaurDescription(dinosaurs, id) {
   let description = `A dinosaur with an ID of 'incorrect-id' cannot be found.`
-
   for (let dinosaur of dinosaurs) {
     if (dinosaur.dinosaurId === id /*dinosaur.mya.length == 2*/) {
     description = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya} million years ago.`
@@ -92,12 +91,14 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya() {
+function getDinosaursAliveMya(dinosaurs, key) {
 dinosaursBornAtCertainTime = []
   for (let dinosaur of dinosaurs) {
-    
+    if (dinosaur.mya === key) {
+      dinosaursBornAtCertainTime.push(dinosaur.dinosaurId)
+    }
   }
-
+  return dinosaursBornAtCertainTime
 }
 
 module.exports = {
