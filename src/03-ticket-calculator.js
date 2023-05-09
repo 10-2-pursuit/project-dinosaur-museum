@@ -134,7 +134,24 @@ const calculateTicketPrice = (ticketData, ticketInfo) => {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+const purchaseTickets = (ticketData, purchases) => {
+  // default price variable set to 0
+  // default receipt message
+  // loop thru purchase array
+  // set purchase var to current element/item
+  // access ticktype set var to tickprice
+  // access extras create extras var
+  // loop thru extras and access extrasprice create variable add to tickprice
+  // add up shoppingCart to tickprice
+  // create extrasAddOnreceipt var empty string
+  // loop thru extrasdata assign description to extras addon
+  // check if extras have more than 1 
+  // access ticktype prop and create a var 
+  // receipt purchase description string var
+  // check if there are any extras format receipt and add
+  //or add a new line
+  // return receipt
+}
 
 // Do not change anything below this line.
 module.exports = {
