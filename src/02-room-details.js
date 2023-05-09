@@ -85,10 +85,9 @@ let noDinosaurFound = `Dinosaur with name '${dinosaurName}' cannot be found.`;
 const getConnectedRoomNamesById = (rooms, id) => {
   const connectedRoom = rooms.find(room => room.roomId === id);
     let connectedRoomNames = [];
-    let errorMessage = null;
   
-    if (connectsToRoomId.length === 0) {
-      errorMessage = `Room with ID of '${id}' could not be found.`;
+    if (!connectsToRoomId) {
+      return `Room with ID of '${id}' could not be found.`;
     } else {
       for (let roomTag of connectsToRoomId) {
         for (let room of rooms) {
@@ -102,11 +101,6 @@ const getConnectedRoomNamesById = (rooms, id) => {
         errorMessage = `Room with ID of 'incorrect-id' could not be found.`;
       }
     }
-  
-    if (errorMessage !== null) {
-      return errorMessage;
-    }
-  
     return connectedRoomNames;
   }
   
