@@ -60,18 +60,18 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   
   if(!Object.hasOwn(ticketData, ticketType)) {
     
-    return `Ticket type '${ticketType}' cannot be found.`
+    return `Ticket type '${ticketType}' cannot be found.`;
 
   };
   if(!Object.hasOwn(ticketData[ticketType].priceInCents, entrantType)) {
 
-    return `Entrant type '${entrantType}' cannot be found.`
+    return `Entrant type '${entrantType}' cannot be found.`;
 
   };
   for(let element of extras) {
     if(!Object.hasOwn(ticketData.extras, element)) {
 
-      return `Extra type '${element}' cannot be found.`
+      return `Extra type '${element}' cannot be found.`;
 
     };
   };
@@ -138,7 +138,57 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let welcome = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  let totalCost = 0;
+  // console.log(welcome)
+  
+  function printOurPurchaseInfo(price, purchase) {
+    const {ticketType, entrantType, extras} = purchase;
+    let extraType = ` (`;
+    let priceBasedOnEntrantType = `${entrantType.replace(entrantType[0],entrantType[0].toUpperCase())} ${ticketType.replace(ticketType[0],ticketType[0].toUpperCase())} Admission: \$${(price/100).toFixed(2)}`;
+    if(extras.length == 0){
+      // console.log(priceBasedOnEntrantType)
+      return priceBasedOnEntrantType + `\n`;
+    }
+    else{
+      for(let i = 0; i < extras.length; i++) {
+        if(i == extras.length -1) {
+
+          extraType = extraType + '' + extras[i].replace(extras[i][0], extras[i][0].toUpperCase()) + ' Access)\n';
+          break;        
+        }
+
+        extraType = extraType + '' + extras[i].replace(extras[i][0], extras[i][0].toUpperCase()) + ' Access, ';
+      }
+      // console.log(extraType)
+      // console.log(priceBasedOnEntrantType + '' + extraType)
+      
+      return priceBasedOnEntrantType + '' + extraType;
+    }
+  }
+  
+  for(let purchase of purchases) {
+    let price = calculateTicketPrice(ticketData, purchase);
+    
+    if(typeof(price) == "string") {
+      return price;
+
+    }
+
+    welcome = welcome + printOurPurchaseInfo(price, purchase);
+    // console.log(welcome)
+    totalCost += price;
+  };
+
+  welcome = welcome + `-------------------------------------------\n` + `TOTAL: \$${(totalCost/100).toFixed(2)}`;
+  // console.log(welcome)
+  return welcome
+  
+}
+
+
+
 
 
 
