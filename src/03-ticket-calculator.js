@@ -61,7 +61,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   let entrant = ticketInfo.entrantType;
   let extraFeat = ticketInfo.extras;
 
-  if (ticketData[tickType] === undefined) {
+  if (ticketData[tickType] === undefined){
     return "Ticket type 'incorrect-type' cannot be found.";
   } else if (ticketData[tickType].priceInCents[entrant] === undefined) {
     return "Entrant type 'incorrect-entrant' cannot be found.";
@@ -137,23 +137,22 @@ function purchaseTickets(ticketData, purchases) {
   let ticketPrice = 0;
   let extraSum = 0;
   let totalTickPrice = 0;
-  let grandTotal = 0;
+  let grandTotal = 0
   let extraStr = "";
   let ticketStr = "";
   let receipt = "";
-  let headLine =
-    "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
-  let endLine = "\n-------------------------------------------\n";
+  let headLine = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let endLine = "\n-------------------------------------------\n"
 
   for (let purchase of purchases) {
     let tickType = purchase.ticketType;
     let entrant = purchase.entrantType;
     let extraFeat = purchase.extras;
 
-    if (ticketData[tickType] === undefined) {
+    if (ticketData[tickType] === undefined){
       return "Ticket type 'incorrect-type' cannot be found.";
     } else if (ticketData[tickType].priceInCents[entrant] === undefined) {
-      return "Entrant type 'incorrect-entrant' cannot be found.";
+    return "Entrant type 'incorrect-entrant' cannot be found.";
     }
 
     for (let extra of extraFeat) {
@@ -172,11 +171,11 @@ function purchaseTickets(ticketData, purchases) {
     ticketPrice = ticketData[tickType].priceInCents[entrant] / 100;
     totalTickPrice = ticketPrice + extraSum;
 
-    ticketStr += `\n${entrantStr} ${ticketData[tickType].description}: $${totalTickPrice}.00`;
+    ticketStr += `\n${entrantStr} ${ticketData[tickType].description}: $${totalTickPrice}.00`
   }
   ticketStr = ticketStr.replace("\n", "");
 
-  if (!extraStr) {
+  if(!extraStr){
     receipt = `${ticketStr}`;
   } else {
     receipt = `${ticketStr} (${extraStr})`;
@@ -184,8 +183,10 @@ function purchaseTickets(ticketData, purchases) {
 
   grandTotal = totalTickPrice;
 
-  console.log(`${headLine}${receipt}${endLine}\nTOTAL: $${grandTotal}.00`);
+
+  console.log(`${headLine}${receipt}${endLine}\nTOTAL: $${grandTotal}.00`)
   return `${headLine} ${receipt}${endLine}\nTOTAL: $${grandTotal}.00`;
+
 }
 
 // Do not change anything below this line.
