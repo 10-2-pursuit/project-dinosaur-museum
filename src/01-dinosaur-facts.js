@@ -56,12 +56,12 @@ function getLongestDinosaur(dinosaurs) {
 function getDinosaurDescription(dinosaurs, id) {
   for(let dino of dinosaurs) {
     if (id === dino.dinosaurId) {
-      years = Math.min(...dino.mya)
-      return `${dino.name} (${dino.pronunciaction})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length - 1]} million years ago.`
+      let years = Math.min(...dino.mya)
+      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${years} million years ago.` 
     }
   }
   return `A dinosaur with an ID of '${id}' cannot be found.`
-  }
+}
 
 
 /**
@@ -90,10 +90,19 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  // let dinosThatWereAlive = []
-  // for (let dinos of dinosaurs) {
-  // }
-  // return 
+  let dinosThatWereAlive = []
+  for (let dinos of dinosaurs) {
+    let dinoId = dino.dinosaurId
+
+    for (let names of dinoNames)
+    let dinoName = dinoName.name
+      if (key === dinoName) {
+        return "key"
+      }
+    }
+    let years = dino.mya
+  } 
+  return dinosThatWereAlive
 }
 
 module.exports = {

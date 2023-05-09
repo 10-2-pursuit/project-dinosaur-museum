@@ -27,7 +27,7 @@ const exampleRoomData = require("../data/rooms");
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   for(let dino of dinosaurs) {
-  let id === dino.dinosaurId
+  let (id === dino.dinosaurId)
 
   for(let room of rooms){ 
       let 
