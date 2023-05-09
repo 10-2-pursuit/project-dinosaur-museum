@@ -30,14 +30,15 @@ const getLongestDinosaur = (dinosaurs) => {
 
   for (let i = 0; i < dinosaurs.length; i++) {
     const currentDinosaur = dinosaurs[i];
-    if (currentDinosaur.lengthInMeters > longestDinosaur.lengthInMeters) {
+    const {lengthInMeters} = currentDinosaur;
+    const {lengthInMeters: longestLength} = longestDinosaur;
+    if (lengthInMeters > longestLength) {
       longestDinosaur = currentDinosaur;
-    } else if (currentDinosaur.lengthInMeters === longestDinosaur.lengthInMeters) {
-      longestDinosaur = longestDinosaur
-    }
+    } 
   }
-  const lengthInFeet = longestDinosaur.lengthInMeters * 3.281;
-  return {[longestDinosaur.name]: lengthInFeet};
+  const {name, lengthInMeters} = longestDinosaur;
+  const lengthInFeet = lengthInMeters * 3.281;
+  return {[name]: lengthInFeet};
 }
 
 /**
