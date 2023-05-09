@@ -164,8 +164,8 @@ const purchaseTickets = (ticketData, purchases) => {
     if (extra !== extras[extras.length - 1]) {
       extrasReceipt += ", ";
     }
-    // access case sensitive ticktype prop and create a var with 
-    const purchaseType = purchase.entrantType[0].ToUpperCase
+    // access purchase object and capitilize first char ticktype prop and create a var with 
+    const purchaseType = purchase.entrantType[0].ToUpperCase() + purchaseTickets.entrantType.slice(1);
     // receipt purchase description string var
   }  
   // check if there are any extras format receipt and add
