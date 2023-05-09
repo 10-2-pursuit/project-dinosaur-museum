@@ -134,8 +134,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  let ticketPricePurch = 0;
   let extraSum = 0;
-  let ticketPrice = 0;
+  let totalTickPrice = 0;
   let grandTotal = 0
   let extraStr = "";
   let ticketStr = "";
@@ -143,7 +144,6 @@ function purchaseTickets(ticketData, purchases) {
   let headLine = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
   let endLine = "\n-------------------------------------------\n"
 
-for( let i = 0; i <= purchases.length; i++) {
   for (let ticket of purchases) {
     let tickType = ticket.ticketType;
     let entrant = ticket.entrantType;
@@ -160,17 +160,37 @@ for( let i = 0; i <= purchases.length; i++) {
         return "Extra type 'incorrect-extra' cannot be found.";
       } else if (ticketData.extras[extra].priceInCents[entrant]) {
         extraSum += ticketData.extras[extra].priceInCents[entrant] / 100;
+        extraStr += `${ticketData.extras[extra].description}`;
+        if (extra !== extraFeat[extraFeat.length - 1]) {
+          extraStr += ", ";
+        }
       }
     }
+    let entrantStr = entrant.charAt(0).toUpperCase() + entrant.slice(1);
 
     ticketPrice = ticketData[tickType].priceInCents[entrant] / 100;
-    receipt = "";
-  }
-}
+    totalTickPrice = ticketPrice + extraSum;
+    
+    for (let i = 0; i <= purchases.length; i++) {
+    ticketPricePurch += totalTickPrice
+    }
 
-  grandTotal = ticketPrice + extraSum
-  console.log(`${headLine} ${endLine}\nTOTAL: $${grandTotal}.00`)
-  return `${headLine} ${endLine}\nTOTAL: $${grandTotal}.00`;
+    ticketStr += `\n${entrantStr} ${ticketData[tickType].description}: $${totalTickPrice}.00`
+  }
+  ticketStr = ticketStr.replace("\n", "");
+
+  if(!extraStr){
+    receipt += `${ticketStr}`;
+  } else {
+    receipt += `${ticketStr} (${extraStr})`;
+  }
+
+  grandTotal += totalTickPrice;
+
+
+  console.log(`${headLine} ${receipt}${endLine}\nTOTAL: $${grandTotal}.00`)
+  return `${headLine} ${receipt}${endLine}\nTOTAL: $${grandTotal}.00`;
+
 }
 
 // Do not change anything below this line.
