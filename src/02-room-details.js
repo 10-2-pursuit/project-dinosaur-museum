@@ -84,7 +84,9 @@ function getConnectedRoomNamesById(rooms, id) {
                                                       }
                                                     }
                                                     /** if could not find one, store it to [err], and return 'ERROR' */
-                                                    err = searchedID;
+                                                    if(!err){
+                                                      err = searchedID;
+                                                    }
                                                     return `ERROR`;
                                                   });
 
