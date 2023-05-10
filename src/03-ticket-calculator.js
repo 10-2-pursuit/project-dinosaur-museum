@@ -54,7 +54,42 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  /** declare vars */
+  const {ticketType, entrantType, extras} = ticketInfo;
+  let extraTotal = 0;
+
+  /** validation for prop. */
+  if(!Object.hasOwn(ticketData, ticketType)){
+    return _errorPrinter("Ticket", ticketType);
+  }
+
+  if(!Object.hasOwn(ticketData[ticketType].priceInCents, entrantType)){
+    return _errorPrinter("Entrant", entrantType);
+  }
+
+  for(let extra of extras){
+    if(!Object.hasOwn(ticketData.extras, extra)){
+      return _errorPrinter("Extra", extra);
+    }
+    extraTotal += ticketData.extras[extra].priceInCents[entrantType];
+  }
+
+  return ticketData[ticketType].priceInCents[entrantType] + extraTotal;
+}
+
+/**
+ * _errorPrinter()
+ * --------------------
+ * Purpose to print a single line of error message in the function calculateTicketPrice().
+ * 
+ * @param {string} type - A 'key' from the tickets object.
+ * @param {string} input - A inputted type from @param [ticketInfo]
+ * @returns {string} The single line of error message.
+ */
+function _errorPrinter(type, input){
+  return `${type} type '${input}' cannot be found.`;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +144,72 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  /** declare vars w/ initial values */
+  let resultString = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  let totalP = 0;
+
+  /** validation, string means error */
+  for(let purchase of purchases){
+    let price = calculateTicketPrice(ticketData, purchase);
+    if(typeof(price) == "string"){
+      return price;
+    }
+
+    /** concat each ticket details to [resultString] */
+    resultString = resultString.concat('',_purchasePrinter(price, purchase));
+    totalP += price;
+  }
+
+  /** concat total ticket price */
+  resultString = resultString.concat('',`-------------------------------------------\n`);
+  resultString = resultString.concat('',`TOTAL: \$${(totalP/100).toFixed(2)}`);
+
+  return resultString;
+}
+
+/**
+ * _purchasePrinter()
+ * ----------------------------------------
+ * Return a string about the details of the ticket purchases
+ * 
+ * @param {Number} price - receiving the ticket price to print
+ * @param {Object} purchase - receiving a single ticket from the purchases
+ * @returns {string} - return a string of the calculation
+ */
+function _purchasePrinter(price, purchase){
+  /** declare vars */
+  const {ticketType, entrantType, extras} = purchase;
+  let extraString = ` (`;
+  let resultBasic = `${_capitalizer(entrantType)} ${_capitalizer(ticketType)} Admission: \$${(price/100).toFixed(2)}`;
+  
+  /** validation for an extra */
+  if(extras.length == 0){
+    return resultBasic + `\n`;
+  }
+  else{
+    for(let index = 0; index < extras.length; index++){
+      if(index == extras.length -1){
+        extraString = extraString.concat('', _capitalizer(extras[index]) + ' Access)\n');
+        break;        
+      }
+      extraString = extraString.concat('', _capitalizer(extras[index]) + ' Access, ');
+    }
+
+    return resultBasic.concat('',extraString);
+  }
+}
+/**
+ * _capitalizer()
+ * ---------------------
+ * changing the first letter of a string to upper case
+ * 
+ * @param {string} str - a string to change. 
+ * @returns {string} - will be return exactly same string w/ upper cased first letter.
+ */
+function _capitalizer(str = ""){
+  return str.replace(str[0],str[0].toUpperCase());
+}
 
 // Do not change anything below this line.
 module.exports = {

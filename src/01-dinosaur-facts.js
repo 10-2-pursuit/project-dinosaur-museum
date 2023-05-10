@@ -22,7 +22,28 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  /** declare vars */
+  let longestIndex = 0;
+  let longest = 0;
+
+  /** validation [dinosaurs] exist or not */
+  if(dinosaurs.length == 0){
+    return {};
+  }
+
+  /** find out longest one */
+  for(let index = 0; index < dinosaurs.length; index++){
+    if(dinosaurs[index].lengthInMeters > longest){
+      longest = dinosaurs[index].lengthInMeters;
+      longestIndex = index;
+    }
+  }
+
+  /** return */
+  return { [dinosaurs[longestIndex].name] : dinosaurs[longestIndex].lengthInMeters * 3.281 };
+
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +65,17 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  /** declare var */
+  const dino = dinosaurs.find(dino => dino.dinosaurId == id);
+
+  /** validation */
+  if(dino == undefined){
+    return `A dinosaur with an ID of '${id}' cannot be found.`;
+  }
+
+  return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya.length > 1 ? dino.mya[1] : dino.mya[0]} million years ago.`;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +102,19 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  /** declare var w/ ternary to dicide which mya to use */
+  let dinos = dinosaurs.filter(dino => dino.mya.length > 1 ? (dino.mya[1] <= mya && dino.mya[0] >= mya ) : (dino.mya[0] == mya || dino.mya[0] - 1 == mya));
+  
+  /** validation, is key exist? is filtered dinos have [key]? */
+  if(key){
+    if(Object.hasOwn(dinos[0],key)){
+      return dinos.map(dino => { return dino[key] });
+    }
+  }
+
+  return dinos.map(dino => dino.dinosaurId);
+}
 
 module.exports = {
   getLongestDinosaur,

@@ -25,7 +25,23 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  /** validation & finding for @param [dinosaurName] exist in @param [dinosaurs] */
+  let dino = dinosaurs.find(dino => dino.name == dinosaurName);
+  
+  if(!dino){
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  }
+
+  /** validation for @param [rooms] contains @param [dinosaurName] */
+  const rmSearched = rooms.find(room => room.dinosaurs.includes(dino.dinosaurId));
+  
+  if(!rmSearched){
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+  }
+
+  return rmSearched.name;
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +65,37 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  /** declare a var, room to store searched result */
+  const room = rooms.find(room => room.roomId.includes(id));
+
+  /** validation */
+  if(!room){
+    return `Room with ID of '${id}' could not be found.`;
+  }
+
+  let err = "";
+
+  /** declare a var to store manipulated room */
+  let manRoom = room.connectsTo.map(searchedID => { 
+                                                    for(let rm of rooms){
+                                                      if(rm.roomId == searchedID){
+                                                        return rm.name;
+                                                      }
+                                                    }
+                                                    /** if could not find one, store it to [err], and return 'ERROR' */
+                                                    if(!err){
+                                                      err = searchedID;
+                                                    }
+                                                    return `ERROR`;
+                                                  });
+
+  /** validation, if manRoom has 'ERROR', something wrong w/ the id. */
+  if (manRoom.includes('ERROR')){
+    return `Room with ID of '${err}' could not be found.`;
+  }
+  return manRoom;
+}
 
 module.exports = {
   getRoomByDinosaurName,
