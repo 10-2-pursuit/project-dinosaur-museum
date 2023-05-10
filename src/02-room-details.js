@@ -79,28 +79,26 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 // create a for loop that loops rooms and id
 function getConnectedRoomNamesById(rooms, id) {
   let roomsConnected;
-let convertRoomIdToName = {};
+  let convertRoomIdToName = {};
 
-for (let i = 0; i < rooms.length; i++) {
-	if (id === rooms[i].roomId) {
-	roomsConnected = rooms[i].connectsTo
-};
-	convertRoomIdToName[rooms[i].roomId] = rooms[i].name 
-};
-	if (!roomsConnected) {
-	return `Room with ID of '${id}' could not be found.`
+  for (let i = 0; i < rooms.length; i++) {
+    if (id === rooms[i].roomId) {
+      roomsConnected = rooms[i].connectsTo;
+    }
+    convertRoomIdToName[rooms[i].roomId] = rooms[i].name;
+  }
+  if (!roomsConnected) {
+    return `Room with ID of '${id}' could not be found.`;
+  }
+  for (let j = 0; j < roomsConnected.length; j++) {
+    if (convertRoomIdToName[roomsConnected[j]]) {
+      roomsConnected[j] = convertRoomIdToName[roomsConnected[j]];
+    } else {
+      return `Room with ID of '${roomsConnected[j]}' could not be found.`;
+    }
+  }
+  return roomsConnected;
 }
-for (let j = 0; j < roomsConnected.length; j++) {
-	if (convertRoomIdToName[roomsConnected[j]]) {
-	roomsConnected[j] = convertRoomIdToName[roomsConnected[j]]
-}	else {
-	return `Room with ID of '${roomsConnected[j]}' could not be found.`
-}
-}
-	return roomsConnected;
-}
-  
-
 
 module.exports = {
   getRoomByDinosaurName,
