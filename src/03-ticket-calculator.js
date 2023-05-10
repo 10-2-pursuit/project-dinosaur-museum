@@ -55,11 +55,12 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {
- 
-if (!ticketData.hasOwnProperty(ticketInfo.ticketType)) {
+const calculateTicketPrice = (ticketData, ticketInfo) => {
+  const ticketType = ticketData[ticketInfo.ticketType];
+  const entrantType = ticketData.general.priceInCents[ticketInfo.entrantType]
+if (!ticketType) {
   return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
-} else if (!ticketData.general.priceInCents.hasOwnProperty(ticketInfo.entrantType)) {
+} else if (!entrantType) {
   return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
 }
   
