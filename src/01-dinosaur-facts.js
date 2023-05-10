@@ -94,7 +94,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   let dinosAliveMya = [];
   if (!key || dinosaurs[0][key] === undefined) {
     key = "dinosaurId";
-  }
+          }
   for (let dino of dinosaurs) {
     let myaArray = dino.mya;
     if (myaArray.includes(mya) || myaArray.includes(mya - 1)) {
