@@ -64,10 +64,12 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
     }
   for (let extra of ticketInfo.extras) {
-    if(ticketData[extra] == null) {
+    if(ticketData.extras[extra] == null) {
       return `Extra type '${extra}' cannot be found.`
     }
-  }
+    ticketPrice+= ticketData.extras[extra].priceInCents[ticketInfo.entrantType];   
+  } 
+  return ticketPrice
 }
 
 /**
@@ -123,7 +125,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  return ticketPrice
+}
 
 // Do not change anything below this line.
 module.exports = {
