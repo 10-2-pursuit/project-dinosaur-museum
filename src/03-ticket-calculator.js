@@ -74,7 +74,7 @@ const exampleTicketData = require("../data/tickets");
       // Calculate the total price by adding the base price and the prices of extras
       const totalPrice = extras.reduce((acc, extra) => {
         if (!(extra in ticketData.extras)) {
-          return `Extra '${extra}' cannot be found.`;
+          return `Extra type '${extra}' cannot be found.`;
         }
         const extraPrice = ticketData.extras[extra].priceInCents[entrantType];
         return acc + extraPrice;
@@ -82,7 +82,7 @@ const exampleTicketData = require("../data/tickets");
     
       return totalPrice;
     }
- 
+
 /**
  * purchaseTickets()
  * ---------------------
@@ -142,31 +142,14 @@ function purchaseTickets(ticketData, purchases) {
   for (const purchase of purchases) {
     const { ticketType, entrantType, extras } = purchase;
 
-    // Check if the ticket type exists in the ticket data
-    if (!(ticketType in ticketData)) {
-      return `Ticket type '${ticketType}' cannot be found.`;
+    // Call calculateTicketPrice() to check for errors and get the ticket price
+    const ticketPrice = calculateTicketPrice(ticketData, purchase);
+    if (typeof ticketPrice === "string") {
+      return ticketPrice; // Return the error message
     }
-
-    const ticketTypeData = ticketData[ticketType];
-
-    // Check if the entrant type exists in the ticket data
-    if (!(entrantType in ticketTypeData.priceInCents)) {
-      return `Entrant type '${entrantType}' cannot be found.`;
-    }
-
-    const basePrice = ticketTypeData.priceInCents[entrantType];
-
-    // Calculate the total price by adding the base price and the prices of extras
-    let totalPrice = extras.reduce((acc, extra) => {
-      if (!(extra in ticketData.extras)) {
-        return `Extra '${extra}' cannot be found.`;
-      }
-      const extraPrice = ticketData.extras[extra].priceInCents[entrantType];
-      return acc + extraPrice;
-    }, basePrice);
 
     // Format the ticket details for the receipt
-    const formattedTicket = `${entrantType.charAt(0).toUpperCase()}${entrantType.slice(1)} ${ticketTypeData.description}: $${(totalPrice / 100).toFixed(2)}`;
+    const formattedTicket = `${entrantType.charAt(0).toUpperCase()}${entrantType.slice(1)} ${ticketData[ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`;
 
     // Add extras to the ticket details if any
     if (extras.length > 0) {
