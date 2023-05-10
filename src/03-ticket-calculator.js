@@ -49,12 +49,37 @@ const exampleTicketData = require("../data/tickets");
  *  const ticketInfo = {
       ticketType: "general",
       entrantType: "kid", // Incorrect
-      extras: ["movie"],
+      extras: ["movie"],npm testw
+
     };
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+const calculateTicketPrice = (ticketData, ticketInfo) => {
+  const ticketType = ticketData[ticketInfo.ticketType];
+  const entrantType = ticketData.general.priceInCents[ticketInfo.entrantType]
+if (!ticketType) {
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+} else if (!entrantType) {
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+}
+  
+  for (const extra of ticketInfo.extras) {
+    if (!Object.keys(ticketData.extras).includes(extra)) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+  }
+  
+  let regTicket = ticketData[ticketInfo.ticketType]["priceInCents"][ticketInfo.entrantType];
+  
+  if (ticketInfo.extras.length !== 0) { 
+    for(const extra of ticketInfo.extras) {
+      regTicket += ticketData.extras[extra]["priceInCents"][ticketInfo.entrantType];
+    }
+  }
+  return regTicket;
+  
+}
 
 /**
  * purchaseTickets()
@@ -68,7 +93,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
  * @param {Object[]} purchases - An array of objects. Each object represents a single ticket being purchased.
  * @param {string} purchases[].ticketType - Represents the type of ticket. Could be any string except the value "extras".
- * @param {string} purchases[].entrantType - Represents the type of entrant. Prices change depending on the entrant.
+ * @param {string} purchases[].entrantType - Represents the type of entrant. Prices change depending on the entrant. 
  * @param {string[]} purchases[].extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {string} A full receipt, with each individual ticket bought and the total.
  *
@@ -109,9 +134,45 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
 
-// Do not change anything below this line.
+// Define a function called purchaseTickets that takes in two arguments, ticketData and purchases.
+const purchaseTickets = (ticketData, purchases) => {
+  let totalPrice = 0;
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+
+  for (let i = 0; i < purchases.length; i++) {
+    let purchase = purchases[i];
+    let shoppingCart = calculateTicketPrice(ticketData, purchase);
+    if (typeof shoppingCart === 'string') {
+      return shoppingCart;
+    }
+    totalPrice += shoppingCart;
+
+    let extras = purchase.extras;
+    let extra = '';
+    for (let j = 0; j < extras.length; j++) {
+      extra += ticketData.extras[extras[j]].description;
+      if (j !== extras.length - 1) {
+        extra += ', ';
+      }
+    }
+
+    let purchaseType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+    receipt += `${purchaseType} ${ticketData[purchase.ticketType].description}: $${shoppingCart/100}.00`;
+
+    if (extras.length > 0) {
+      receipt += ` (${extra})\n`;
+    } else {
+      receipt += `\n`;
+    }  
+  }
+
+  return receipt + `-------------------------------------------\nTOTAL: $${totalPrice/100}.00`;
+};
+
+
+
+
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
