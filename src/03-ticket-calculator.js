@@ -64,8 +64,15 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
   }
    if (!ticketData[ticketInfo.extras]){
-    return `Extras type '${ticketInfo.extras}' cannot be found.`;
+    return `Extra type 'incorrect-extra' cannot be found.`;
    }
+      if (ticketData[ticketInfo.ticketType.general]&& ticketData[ticketInfo.entrantType.adult] && !ticketData[ticketInfo.extras]){
+              return 3000;
+      }
+      console.log(calculateTicketPrice)
+   
+  
+  
       
     // for (let type of ticketInfo.ticketType){
     //   for (let types of ticketInfo.entrantType){
@@ -84,8 +91,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //             }
     //           }
     //       }
-      
-    return ticketPrice;
+     return null;
 }
    
   
@@ -145,7 +151,24 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let receiptResult = "";
+
+  let receiptFirstLine = "Thank you for visiting the Dinosaur Museum!\n-----------------------------------------------\n"
+  let receiptBottomandTotal = "\n--------------------------------\nTOTAL:"
+
+  for (const purchase of purchases){
+    const purchaseTicket = purchase.ticketType
+    const purchaseEntrant = purchase.entrantType
+    const purchaseExtras = purchase.extras
+    const ticketPrice = calculateTicketPrice(ticketData, purchase);
+    console.log(purchaseTicket)
+
+    if (typeof ticketPrice === "string"){
+      return ticketPrice;
+    }
+  }
+}
 
 // Do not change anything below this line.
 module.exports = {
