@@ -54,7 +54,36 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let {ticketType, entrantType, extras} = ticketInfo;
+  let addedCost = 0;
+  
+  if(!Object.hasOwn(ticketData, ticketType)) {
+    
+    return `Ticket type '${ticketType}' cannot be found.`;
+
+  };
+  if(!Object.hasOwn(ticketData[ticketType].priceInCents, entrantType)) {
+
+    return `Entrant type '${entrantType}' cannot be found.`;
+
+  };
+  for(let element of extras) {
+    if(!Object.hasOwn(ticketData.extras, element)) {
+
+      return `Extra type '${element}' cannot be found.`;
+
+    };
+  };
+
+  for (let feature of extras) {
+
+    addedCost += ticketData.extras[feature].priceInCents[entrantType];
+
+  };
+
+  return ticketData[ticketType].priceInCents[entrantType] + addedCost;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +138,59 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let welcome = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  let totalCost = 0;
+  
+  
+  function printOurPurchaseInfo(price, purchase) {
+    const {ticketType, entrantType, extras} = purchase;
+    let extraType = ` (`;
+    let priceBasedOnEntrantType = `${entrantType.replace(entrantType[0],entrantType[0].toUpperCase())} ${ticketType.replace(ticketType[0],ticketType[0].toUpperCase())} Admission: \$${(price/100).toFixed(2)}`;
+    if(extras.length == 0){
+      
+      return priceBasedOnEntrantType + `\n`;
+    }
+    else{
+      for(let i = 0; i < extras.length; i++) {
+        if(i == extras.length -1) {
+
+          extraType = extraType + '' + extras[i].replace(extras[i][0], extras[i][0].toUpperCase()) + ' Access)\n';
+          break;        
+        };
+
+        extraType = extraType + '' + extras[i].replace(extras[i][0], extras[i][0].toUpperCase()) + ' Access, ';
+      };
+      
+
+      return priceBasedOnEntrantType + '' + extraType;
+    };
+  };
+  
+  for(let purchase of purchases) {
+    let price = calculateTicketPrice(ticketData, purchase);
+    
+    if(typeof(price) == "string") {
+      return price;
+
+    };
+
+    welcome = welcome + printOurPurchaseInfo(price, purchase);
+    
+    totalCost += price;
+  };
+
+  welcome = welcome + `-------------------------------------------\n` + `TOTAL: \$${(totalCost/100).toFixed(2)}`;
+  
+  return welcome;
+  
+}
+
+
+
+
+
+
 
 // Do not change anything below this line.
 module.exports = {
