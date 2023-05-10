@@ -157,16 +157,16 @@ function purchaseTickets(ticketData, purchases) {
 
           extraType = extraType + '' + extras[i].replace(extras[i][0], extras[i][0].toUpperCase()) + ' Access)\n';
           break;        
-        }
+        };
 
         extraType = extraType + '' + extras[i].replace(extras[i][0], extras[i][0].toUpperCase()) + ' Access, ';
-      }
+      };
       // console.log(extraType)
       // console.log(priceBasedOnEntrantType + '' + extraType)
-      
+
       return priceBasedOnEntrantType + '' + extraType;
-    }
-  }
+    };
+  };
   
   for(let purchase of purchases) {
     let price = calculateTicketPrice(ticketData, purchase);
@@ -174,7 +174,7 @@ function purchaseTickets(ticketData, purchases) {
     if(typeof(price) == "string") {
       return price;
 
-    }
+    };
 
     welcome = welcome + printOurPurchaseInfo(price, purchase);
     // console.log(welcome)
@@ -183,7 +183,7 @@ function purchaseTickets(ticketData, purchases) {
 
   welcome = welcome + `-------------------------------------------\n` + `TOTAL: \$${(totalCost/100).toFixed(2)}`;
   // console.log(welcome)
-  return welcome
+  return welcome;
   
 }
 
