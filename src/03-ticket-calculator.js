@@ -191,17 +191,17 @@ function purchaseTickets(ticketData, purchases) {
   for (const purchase of purchases) {
     const { ticketType, entrantType, extras } = purchase;
 
-    // Check if the ticket type exists
+    // check if the ticket  type exists
     if (!ticketData[ticketType]) {
       return `Ticket type '${ticketType}' cannot be found.`;
     }
 
-    // Check if the entrant type exists
+    // check if the entrant type exists
     if (!ticketData[ticketType].priceInCents[entrantType]) {
       return `Entrant type '${entrantType}' cannot be found.`;
     }
 
-    // Calculate the base ticket price
+    // calculate the base ticket price
     const basePrice = ticketData[ticketType].priceInCents[entrantType] / 100;
 
     // Calculate the price for each extra
