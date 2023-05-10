@@ -176,12 +176,12 @@ function purchaseTickets(ticketData, purchases) {
     };
 
     welcome = welcome + printOurPurchaseInfo(price, purchase);
-    // console.log(welcome)
+    
     totalCost += price;
   };
 
   welcome = welcome + `-------------------------------------------\n` + `TOTAL: \$${(totalCost/100).toFixed(2)}`;
-  // console.log(welcome)
+  
   return welcome;
   
 }
