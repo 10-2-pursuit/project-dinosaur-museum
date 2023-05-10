@@ -63,19 +63,21 @@ function calculateTicketPrice(ticketData, ticketInfo) {
               if (ticketInfo.ticketType === "general"){
                 if (ticketInfo.entrantType === "adult"){
                   if (ticketInfo.extras === null){
-                    let general = ticketInfo.ticketType.general;
-                    let adult = ticketInfo.entrantType.adult; 
-                    let generalAdult = general.push(adult);
-                    return generalAdult;
-                    }
+                    const general = ticketInfo.ticketType.general;
+                    const adult = ticketInfo.entrantType.adult; 
+                    const extras = ticketInfo.extras;
+                  }
+                 
+
+                }
+                  }
                   }
                 }
               }
           }
-        }
+      
       
     return generalAdultTicketNoExtras;
-}
    
   
 
