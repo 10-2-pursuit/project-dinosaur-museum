@@ -141,14 +141,14 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 function purchaseTickets(ticketData, purchases) {
   let welcome = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
   let totalCost = 0;
-  // console.log(welcome)
+  
   
   function printOurPurchaseInfo(price, purchase) {
     const {ticketType, entrantType, extras} = purchase;
     let extraType = ` (`;
     let priceBasedOnEntrantType = `${entrantType.replace(entrantType[0],entrantType[0].toUpperCase())} ${ticketType.replace(ticketType[0],ticketType[0].toUpperCase())} Admission: \$${(price/100).toFixed(2)}`;
     if(extras.length == 0){
-      // console.log(priceBasedOnEntrantType)
+      
       return priceBasedOnEntrantType + `\n`;
     }
     else{
@@ -161,8 +161,7 @@ function purchaseTickets(ticketData, purchases) {
 
         extraType = extraType + '' + extras[i].replace(extras[i][0], extras[i][0].toUpperCase()) + ' Access, ';
       };
-      // console.log(extraType)
-      // console.log(priceBasedOnEntrantType + '' + extraType)
+      
 
       return priceBasedOnEntrantType + '' + extraType;
     };
