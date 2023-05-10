@@ -98,15 +98,34 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let myaValues = dinosaurs.mya;
- const closestMya = myaValues.reduce(
-    (prev, curr) => (Math.abs(curr - key) < Math.abs(prev - key) ? curr : prev),
-    myaValues[0]
-  );
-  const dinosaurIds = dinosaurs
-    .filter((dinosaur) => dinosaur.mya.includes(closestMya))
-    .map((dinosaur) => dinosaur.dinosaurId);
-  return dinosaurIds;
+  const aliveDinosaurIDs = [];
+  
+  for (let i = 0; i < dinosaurs.length; i++) {
+    const dinosaur = dinosaurs[i];
+    if (dinosaur.mya.length == 1 && dinosaur.mya[0] - 1 <= mya && mya <= dinosaur.mya[0] || 
+       dinosaur.mya.length == 2 && dinosaur.mya[1] <= mya && mya <= dinosaur.mya[0]) {
+      aliveDinosaurIDs.push(dinosaur.dinosaurId);
+    }
+  }
+  
+  if (!key) {
+    return aliveDinosaurIDs;
+  }
+  
+  const result = [];
+  
+  for (let i = 0; i < aliveDinosaurIDs.length; i++) {
+    const dinosaurID = aliveDinosaurIDs[i];
+    const dino = dinosaurs.find(d => d.dinosaurId === dinosaurID);
+    const value = dino[key];
+    if (value) {
+      result.push(value);
+    } else {
+      result.push(dinosaurID);
+    }
+  }
+  
+  return result;
 }
 
 module.exports = {

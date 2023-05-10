@@ -31,20 +31,19 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   if (!dinosaur) {
     return `Dinosaur with name '${dinosaurName}' cannot be found.`;
   }
-  // Find the room IDs where the dinosaur is located
   const roomIds = rooms
     .filter(r => r.dinosaurs.includes(dinosaur.dinosaurId))
     .map(r => r.roomId);
   if (roomIds.length === 0) {
     return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
   }
-  // Find the rooms where the dinosaur is located
+
   const roomsWithDinosaur = rooms.filter(r => roomIds.includes(r.roomId));
   const roomNames = roomsWithDinosaur.map(r => r.name);
   if (roomNames.length === 0) {
     return `Dinosaur with name'${dinosaurName}' cannot be found in any rooms.`;
   }
-  // Return the name of the first room where the dinosaur is located
+
   return roomNames[0];
 }
 
@@ -71,6 +70,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
+  
 }
 
 module.exports = {
