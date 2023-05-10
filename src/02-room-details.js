@@ -64,25 +64,19 @@ const getRoomByDinosaurName = (dinosaurs, rooms, dinosaurName) => {
       "Kit Hopkins Education Wing"
     ]
  */
-    const getConnectedRoomNamesById = (rooms, id) => {
-      const connectedRoom = rooms.find(room => room.roomId === id);
-    
-      if (!connectedRoom) {
-        return `Room with ID of '${id}' could not be found.`;
-      }
-    
-      const connectedRoomIds = connectedRoom.connectsTo;
-    
-      const connectedRoomNames = rooms
-        .filter(room => connectedRoomIds.includes(room.roomId))
-        .map(room => room.name);
-    
-      if (connectedRoomNames.length !== connectedRoomIds.length) {
-        return `Room with ID of 'incorrect-id' could not be found.`;
-      }
-    
-      return connectedRoomNames;
-    }
+const getConnectedRoomNamesById = (rooms, id) => {
+  const connectedRoom = rooms.find(room => room.roomId === id);
+  if (!connectedRoom) {
+    return `Room with ID of '${id}' could not be found.`;
+  }
+  
+  const connectedRoomIds = connectedRoom.connectsTo;
+  const connectedRoomNames = rooms.filter(room => connectedRoomIds.includes(room.roomId)).map(room => room.name);
+  if (connectedRoomNames.length !== connectedRoomIds.length) {
+    return `Room with ID of 'incorrect-id' could not be found.`;
+  }
+  return connectedRoomNames;
+}
     
   
   
