@@ -54,34 +54,34 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-    function calculateTicketPrice(ticketData, ticketInfo) {
-      const { ticketType, entrantType, extras } = ticketInfo;
-    
-      // Check if the ticket type exists in the ticket data
-      if (!(ticketType in ticketData)) {
-        return `Ticket type '${ticketType}' cannot be found.`;
-      }
-    
-      const ticketTypeData = ticketData[ticketType];
-    
-      // Check if the entrant type exists in the ticket data
-      if (!(entrantType in ticketTypeData.priceInCents)) {
-        return `Entrant type '${entrantType}' cannot be found.`;
-      }
-    
-      const basePrice = ticketTypeData.priceInCents[entrantType];
-    
-      // Calculate the total price by adding the base price and the prices of extras
-      const totalPrice = extras.reduce((acc, extra) => {
-        if (!(extra in ticketData.extras)) {
-          return `Extra type '${extra}' cannot be found.`;
-        }
-        const extraPrice = ticketData.extras[extra].priceInCents[entrantType];
-        return acc + extraPrice;
-      }, basePrice);
-    
-      return totalPrice;
+function calculateTicketPrice(ticketData, ticketInfo) {
+  const { ticketType, entrantType, extras } = ticketInfo;
+
+  // Check if the ticket type exists in the ticket data
+  if (!(ticketType in ticketData)) {
+    return `Ticket type '${ticketType}' cannot be found.`;
+  }
+
+  const ticketTypeData = ticketData[ticketType];
+
+  // Check if the entrant type exists in the ticket data
+  if (!(entrantType in ticketTypeData.priceInCents)) {
+    return `Entrant type '${entrantType}' cannot be found.`;
+  }
+  
+  const basePrice = ticketTypeData.priceInCents[entrantType];
+  
+  // Calculate the total price by adding the base price and the prices of extras
+  const totalPrice = extras.reduce((acc, extra) => {
+    if (!(extra in ticketData.extras)) {
+      return `Extra type '${extra}' cannot be found.`;
     }
+    const extraPrice = ticketData.extras[extra].priceInCents[entrantType];
+    return acc + extraPrice;
+  }, basePrice);
+
+  return totalPrice;
+}
 
 /**
  * purchaseTickets()
@@ -137,39 +137,37 @@ const exampleTicketData = require("../data/tickets");
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  const receipt = [];
+  let total = 0;
+  let receipt =
+    "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
 
-  for (const purchase of purchases) {
-    const { ticketType, entrantType, extras } = purchase;
+  const formatTicketInfo = (purchase, ticket) => {
+    let extras = purchase.extras;
+    let altReceipt = extras
+      .map((extra) => ticketData.extras[extra].description)
+      .join(", ");
+    return `${
+      purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)
+    } ${ticketData[purchase.ticketType].description}: $${(ticket / 100).toFixed(
+      2
+    )}${extras.length ? ` (${altReceipt})` : ""}\n`;
+  };
 
-    // Call calculateTicketPrice() to check for errors and get the ticket price
-    const ticketPrice = calculateTicketPrice(ticketData, purchase);
-    if (typeof ticketPrice === "string") {
-      return ticketPrice; // Return the error message
+  for (let purchase of purchases) {
+    let ticket = calculateTicketPrice(ticketData, purchase);
+
+    total += ticket;
+
+    if (typeof ticket === "string") {
+      return ticket;
     }
 
-    // Format the ticket details for the receipt
-    const formattedTicket = `${entrantType.charAt(0).toUpperCase()}${entrantType.slice(1)} ${ticketData[ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`;
-
-    // Add extras to the ticket details if any
-    if (extras.length > 0) {
-      const extrasList = extras.map(extra => ticketData.extras[extra].description);
-      formattedTicket += ` (${extrasList.join(", ")})`;
-    }
-
-    receipt.push(formattedTicket);
+    receipt += formatTicketInfo(purchase, ticket);
   }
 
-  const totalCost = receipt.reduce((acc, ticket) => {
-    const price = Number(ticket.match(/\d+\.\d+/));
-    return acc + price;
-  }, 0);
-
-  // Format the receipt with total cost
-  const formattedReceipt = receipt.join("\n");
-  const total = `TOTAL: $${totalCost.toFixed(2)}`;
-
-  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${formattedReceipt}\n-------------------------------------------\n${total}`;
+  return `${receipt}-------------------------------------------\nTOTAL: $${(
+    total / 100
+  ).toFixed(2)}`;
 }
 
 // Do not change anything below this line.
