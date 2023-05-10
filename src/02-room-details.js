@@ -72,21 +72,21 @@ function getConnectedRoomNamesById(rooms, id) {
     
     if(!ourRoom) {
       return "Room with ID of '" + id + "' could not be found.";
-    }
+    };
     
     let connectedRooms = ourRoom.connectsTo.map(roomIdCheck => { 
       for(let room of rooms) {
 
         if(room.roomId == roomIdCheck) {
           return room.name;
-        }
-      }
+        };
+      };
           return `ERROR`;
     });
     
     if (connectedRooms.includes('ERROR')) {
       return `Room with ID of 'incorrect-id' could not be found.`;
-    }
+    };
     return connectedRooms;
   }
 
