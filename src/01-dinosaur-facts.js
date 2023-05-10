@@ -15,6 +15,11 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *
  * NOTE: To convert from meters to feet, multiply the meters by `3.281`.
  *
+ *
+ *
+ *
+ *
+ *
  * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
  * @returns {Object} An object where the key is the name of the dinosaur and the value is the height of the dinosaur in feet.
  *
@@ -22,8 +27,28 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
 
+function getLongestDinosaur(dinosaurs) {
+  if (dinosaurs.length < 1) {
+    // returns an empty object
+    return {};
+  }
+  // returns the longest dinosaur object in meters
+  let longestDinoObj = dinosaurs.reduce((a, b) => {
+    if (a.lengthInMeters > b.lengthInMeters) {
+      return a;
+    } else if (a.lengthInMeters < b.lengthInMeters) {
+      return b;
+    } else {
+      return a;
+    }
+  });
+  // converts dinosaur length in meters to dinosaur length in feet
+  let longestDinoInFeet = longestDinoObj.lengthInMeters * 3.281;
+  // creates a new object and returns the new object
+  let longestDino = { [longestDinoObj.name]: longestDinoInFeet };
+  return longestDino;
+}
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -44,7 +69,18 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  // assign foundDino variable to the result of dinosaus.find() by id
+  const foundDino = dinosaurs.find(dino => dino.dinosaurId === id) 
+  if (foundDino) {
+    // return description of dinosaur
+    return `${foundDino.name} (${foundDino.pronunciation})\n${foundDino.info} It lived in the ${foundDino.period} period, over ${foundDino.mya[foundDino.mya.length-1]} million years ago.`
+  }
+  else {
+    // returns an error message if no dinosaur is found
+    return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+  }
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +107,29 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinosaurIdKey = key;
+  if (key === undefined){
+    dinosaurIdKey = 'dinosaurId';
+  }
+  if (dinosaurs[0][key] === undefined ){
+    dinosaurIdKey = 'dinosaurId';
+  }
+  let dinoAlive = [];
+  for(let i = 0; i < dinosaurs.length; i++){
+    if(dinosaurs[i].mya.length === 1 && (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0]-1 === mya)){
+      dinoAlive.push(dinosaurs[i][dinosaurIdKey]);
+    } else if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya) {
+      dinoAlive.push(dinosaurs[i] [dinosaurIdKey]);
+    }
+  }
+
+
+  return dinoAlive;
+  
+  
+}
 
 module.exports = {
   getLongestDinosaur,
