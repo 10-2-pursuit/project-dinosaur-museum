@@ -196,6 +196,20 @@ function getDinosaursAliveMya(dinosaurs, mya, key = "dinosaurId") {
 }
 
 
+//Whats the average lifespan of a dinosaur?
+function avgDinosaurLifeSpan() {
+  let totalLifeSpan = 0;
+  let totalDinosaurs = 0;
+
+  for (const dinosaur in dinosaurs) {
+    totalLifeSpan += dinosaurs[dinosaur].lifeSpan;
+    totalDinosaurs++;
+  }
+
+  const averageLifeSpan = totalLifeSpan / totalDinosaurs;
+  return averageLifeSpan;
+}
+
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
