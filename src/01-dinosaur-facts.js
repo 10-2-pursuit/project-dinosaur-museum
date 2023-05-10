@@ -44,7 +44,29 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+
+function getLongestDinosaur(dinosaurs) {
+  let longestDino = {};
+     
+  let maximumLength = 0;
+  let dinoName = "";
+    for (let dinosaur of dinosaurs){
+      if (dinosaur.lengthInMeters > maximumLength){
+      maximumLength = dinosaur.lengthInMeters; 
+      dinoName = dinosaur.name
+    }
+  }
+  
+      const maximumLengthFeet = maximumLength * 3.281; 
+
+  longestDino[dinoName] = maximumLengthFeet
+  return longestDino
+}
+
+
+
+let finalAnswer = getLongestDinosaur(dinosaurs)
+console.log(finalAnswer)
 
 /**
  * getDinosaursAliveMya()
