@@ -54,7 +54,23 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let ticketType = ticketData[ticketInfo.ticketType];
+    if(ticketType == null) {
+      return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+    }
+  let ticketPrice = ticketType.priceInCents[ticketInfo.entrantType];
+    if (ticketPrice == null) {
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+    }
+  for (let extra of ticketInfo.extras) {
+    if(ticketData.extras[extra] == null) {
+      return `Extra type '${extra}' cannot be found.`
+    }
+    ticketPrice+= ticketData.extras[extra].priceInCents[ticketInfo.entrantType];   
+  } 
+  return ticketPrice
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +125,43 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function toTitleCase(str) {
+  return str.replace(
+    /\w\S*/g,
+    function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    }
+  );
+}
+
+function purchaseTickets(ticketData, purchases) {
+  let total = 0;
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  for (let purchase of purchases) {
+    let ticketPrice = calculateTicketPrice(ticketData, purchase);
+      if (!Number.isInteger(ticketPrice)) {
+        return ticketPrice
+      }
+      total += ticketPrice;
+      receipt += toTitleCase(`${purchase.entrantType} ${purchase.ticketType} Admission: $${((ticketPrice/100).toFixed(2))}`);
+      if(purchase.extras.length != 0)
+      {
+        receipt += ' (';
+        extras = [];
+        for (let extra of purchase.extras) {
+          extras.push(ticketData.extras[extra].description);
+        }
+        receipt += extras.join(', ');
+        receipt += ')\n';
+      }
+      else {
+        receipt += '\n'
+      }
+  }
+  receipt += `-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`
+  return receipt
+}
+
 
 // Do not change anything below this line.
 module.exports = {
