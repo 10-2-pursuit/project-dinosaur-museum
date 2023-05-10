@@ -140,7 +140,7 @@ function purchaseTickets(ticketData, purchases) {
     const ticketPrice = calculateTicketPrice(ticketData, purchase);
     if (typeof ticketPrice === 'string') {
       errors += `${ticketPrice}\n`
-      return errors;
+      return ticketPrice;
     }
     const {ticketType, entrantType, extras} = purchase;
     const ticketPriceInDollars = (ticketPrice / 100).toFixed(2);
