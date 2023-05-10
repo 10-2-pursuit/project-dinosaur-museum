@@ -54,7 +54,27 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  const {ticketType, entrantType, extras} = ticketInfo;
+  let price;
+  if (ticketData[ticketType]) {
+    price = ticketData[ticketType].priceInCents[entrantType];
+  } else {
+    return `Ticket type '${ticketType}' cannot be found.`;
+  }
+  if (!ticketData[ticketType].priceInCents[entrantType]) {
+    return `Entrant type '${entrantType}' cannot be found.`;
+  }
+  for (let extra of extras) {
+    if (!ticketData.extras[extra]) {
+      return `Extra type '${extras}' cannot be found.`;
+    }
+    else {
+      price += ticketData.extras[extra].priceInCents[entrantType];
+    } 
+  }
+  return price;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +129,38 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function _receiptCreator(price, purchase) {
+  const {ticketType, entrantType, extras} = purchase;
+  let receiptLine = `${entrantType[0].toUpperCase() + entrantType.slice(1)} ${ticketType[0].toUpperCase() + ticketType.slice(1)} Admission: $${(price/100).toFixed(2)}`;
+  if (extras.length === 0){
+    return receiptLine + `\n`;
+  } else {
+    receiptLine += ' (';
+    for (let i = 0; i < extras.length; i++) {
+      if (i === extras.length - 1) {
+        receiptLine += `${extras[i][0].toUpperCase() + extras[i].slice(1)} Access)\n`;
+      } else {
+        receiptLine += `${extras[i][0].toUpperCase() + extras[i].slice(1)} Access, `;
+      }
+    }
+  }
+  return receiptLine;
+}
+
+function purchaseTickets(ticketData, purchases) {
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  let totalPrice = 0;
+  for (let purchase of purchases) {
+    let tempPrice = calculateTicketPrice(ticketData, purchase);
+    if (typeof tempPrice === "string") {
+      return tempPrice;
+    }
+    receipt += _receiptCreator(tempPrice, purchase);
+    totalPrice += tempPrice;
+  }
+  receipt += `-------------------------------------------\nTOTAL: $${(totalPrice/100).toFixed(2)}`;
+  return receipt;
+}
 
 // Do not change anything below this line.
 module.exports = {

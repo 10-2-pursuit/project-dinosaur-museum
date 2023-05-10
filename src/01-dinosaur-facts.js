@@ -22,7 +22,10 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  let longestDinosaur = dinosaurs.find(dinosaur => dinosaur.lengthInMeters === Math.max(...dinosaurs.map(dinosaur => dinosaur.lengthInMeters)));
+  return (longestDinosaur ? {[longestDinosaur.name]: longestDinosaur.lengthInMeters * 3.281} : {});
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +47,14 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let chosenDinosaur = dinosaurs.find(dinosaur => dinosaur.dinosaurId === id);
+  if (chosenDinosaur) {
+    return `${chosenDinosaur.name} (${chosenDinosaur.pronunciation})\n${chosenDinosaur.info} It lived in the ${chosenDinosaur.period} period, over ${Math.min(...chosenDinosaur.mya)} million years ago.`;
+  } else {
+    return `A dinosaur with an ID of '${id}' cannot be found.`;
+  }
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +81,25 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinosaursAlive = dinosaurs.filter((dinosaur) => {
+    if (dinosaur.mya.length > 1) {
+      return dinosaur.mya[1] <= mya && dinosaur.mya[0] >= mya;
+    } else {
+      return dinosaur.mya[0] == mya || dinosaur.mya[0] - 1 == mya;
+    }
+  });
+  if (key) {
+    if (Object.hasOwn(dinosaursAlive[0], key)) {
+      return dinosaursAlive.map(dinosaur => {return dinosaur[key]});
+    }
+  }
+  return dinosaursAlive.map(dinosaur => dinosaur.dinosaurId);
+  //console.log(dinosaursAlive)
+  // let dinosaursAlive = dinosaurs.filter((dinosaur) => (Math.max(dinosaur.mya) > mya) && dinosaur.period));
+  // console.log(dinosaursAlive);
+}
+
 
 module.exports = {
   getLongestDinosaur,
