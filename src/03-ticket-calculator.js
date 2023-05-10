@@ -136,7 +136,7 @@ if (!ticketType) {
  */
 
 // Define a function called purchaseTickets that takes in two arguments, ticketData and purchases.
-function purchaseTickets(ticketData, purchases) {
+const purchaseTickets = (ticketData, purchases) => {
   let totalPrice = 0;
   let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
 
@@ -175,5 +175,5 @@ function purchaseTickets(ticketData, purchases) {
 
 module.exports = {
   calculateTicketPrice,
-  purchaseTickets,
+  purchaseTickets,git 
 };
