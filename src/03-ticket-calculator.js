@@ -62,7 +62,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     for (let type of ticketInfo.ticketType){
       for (let types of ticketInfo.entrantType){
         for (let extra of ticketInfo.extras){
-          let calculatedPrice = priceInCents.child + ticketInfo.extras
+          let calculatedPrice = priceInCents.child.push(ticketInfo.extras);
           if (ticketInfo.ticketType === "general" && ticketInfo.entrantType === "child" && ticketInfo.extras === null){
             return `${calculatedPrice}`
           }
