@@ -23,12 +23,19 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
-  if (dinosaurs.length === 0) {
-    return {}
+  if (!dinosaurs || !Array.isArray(dinosaurs) || dinosaurs.length === 0) {
+    return {};
   }
-  const sortedDinos = dinosaurs.sort((a, b) => b.lengthInMeters - a.lengthInMeters)
-  const longestDino = sortedDinos[0]
-  return {[longestDino.name]: longestDino.lengthInMeters * 3.281}
+  let longestDinosaur = dinosaurs[0];
+  for (const dinosaur of dinosaurs) {
+    if (dinosaur.lengthInMeters > longestDinosaur.lengthInMeters) {
+      longestDinosaur = dinosaur;
+    }
+  }
+  const longestDinosaurInFeet = {
+    [longestDinosaur.name]: longestDinosaur.lengthInMeters * 3.281,
+  };
+  return longestDinosaurInFeet;
 }
 
 /**
@@ -52,17 +59,21 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  const foundDinosaur = dinosaurs.find((dinosaur) => {
-    if (dinosaur.dinosaurId === id) {
-      return dinosaur;
-    }
-  });
-  if (foundDinosaur) {
-    return `${foundDinosaur.name} (${foundDinosaur.pronunciation})\n${foundDinosaur.info} It lived in the ${foundDinosaur.period} period, over ${
-      foundDinosaur.mya[foundDinosaur.mya.length - 1]} million years ago.`;
-  } else {
-    return `A dinosaur with an ID of 'incorrect-id' cannot be found.`;
+  const dinosaur = dinosaurs.find((dinosaur) => dinosaur.dinosaurId === id);
+
+  if (!dinosaur) {
+    return `A dinosaur with an ID of '${id}' cannot be found.`;
   }
+
+  const mya = Array.isArray(dinosaur.mya) ? Math.min(...dinosaur.mya) : dinosaur.mya;
+  const formattedMya = mya === 1 ? `${mya} million year ago` : `${mya} million years ago`;
+  const name = dinosaur.name;
+  const pronunciation = dinosaur.pronunciation;
+  const period = dinosaur.period;
+  const info = dinosaur.info;
+
+  const description =`${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${formattedMya}.`;
+ return description;
 }
 
 /**
@@ -91,17 +102,22 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  const aliveDinosaurs = dinosaurs.find((dinosaurs) => {
-    if (dinosaurs.mya.length -1 === key) {
-      return dinosaur
-    }
-
-  })
-  if (aliveDinosaurs) {
-    return `${dinosaurs.mya[dinosaurs.mya.length -1]}`
-  } else {
-    return `${dinosaurs.dinosaurId}`
+  let dinosAliveDuringTheseEras = [];
+  if (!key || dinosaurs[0][key] === undefined) {
+    key = "dinosaurId";
   }
+  for (let dino of dinosaurs) {
+    if (dino.mya.length === 1) {
+      if (dino.mya[0] === mya || dino.mya[0] - 1 === mya) {
+        dinosAliveDuringTheseEras.push(dino[key]);
+      }
+    } else {
+      if (mya <= dino.mya[0] && mya >= dino.mya[1]) {
+        dinosAliveDuringTheseEras.push(dino[key]);
+      }
+    }
+  }
+  return dinosAliveDuringTheseEras;
 }
 
 module.exports = {
