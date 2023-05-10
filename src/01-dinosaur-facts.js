@@ -89,20 +89,19 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let dinosThatWereAlive = []
-  for (let dinos of dinosaurs) {
-    let dinoId = dino.dinosaurId
 
-    for (let names of dinoNames)
-    let dinoName = dinoName.name
-      if (key === dinoName) {
-        return "key"
-      }
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinosAliveMya = [];
+  if (!key || dinosaurs[0][key] === undefined) {
+    key = "dinosaurId";
+  }
+  for (let dino of dinosaurs) {
+    let myaArray = dino.mya;
+    if (myaArray.includes(mya) || myaArray.includes(mya - 1)) {
+      dinosAliveMya.push(dino[key]);
     }
-    let years = dino.mya
-  } 
-  return dinosThatWereAlive
+  }
+  return dinosAliveMya;
 }
 
 module.exports = {
