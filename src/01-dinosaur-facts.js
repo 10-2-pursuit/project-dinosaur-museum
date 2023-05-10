@@ -112,7 +112,6 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       (mya === dino.mya[0] || mya === dino.mya[0] - 1)
     ) {
       dinoArr.push(dino[targetKey]);
-      console.log(dino[targetKey]);
     } else if (mya <= dino.mya[0] && mya >= dino.mya[1]) {
       dinoArr.push(dino[targetKey]);
     }
