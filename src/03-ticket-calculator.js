@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,30 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let extraSum = 0;
+  let tickType = ticketInfo.ticketType;
+  let entrant = ticketInfo.entrantType;
+  let extraFeat = ticketInfo.extras;
+
+  if (ticketData[tickType] === undefined){
+    return "Ticket type 'incorrect-type' cannot be found.";
+  } else if (ticketData[tickType].priceInCents[entrant] === undefined) {
+    return "Entrant type 'incorrect-entrant' cannot be found.";
+  }
+
+  for (let extra of extraFeat) {
+    if (ticketData.extras[extra] === undefined) {
+      return "Extra type 'incorrect-extra' cannot be found.";
+    } else if (ticketData.extras[extra].priceInCents[entrant]) {
+      extraSum += ticketData.extras[extra].priceInCents[entrant];
+    }
+  }
+
+  let ticketPrice = ticketData[tickType].priceInCents[entrant];
+
+  return ticketPrice + extraSum;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +133,57 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let grandTotal = 0;
+  let receipt = "";
+
+  const headLine = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  const endLine = "\n-------------------------------------------\n";
+
+  for (const purchase of purchases) {
+    const ticketType = purchase.ticketType;
+    const entrantType = purchase.entrantType;
+    const extras = purchase.extras;
+
+    if (!ticketData[ticketType]) {
+      return `Ticket type '${ticketType}' cannot be found.`;
+    }
+
+    const ticketPriceInCents = ticketData[ticketType].priceInCents[entrantType];
+    if (!ticketPriceInCents) {
+      return `Entrant type '${entrantType}' cannot be found.`;
+    }
+
+    let ticketPrice = ticketPriceInCents / 100;
+    let extrasStr = "";
+    let extrasSum = 0;
+
+    if (extras) {
+      for (const extra of extras) {
+        if (!ticketData.extras[extra]) {
+          return `Extra type '${extra}' cannot be found.`;
+        }
+
+        const extraPriceInCents = ticketData.extras[extra].priceInCents[entrantType];
+        if (extraPriceInCents) {
+          extrasSum += extraPriceInCents / 100;
+          extrasStr += `, ${ticketData.extras[extra].description}`;
+        }
+      }
+    }
+
+    const ticketAndExtrasPrice = ticketPrice + extrasSum;
+    grandTotal += ticketAndExtrasPrice;
+
+    receipt += `\n${entrantType.charAt(0).toUpperCase() + entrantType.slice(1)} ${ticketData[ticketType].description}: $${ticketAndExtrasPrice.toFixed(2)}`;
+    if (extrasStr) {
+      receipt += ` (${extrasStr.slice(2)})`;
+    }
+  }
+  receipt = receipt.replace("\n", "");
+  
+  return `${headLine}${receipt}${endLine}TOTAL: $${grandTotal.toFixed(2)}`;
+}
 
 // Do not change anything below this line.
 module.exports = {
