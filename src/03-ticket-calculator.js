@@ -166,24 +166,22 @@ function purchaseTickets(ticketData, purchases) {
         }
       }
     }
+    
     let entrantStr = entrant.charAt(0).toUpperCase() + entrant.slice(1);
 
     ticketPrice = ticketData[tickType].priceInCents[entrant] / 100;
     
     singleTickPrice = ticketPrice + extraSum;
+    
+      if (extraStr) {
+        ticketStr = `\n${entrantStr} ${ticketData[tickType].description}: $${singleTickPrice}.00 (${extraStr})`;
+      } else {
+        ticketStr = `\n${entrantStr} ${ticketData[tickType].description}: $${singleTickPrice}.00`
+      }
 
-    ticketStr += `\n${entrantStr} ${ticketData[tickType].description}: $${singleTickPrice}.00`
+    grandTotal += singleTickPrice;
   }
-  ticketStr = ticketStr.replace("\n", "");
-
-  if(!extraStr){
-    receipt = `${ticketStr}`;
-  } else {
-    receipt = `${ticketStr} (${extraStr})`;
-  }
-
-  grandTotal = 0;
-
+  receipt = ticketStr.replace("\n", "");
 
   console.log(`${headLine}${receipt}${endLine}\nTOTAL: $${grandTotal}.00`)
   return `${headLine} ${receipt}${endLine}\nTOTAL: $${grandTotal}.00`;
