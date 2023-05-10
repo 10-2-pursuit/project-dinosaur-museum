@@ -29,7 +29,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   
   if(!dinosaurs.some(dinosaur => dinosaur.name == dinosaurName)) {
     
-    return "Dinosaur with name " + dinosaurName + " cannot be found.";
+    return "Dinosaur with name '" + dinosaurName + "' cannot be found.";
   }
 
   let ourDinosaur = dinosaurs.find(dinosaur => dinosaur.name == dinosaurName);
@@ -38,7 +38,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     
   if(!roomWithDinosaur) {
 
-    return "Dinosaur with name " + dinosaurName + " cannot be found in any rooms.";
+    return "Dinosaur with name '" + dinosaurName + "' cannot be found in any rooms.";
   }
     return roomWithDinosaur.name;
 }
@@ -71,13 +71,13 @@ function getConnectedRoomNamesById(rooms, id) {
  let ourRoom = rooms.find(room => room.roomId.includes(id));
     
     if(!ourRoom) {
-      return "Room with ID of " + id + " could not be found.";
+      return "Room with ID of '" + id + "' could not be found.";
     }
     
     let connectedRooms = ourRoom.connectsTo.map(roomIdCheck => { 
       for(let room of rooms) {
 
-        if(roomIdCheck = room.roomId) {
+        if(room.roomId == roomIdCheck) {
           return room.name;
         }
       }
