@@ -147,4 +147,4 @@ describe("getDinosaursAliveMya()", () => {
 
     expect(actual).toEqual(expected);
   });
-});
+})
