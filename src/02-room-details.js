@@ -30,13 +30,13 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let dinoId = "";
   let dinoRoom = "";
 
-  for (const i = 0; i < dinosaurs.length; i++) {
+  for (let i = 0; i < dinosaurs.length; i++) {
     if (dinosaurs[i].name === dinosaurName) {
       dinoId = dinosaurs[i].dinosaurId;
     }
   }
 
-  for (const j = 0; j < rooms.length; j++) {
+  for (let j = 0; j < rooms.length; j++) {
     if (rooms[j].dinosaurs.includes(dinoId)) {
       dinoRoom = rooms[j].name;
     }
@@ -73,7 +73,34 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+
+// create a variable to store rooms that are connected
+// create a variable that holds name of room changed from the room id
+// create a for loop that loops rooms and id
+function getConnectedRoomNamesById(rooms, id) {
+  let roomsConnected;
+let convertRoomIdToName = {};
+
+for (let i = 0; i < rooms.length; i++) {
+	if (id === rooms[i].roomId) {
+	roomsConnected = rooms[i].connectsTo
+};
+	convertRoomIdToName[rooms[i].roomId] = rooms[i].name 
+};
+	if (!roomsConnected) {
+	return `Room with ID of '${id}' could not be found.`
+}
+for (let j = 0; j < roomsConnected.length; j++) {
+	if (convertRoomIdToName[roomsConnected[j]]) {
+	roomsConnected[j] = convertRoomIdToName[roomsConnected[j]]
+}	else {
+	return `Room with ID of '${roomsConnected[j]}' could not be found.`
+}
+}
+	return roomsConnected;
+}
+  
+
 
 module.exports = {
   getRoomByDinosaurName,
