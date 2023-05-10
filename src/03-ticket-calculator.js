@@ -136,58 +136,58 @@ const exampleTicketData = require("../data/tickets");
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-    function purchaseTickets(ticketData, purchases) {
-      const receipt = [];
-    
-      for (const purchase of purchases) {
-        const { ticketType, entrantType, extras } = purchase;
-    
-        // Check if the ticket type exists in the ticket data
-        if (!(ticketType in ticketData)) {
-          return `Ticket type '${ticketType}' cannot be found.`;
-        }
-    
-        const ticketTypeData = ticketData[ticketType];
-    
-        // Check if the entrant type exists in the ticket data
-        if (!(entrantType in ticketTypeData.priceInCents)) {
-          return `Entrant type '${entrantType}' cannot be found.`;
-        }
-    
-        const basePrice = ticketTypeData.priceInCents[entrantType];
-    
-        // Calculate the total price by adding the base price and the prices of extras
-        let totalPrice = extras.reduce((acc, extra) => {
-          if (!(extra in ticketData.extras)) {
-            return `Extra '${extra}' cannot be found.`;
-          }
-          const extraPrice = ticketData.extras[extra].priceInCents[entrantType];
-          return acc + extraPrice;
-        }, basePrice);
-    
-        // Format the ticket details for the receipt
-        const formattedTicket = `${entrantType.charAt(0).toUpperCase()}${entrantType.slice(1)} ${ticketTypeData.description}: $${(totalPrice / 100).toFixed(2)}`;
-    
-        // Add extras to the ticket details if any
-        if (extras.length > 0) {
-          const extrasList = extras.map(extra => ticketData.extras[extra].description);
-          formattedTicket += ` (${extrasList.join(", ")})`;
-        }
-    
-        receipt.push(formattedTicket);
-      }
-    
-      const totalCost = receipt.reduce((acc, ticket) => {
-        const price = Number(ticket.match(/\d+\.\d+/));
-        return acc + price;
-      }, 0);
-    
-      // Format the receipt with total cost
-      const formattedReceipt = receipt.join("\n");
-      const total = `TOTAL: $${totalCost.toFixed(2)}`;
-    
-      return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${formattedReceipt}\n-------------------------------------------\n${total}`;
+function purchaseTickets(ticketData, purchases) {
+  const receipt = [];
+
+  for (const purchase of purchases) {
+    const { ticketType, entrantType, extras } = purchase;
+
+    // Check if the ticket type exists in the ticket data
+    if (!(ticketType in ticketData)) {
+      return `Ticket type '${ticketType}' cannot be found.`;
     }
+
+    const ticketTypeData = ticketData[ticketType];
+
+    // Check if the entrant type exists in the ticket data
+    if (!(entrantType in ticketTypeData.priceInCents)) {
+      return `Entrant type '${entrantType}' cannot be found.`;
+    }
+
+    const basePrice = ticketTypeData.priceInCents[entrantType];
+
+    // Calculate the total price by adding the base price and the prices of extras
+    let totalPrice = extras.reduce((acc, extra) => {
+      if (!(extra in ticketData.extras)) {
+        return `Extra '${extra}' cannot be found.`;
+      }
+      const extraPrice = ticketData.extras[extra].priceInCents[entrantType];
+      return acc + extraPrice;
+    }, basePrice);
+
+    // Format the ticket details for the receipt
+    const formattedTicket = `${entrantType.charAt(0).toUpperCase()}${entrantType.slice(1)} ${ticketTypeData.description}: $${(totalPrice / 100).toFixed(2)}`;
+
+    // Add extras to the ticket details if any
+    if (extras.length > 0) {
+      const extrasList = extras.map(extra => ticketData.extras[extra].description);
+      formattedTicket += ` (${extrasList.join(", ")})`;
+    }
+
+    receipt.push(formattedTicket);
+  }
+
+  const totalCost = receipt.reduce((acc, ticket) => {
+    const price = Number(ticket.match(/\d+\.\d+/));
+    return acc + price;
+  }, 0);
+
+  // Format the receipt with total cost
+  const formattedReceipt = receipt.join("\n");
+  const total = `TOTAL: $${totalCost.toFixed(2)}`;
+
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${formattedReceipt}\n-------------------------------------------\n${total}`;
+}
 
 // Do not change anything below this line.
 module.exports = {
