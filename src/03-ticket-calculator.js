@@ -67,7 +67,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   if(!Object.hasOwn(ticketData[ticketType].priceInCents, entrantType)){
     return _errorPrinter("Entrant", entrantType);
   }
-  
+
   for(let extra of extras){
     if(!Object.hasOwn(ticketData.extras, extra)){
       return _errorPrinter("Extra", extra);
@@ -181,7 +181,7 @@ function _purchasePrinter(price, purchase){
   /** declare vars */
   const {ticketType, entrantType, extras} = purchase;
   let extraString = ` (`;
-  let resultBasic = `${entrantType.replace(entrantType[0],entrantType[0].toUpperCase())} ${ticketType.replace(ticketType[0],ticketType[0].toUpperCase())} Admission: \$${(price/100).toFixed(2)}`;
+  let resultBasic = `${_capitalizer(entrantType)} ${_capitalizer(ticketType)} Admission: \$${(price/100).toFixed(2)}`;
   
   /** validation for an extra */
   if(extras.length == 0){
@@ -190,14 +190,25 @@ function _purchasePrinter(price, purchase){
   else{
     for(let index = 0; index < extras.length; index++){
       if(index == extras.length -1){
-        extraString = extraString.concat('',extras[index].replace(extras[index][0], extras[index][0].toUpperCase()) + ' Access)\n');
+        extraString = extraString.concat('', _capitalizer(extras[index]) + ' Access)\n');
         break;        
       }
-      extraString = extraString.concat('',extras[index].replace(extras[index][0], extras[index][0].toUpperCase()) + ' Access, ');
+      extraString = extraString.concat('', _capitalizer(extras[index]) + ' Access, ');
     }
 
     return resultBasic.concat('',extraString);
   }
+}
+/**
+ * _capitalizer()
+ * ---------------------
+ * changing the first letter of a string to upper case
+ * 
+ * @param {string} str - a string to change. 
+ * @returns {string} - will be return exactly same string w/ upper cased first letter.
+ */
+function _capitalizer(str = ""){
+  return str.replace(str[0],str[0].toUpperCase());
 }
 
 // Do not change anything below this line.
