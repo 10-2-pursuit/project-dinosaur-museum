@@ -77,12 +77,12 @@ function getConnectedRoomNamesById(rooms, id) {
   } else {
     for (let arrRoomId of arrRoomIds) {
       for (let room of rooms) {
-        if(arrRoomId === room.roomId) {
+        if(arrRoomId === rooms.roomId) {
           arrRoomNames.push(room.name)
         }
       }
     }
-    if (arrRoomIds !== arrRoomNames) {
+    if (arrRoomIds.length !== arrRoomNames.length) {
       error = `Room with ID of 'incorrect-id' could not be found.`
     }
   }
