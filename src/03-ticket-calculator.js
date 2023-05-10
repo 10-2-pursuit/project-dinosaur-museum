@@ -54,7 +54,31 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let priceForTickets = 0;
+
+  if (!ticketData[ticketInfo.ticketType]) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+
+  if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+
+  priceForTickets =
+    ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+
+  for (let i = 0; i < ticketInfo.extras.length; i++) {
+    const extrasForCustomers = ticketInfo.extras[i];
+    if (!ticketData.extras[extrasForCustomers]) {
+      return `Extra type '${extrasForCustomers}' cannot be found.`;
+    }
+    priceForTickets +=
+      ticketData.extras[extrasForCustomers].priceInCents[ticketInfo.entrantType];
+  }
+  return priceForTickets;
+}
+
 
 /**
  * purchaseTickets()
@@ -109,7 +133,23 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let customerReceipt = "Thank you for visiting the Dinosaur Museum!"
+
+  if (!ticketData[ticketInfo.ticketType]) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+
+  if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  for (let purchase of purchases) {
+    for (let extra of purchase.extras) {
+    let cost = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] // convert to usd
+    customerReceipt += `${purchase.entrantType} ${purchase.ticketType} Admission: ${cost} (${purchase.extra})`
+  }
+}
+}
 
 // Do not change anything below this line.
 module.exports = {
