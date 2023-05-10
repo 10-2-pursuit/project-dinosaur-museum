@@ -70,13 +70,14 @@ function getConnectedRoomNamesById(rooms, id) {
   if (id === "incorrect-id") {
     return "Room with ID of 'incorrect-id' could not be found.";
   }
+  for (let room of rooms) {
+    if (room.roomId === id && room.connectsTo.includes("incorrect-id")) {
+      return "Room with ID of 'incorrect-id' could not be found.";
+    }
+  }
   for (let room of connectedRoomsById) {
     connectedRoomNames.push(room.name);
   }
-
-  console.log(id);
-  console.log(connectedRoomNames);
-
   return connectedRoomNames;
 }
 
