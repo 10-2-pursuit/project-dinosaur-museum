@@ -30,8 +30,8 @@ function getLongestDinosaur(dinosaurs) {
       if (dinosaur.lengthInMeters > maximumLength){
       maximumLength = dinosaur.lengthInMeters; 
       dinoName = dinosaur.name;
+      }
     }
-  }
       const maximumLengthFeet = maximumLength * 3.281; 
       longestDino[dinoName] = maximumLengthFeet;
   return longestDino;
@@ -66,11 +66,11 @@ function getDinosaurDescription(dinosaurs, id) {
       ${dinosaur.name} ${dinosaur.info}.It lived in the ${dinosaur.period}, over ${dinosaur.mya[0]} million years ago.`; 
       return descriptionDino;
        }
-  }
+    }
         const error = `A dinosaur with an ID of ${id} cannot be found.`;
         return error;
 }
- getDinosaurDescription(dinosaurs, "id");
+ getDinosaurDescription(dinosaurs, "U9vuZmgKwUr");
  
 
 /**
