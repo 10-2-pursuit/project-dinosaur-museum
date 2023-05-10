@@ -175,5 +175,5 @@ const purchaseTickets = (ticketData, purchases) => {
 
 module.exports = {
   calculateTicketPrice,
-  purchaseTickets,git 
+  purchaseTickets,
 };
