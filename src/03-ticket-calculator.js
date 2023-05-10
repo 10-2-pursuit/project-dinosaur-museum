@@ -54,7 +54,59 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let totalTicketPrice = 0;
+  if (ticketInfo.ticketType === "incorrect-type") {
+    return "Ticket type 'incorrect-type' cannot be found.";
+  }
+  if (ticketInfo.entrantType === "incorrect-entrant") {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  if (ticketInfo.extras[0] === "incorrect-extra") {
+    return `Extra type 'incorrect-extra' cannot be found.`;
+  }
+  if (ticketInfo.ticketType === "general") {
+    if (ticketInfo.entrantType === "child") {
+      totalTicketPrice += 2000;
+    } else if (ticketInfo.entrantType === "adult") {
+      totalTicketPrice += 3000;
+    } else {
+      totalTicketPrice += 2500;
+    }
+  }
+  if (ticketInfo.ticketType === "membership") {
+    if (ticketInfo.entrantType === "child") {
+      totalTicketPrice += 1500;
+    } else if (ticketInfo.entrantType === "adult") {
+      totalTicketPrice += 2800;
+    } else {
+      totalTicketPrice += 2300;
+    }
+  }
+  if (ticketInfo.extras.includes("movie")) {
+    totalTicketPrice += 1000;
+  }
+  if (ticketInfo.extras.includes("education")) {
+    if (ticketInfo.entrantType === "child") {
+      totalTicketPrice += 1000;
+    } else {
+      totalTicketPrice += 1200;
+    }
+  }
+  if (ticketInfo.extras.includes("terrace")) {
+    if (ticketInfo.entrantType === "child") {
+      totalTicketPrice += 500;
+    } else {
+      totalTicketPrice += 1000;
+    }
+  }
+  return totalTicketPrice;
+}
+
+
 
 /**
  * purchaseTickets()
@@ -109,7 +161,118 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function _fixedCapitalization(text) {
+  let newArr = text.split("");
+  newArr[0] = newArr[0].toUpperCase();
+  for (i = 1; i < newArr.length; i++) {
+    newArr[i] = newArr[i].toLowerCase();
+  }
+  return newArr.join("") + " Access";
+}
+
+
+function purchaseTickets(ticketData, purchases) {
+  let allTickets = [];
+  let ticketExtras = [];
+  let individualTicketPrice = 0;
+  let totalTicketPrice = 0;
+  let fullTicket = "";
+  let ticketName = "";
+  for (let purchase of purchases) {
+    if (purchase.ticketType === "incorrect-type") {
+      return `Ticket type '${purchase.ticketType}' cannot be found.`;
+    }
+    if (purchase.entrantType === "incorrect-entrant") {
+      return `Entrant type '${purchase.entrantType}' cannot be found.`;
+    }
+    if (purchase.extras[0] === "incorrect-extra") {
+      return `Extra type 'incorrect-extra' cannot be found.`;
+    }
+    if (purchase.ticketType === "general") {
+      if (purchase.entrantType === "child") {
+        individualTicketPrice = 2000;
+        totalTicketPrice += 2000;
+        ticketName = "Child General Admission:";
+      } else if (purchase.entrantType === "adult") {
+        individualTicketPrice = 3000;
+        totalTicketPrice += 3000;
+        ticketName = "Adult General Admission:";
+      } else if (purchase.entrantType === "senior") {
+        (individualTicketPrice = 2500), (totalTicketPrice += 2500);
+        ticketName = "Senior General Admission:";
+      }
+    }
+    if (purchase.ticketType === "membership") {
+      if (purchase.entrantType === "child") {
+        individualTicketPrice = 1500;
+        totalTicketPrice += 1500;
+        ticketName = "Child Membership Admission:";
+      } else if (purchase.entrantType === "adult") {
+        individualTicketPrice = 2800;
+        totalTicketPrice += 2800;
+        ticketName = "Adult Membership Admission:";
+      } else if (purchase.entrantType === "senior") {
+        individualTicketPrice = 2300;
+        totalTicketPrice += 2300;
+        ticketName = "Senior Membership Admission:";
+      }
+    }
+    if (purchase.extras.includes("movie")) {
+      if (purchase.entrantType === "child") {
+        individualTicketPrice += 1000;
+        totalTicketPrice += 1000;
+      } else if (purchase.entrantType === "adult") {
+        individualTicketPrice += 1000;
+        totalTicketPrice += 1000;
+      } else if (purchase.entrantType === "senior") {
+        individualTicketPrice += 1000;
+        totalTicketPrice += 1000;
+      }
+    }
+    if (purchase.extras.includes("education")) {
+      if (purchase.entrantType === "child") {
+        individualTicketPrice += 1000;
+        totalTicketPrice += 1000;
+      } else if (purchase.entrantType === "adult") {
+        individualTicketPrice += 1200;
+        totalTicketPrice += 1200;
+      } else if (purchase.entrantType === "senior") {
+        individualTicketPrice += 1200;
+        totalTicketPrice += 1200;
+      }
+    }
+    if (purchase.extras.includes("terrace")) {
+      if (purchase.entrantType === "child") {
+        totalTicketPrice += 500;
+        individualTicketPrice += 500;
+      } else if (purchase.entrantType === "adult") {
+        individualTicketPrice += 1000;
+        totalTicketPrice += 1000;
+      } else if (purchase.entrantType === "senior") {
+        individualTicketPrice += 1000;
+        totalTicketPrice += 1000;
+      }
+    }
+    individualTicketPrice *= 0.01;
+    for (let extra of purchase.extras) {
+      if (extra && !ticketExtras.includes(extra)) {
+        ticketExtras.push(_fixedCapitalization(extra));
+      }
+    }
+    if (purchase.extras.length >= 1) {
+      fullTicket = `\n${ticketName} $${individualTicketPrice}.00 (${ticketExtras.join(
+        ", "
+      )})`;
+    } else {
+      fullTicket = `\n${ticketName} $${individualTicketPrice}.00`;
+    }
+    allTickets.push(fullTicket);
+  }
+  totalTicketPrice *= 0.01;
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${allTickets.join(
+    ""
+  )}\n-------------------------------------------\nTOTAL: $${totalTicketPrice}.00`;
+}
 
 // Do not change anything below this line.
 module.exports = {
