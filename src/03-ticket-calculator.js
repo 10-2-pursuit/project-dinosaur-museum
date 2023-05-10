@@ -54,7 +54,29 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  const { ticketType, entrantType, extras } = ticketInfo;
+    if (!ticketData[ticketType]) {
+      return `Ticket type '${ticketType}' cannot be found.`;
+    }
+    if (!ticketData[ticketType].priceInCents[entrantType]) {
+      return `Entrant type '${entrantType}' cannot be found.`;
+    }
+    let ticketPrice = ticketData[ticketType].priceInCents[entrantType];
+    const addedExtras = {};
+    for (let i = 0; i < extras.length; i++) {
+      const extra = extras[i];
+      if (!ticketData.extras[extra]) {
+        return `Extra type '${extra}' cannot be found.`;
+      }
+      if (addedExtras[extra]) {
+        return `Extra type '${extra}' has already been added.`;
+      }
+      ticketPrice += ticketData.extras[extra].priceInCents[entrantType];
+      addedExtras[extra] = true;
+    }
+    return ticketPrice;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +131,27 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let total = 0;
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  let errors = '';
+  for (let i = 0; i < purchases.length; i++) {
+    const purchase = purchases[i];
+    const ticketPrice = calculateTicketPrice(ticketData, purchase);
+    if (typeof ticketPrice === 'string') {
+      errors += `${ticketPrice}\n`
+      return ticketPrice;
+    }
+    const {ticketType, entrantType, extras} = purchase;
+    const ticketPriceInDollars = (ticketPrice / 100).toFixed(2);
+    const ticketDescription = `${entrantType[0].toUpperCase()}${entrantType.slice(1)} ${ticketType[0].toUpperCase()}${ticketType.slice(1)} Admission`;
+    const extrasDescription = extras.length ? ` (${extras.map(extra => extra.charAt(0).toUpperCase() + extra.slice(1) + ' Access').join(`, `)})` : '';
+    receipt += `${ticketDescription}: $${ticketPriceInDollars}${extrasDescription}\n`;
+    total += ticketPrice
+  }
+  receipt += `-------------------------------------------\nTOTAL: $${(total / 100).toFixed(2)}`
+  return errors || receipt;
+}
 
 // Do not change anything below this line.
 module.exports = {

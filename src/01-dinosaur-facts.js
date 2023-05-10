@@ -22,7 +22,16 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  if (dinosaurs.length === 0) {
+    return {};
+  }
+  const longestDinosaur = dinosaurs.reduce((dinosaurLength, dinosaur) => {
+    return dinosaur.lengthInMeters > dinosaurLength.lengthInMeters ? dinosaur : dinosaurLength
+  }, dinosaurs[0])
+  const lengthInFeet = longestDinosaur.lengthInMeters * 3.281;
+  return {[longestDinosaur.name]: Number(lengthInFeet)};
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +53,14 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.dinosaurId === id) {
+      return `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya.length > 1 ? dinosaur.mya[1] : dinosaur.mya[0]} million years ago.`;
+    } 
+  }
+  return `A dinosaur with an ID of '${id}' cannot be found.`;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +87,23 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinosaursWhoWereAlive = dinosaurs.filter(dinosaur => {
+    const myaValues = dinosaur.mya;
+    if (myaValues.length === 1) {
+      return myaValues[0] === mya || myaValues[0] - 1 === mya;
+    } else {
+      return myaValues[0] >= mya && myaValues[1] <= mya;
+    }
+  });
+  if (key) {
+    return dinosaursWhoWereAlive.map(dinosaur => {
+      return dinosaur[key] || dinosaur.dinosaurId;
+    });
+  } else {
+    return dinosaursWhoWereAlive.map(dinosaur => dinosaur.dinosaurId);
+  }
+}
 
 module.exports = {
   getLongestDinosaur,
