@@ -54,7 +54,47 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+// function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  const { ticketType, entrantType, extras } = ticketInfo;
+
+  if (!ticketData.hasOwnProperty(ticketType)) {
+    return `Invalid ticket type: ${ticketType}`;
+  }
+
+  if (!ticketData[ticketType].priceInCents.hasOwnProperty(entrantType)) {
+    return `Invalid entrant type: ${entrantType}`;
+  }
+
+  const validExtras = Object.keys(ticketData.extras);
+  const invalidExtras = extras.filter((extra) => !validExtras.includes(extra));
+
+  if (invalidExtras.length > 0) {
+    return `Invalid extras: ${invalidExtras.join(", ")}`;
+  }
+
+  let totalCost = ticketData[ticketType].priceInCents[entrantType];
+
+  for (const extra of extras) {
+    totalCost += ticketData.extras[extra].priceInCents[entrantType];
+  }
+
+  return totalCost;
+}
+// function calculateTicketPrice(tickets, ticketInfo) {
+//   const { ticketType, entrantType, extras } = ticketInfo;
+//   const ticketPrice = tickets[ticketType].priceInCents[entrantType];
+//   let extrasTotal = 0;
+
+//   extras.forEach((extra) => {
+//     const extraPrice = tickets.extras[extra].priceInCents[entrantType];
+//     extrasTotal += extraPrice;
+//   });
+
+//   return ticketPrice + extrasTotal;
+// }
+
+
 
 /**
  * purchaseTickets()
@@ -109,7 +149,192 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+// function purchaseTickets(ticketData, purchases) {}
+// function purchaseTickets(ticketData, purchases) {
+//   const receipt = [];
+//   let totalCost = 0;
+
+//   for (const purchase of purchases) {
+//     const { ticketType, entrantType, extras } = purchase;
+
+//     if (!ticketData.hasOwnProperty(ticketType)) {
+//       return `Ticket type '${ticketType}' cannot be found.`;
+//     }
+
+//     if (!ticketData[ticketType].priceInCents.hasOwnProperty(entrantType)) {
+//       return `Invalid entrant type: ${entrantType}`;
+//     }
+
+//     const validExtras = Object.keys(ticketData.extras);
+//     const invalidExtras = extras.filter((extra) => !validExtras.includes(extra));
+
+//     if (invalidExtras.length > 0) {
+//       return `Invalid extras: ${invalidExtras.join(", ")}`;
+//     }
+
+//     const ticketDescription = ticketData[ticketType].description;
+//     const ticketPrice = ticketData[ticketType].priceInCents[entrantType];
+//     const extraDescriptions = extras.map((extra) => ticketData.extras[extra].description);
+//     const extraPrices = extras.map((extra) => ticketData.extras[extra].priceInCents[entrantType]);
+//     const ticketTotalPrice = ticketPrice + extraPrices.reduce((acc, curr) => acc + curr, 0);
+
+//     receipt.push(`${entrantType} ${ticketDescription}: $${(ticketTotalPrice / 100).toFixed(2)} (${extraDescriptions.join(", ")})`);
+//     totalCost += ticketTotalPrice;
+//   }
+
+//   return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receipt.join("\n")}\n-------------------------------------------\nTOTAL: $${(totalCost / 100).toFixed(2)}`;
+// }
+// function purchaseTickets(ticketData, purchases) {
+//   const ticketReceipt = [];
+//   let totalCost = 0;
+
+//   for (const purchase of purchases) {
+//     const { ticketType, entrantType, extras } = purchase;
+
+//     // check if the ticket  type exists
+//     if (!ticketData[ticketType]) {
+//       return `Ticket type '${ticketType}' cannot be found.`;
+//     }
+
+//     // check if the entrant type exists
+//     if (!ticketData[ticketType].priceInCents[entrantType]) {
+//       return `Entrant type '${entrantType}' cannot be found.`;
+//     }
+
+//     // calculate the base ticket price
+//     const basePrice = ticketData[ticketType].priceInCents[entrantType] / 100;
+
+//     // Calculate the price for each extra
+//     const extraPrices = extras.map(extra => {
+//       if (!ticketData.extras[extra]) {
+//         return `Extra '${extra}' cannot be found.`;
+//       }
+//       return ticketData.extras[extra].priceInCents[entrantType] / 100;
+//     });
+
+//     // calculate the total price for the ticket
+//     const ticketPrice = basePrice + extraPrices.reduce((sum, price) => sum + price, 0);
+
+//     // adds the ticket to receipt
+//     ticketReceipt.push(`${entrantType} ${ticketData[ticketType].description}: $${ticketPrice.toFixed(2)} (${extras.join(", ")})`);
+//      // add the ticket price to the total cost
+//     totalCost += ticketPrice;
+//   }
+
+//   // Generate the full receipt
+//   const receipt = [
+//     "Thank you for visiting the Dinosaur Museum!",
+//     "-------------------------------------------",
+//     ...ticketReceipt,
+//     "-------------------------------------------",
+//     `TOTAL: $${totalCost.toFixed(2)}`,
+//   ];
+
+//   return receipt.join("\n");
+// }
+// function purchaseTickets(tickets, purchases) {
+  function purchaseTickets(tickets, purchases) {
+    const receipt = [];
+    let totalCost = 0;
+  
+    for (const purchase of purchases) {
+      const { ticketType, entrantType, extras } = purchase;
+  
+      // Check if the ticket type exists
+      if (!tickets[ticketType]) {
+        return `Ticket type '${ticketType}' cannot be found.`;
+      }
+  
+      // Check if the entrant type exists
+      if (!tickets[ticketType].priceInCents[entrantType]) {
+        return `Entrant type '${entrantType}' cannot be found.`;
+      }
+  
+      // Calculate the base ticket price
+      const basePrice = tickets[ticketType].priceInCents[entrantType] / 100;
+  
+      // Calculate the price for each extra
+      const extraPrices = extras.map(extra => {
+        if (!tickets.extras[extra]) {
+          return `Extra '${extra}' cannot be found.`;
+        }
+        return tickets.extras[extra].priceInCents[entrantType] / 100;
+      });
+  
+      // Calculate the total price for the ticket
+      const ticketPrice = basePrice + extraPrices.reduce((sum, price) => sum + price, 0);
+  
+      // Add the ticket to the receipt
+      receipt.push(`${entrantType} ${tickets[ticketType].description}: $${ticketPrice.toFixed(2)} (${extras.join(", ")})`);
+  
+      // Add the ticket price to the total cost
+      totalCost += ticketPrice;
+    }
+  
+    // Generate the full receipt
+    const fullReceipt = [
+      "Thank you for your purchase!",
+      "Receipt:",
+      ...receipt,
+      "-------------------",
+      `Total: $${totalCost.toFixed(2)}`,
+    ];
+  
+    return fullReceipt.join("\n");
+  }
+// function purchaseTickets(tickets, purchases) {
+//   const receipt = [];
+//   let totalCost = 0;
+
+//   for (const purchase of purchases) {
+//     const { ticketType, entrantType, extras } = purchase;
+
+//     // Check if the ticket type exists
+//     if (!tickets[ticketType]) {
+//       return `Ticket type '${ticketType}' cannot be found.`;
+//     }
+
+//     // Check if the entrant type exists
+//     if (!tickets[ticketType].priceInCents[entrantType]) {
+//       return `Entrant type '${entrantType}' cannot be found.`;
+//     }
+
+//     // Calculate the base ticket price
+//     const basePrice = tickets[ticketType].priceInCents[entrantType] / 100;
+
+//     // Calculate the price for each extra
+//     const extraPrices = extras.map(extra => {
+//       if (!tickets.extras[extra]) {
+//         return `Extra '${extra}' cannot be found.`;
+//       }
+//       return tickets.extras[extra].priceInCents[entrantType] / 100;
+//     });
+
+//     // Calculate the total price for the ticket
+//     const ticketPrice = basePrice + extraPrices.reduce((sum, price) => sum + price, 0);
+
+//     // Add the ticket to the receipt
+//     receipt.push(`${entrantType} ${tickets[ticketType].description}: $${ticketPrice.toFixed(2)} (${extras.join(", ")})`);
+
+//     // Add the ticket price to the total cost
+//     totalCost += ticketPrice;
+//   }
+
+//   // Generate the full receipt
+//   const fullReceipt = [
+//     "Thank you for your purchase!",
+//     "Receipt:",
+//     ...receipt,
+//     "-------------------",
+//     `Total: $${totalCost.toFixed(2)}`,
+//   ];
+
+//   return fullReceipt.join("\n");
+// }
+
+
+
+
 
 // Do not change anything below this line.
 module.exports = {
