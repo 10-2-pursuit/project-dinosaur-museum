@@ -73,9 +73,7 @@ const foundDinosaur = dinosaurs.find((dinosaur) => dinosaur.dinosaurId === id);
        return `${foundDinosaur.name} (${foundDinosaur.pronunciation})\n${foundDinosaur.info} It lived in the ${foundDinosaur.period} period, over ${foundDinosaur.mya[0]} million years ago.`;
    }
    return `A dinosaur with an ID of '${id}' cannot be found.`;
-  for(let i = 0; i < dinosaurs.length; i++){
-   return dinosaurs[0].mya[0];
-  }
+ 
  }
 /**
  * getDinosaursAliveMya()
