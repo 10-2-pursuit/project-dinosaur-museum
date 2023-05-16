@@ -105,3 +105,12 @@ module.exports = {
   getDinosaurDescription,
   getDinosaursAliveMya,
 };
+
+
+const medthodOfTransit = [
+  {
+    rain : ["C","B","2","3"]
+
+
+  }
+]
