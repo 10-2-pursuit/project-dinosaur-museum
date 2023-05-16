@@ -101,15 +101,12 @@ const foundDinosaur = dinosaurs.find((dinosaur) => dinosaur.dinosaurId === id);
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  
-const filteredDinosaurs = dinosaurs.filter(dinosaur => dinosaur.mya <= mya);
- 
-if (key) {
-return filteredDinosaurs.map(dinosaur => dinosaur[key]);
-} else {
-return filteredDinosaurs.map(dinosaur => dinosaur.id);
+ filteredDinosaurs = forEach(dinosaurs)
+
+
+
 }
-}
+
 
  module.exports = {
   getLongestDinosaur,
