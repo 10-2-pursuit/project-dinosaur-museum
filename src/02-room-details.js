@@ -62,35 +62,23 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  */
 function getConnectedRoomNamesById(rooms, id) {
   let ourRoom = rooms.find(room => room.roomId.includes(id));
-    //we are using the .find method to store the room we want as variable ourRoom. This will be an object(element of rooms array) if .find returns a truthy value
     if(!ourRoom) {
-      //if no element  of our rooms array satisfies the callbackfunction of .roomId.includes(id-parameter) we will return the following error code.
-      //.find() iterated through our array looking through each element to see if any of their dot roomId properties included our parameter id
       return "Room with ID of '" + id + "' could not be found.";
     };
-    //if .find returned a flasy value i.e undefined we are saying to return above error code
     let connectedRooms = ourRoom.connectsTo.map(roomIdCheck => { 
-       //.map is returning an array whose elements each satisfy the callback function below
-      //declaring a variable to hold our array created by .map which will loop through ourRoom's dot connectsTo property and perform the following 
      
       for(let room of rooms) {
-        //We are looping through our rooms array to see if any room has the dot roomId property that matches any of elements of ourRoom.connectsTo array, we are declaring each element of that array
-        //as room Id check. connectedRooms variable will be an array where each element has a roomId property equal to an element inside of OurRoom.connectsTo array
         if(room.roomId == roomIdCheck) {
-        //conditional if room.roomId is strictly equal to our roomIdCheck
           return room.name;
         };
       };
-      //otherwise connectedRooms will store the value of 'Error'
           return `ERROR`;
     });
     
     if (connectedRooms.includes('ERROR')) {
-      //if connectedRooms stored a value of 'Error' return the following error code 
       return `Room with ID of 'incorrect-id' could not be found.`;
     };
-    // console.log(connectedRooms)
-    //returning our connectedRooms which is an array of room names 
+
     return connectedRooms;
   }
 
