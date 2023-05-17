@@ -54,62 +54,72 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+  function calculateTicketPrice(ticketData, ticketInfo) {
+    let {ticketType, entrantType, extras} = ticketInfo;
 
-/**
- * purchaseTickets()
- * ---------------------
- * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
- *
- * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the previous function.
- * 
- * NOTE: Pay close attention to the format in the examples below and tests. You will need to have the same format to get the tests to pass.
- *
- * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
- * @param {Object[]} purchases - An array of objects. Each object represents a single ticket being purchased.
- * @param {string} purchases[].ticketType - Represents the type of ticket. Could be any string except the value "extras".
- * @param {string} purchases[].entrantType - Represents the type of entrant. Prices change depending on the entrant.
- * @param {string[]} purchases[].extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
- * @returns {string} A full receipt, with each individual ticket bought and the total.
- *
- * EXAMPLE:
- *  const purchases = [
-      {
-        ticketType: "general",
-        entrantType: "adult",
-        extras: ["movie", "terrace"],
-      },
-      {
-        ticketType: "general",
-        entrantType: "senior",
-        extras: ["terrace"],
-      },
-      {
-        ticketType: "general",
-        entrantType: "child",
-        extras: ["education", "movie", "terrace"],
-      },
-      {
-        ticketType: "general",
-        entrantType: "child",
-        extras: ["education", "movie", "terrace"],
-      },
-    ];
-    purchaseTickets(tickets, purchases);
-    //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+    let addedCost = 0;
+  
+    if(!Object.hasOwn(ticketData, ticketType)) {
+      return `Ticket type '${ticketType}' cannot be found.`;
+  
+    };
+    if(!Object.hasOwn(ticketData[ticketType].priceInCents, entrantType)) {
+      return `Entrant type '${entrantType}' cannot be found.`;
+  
+    };
+    for(let element of extras) {
+      if(!Object.hasOwn(ticketData.extras, element)) {
+        return `Extra type '${element}' cannot be found.`;
+      };
+    };
+  
+    for (let element of extras) {
+      addedCost += ticketData.extras[element].priceInCents[entrantType];
+    };
+    console.log(ticketData[ticketType].priceInCents[entrantType] + addedCost)
+  
+    return ticketData[ticketType].priceInCents[entrantType] + addedCost;
+  }
+  function purchaseTickets(ticketData, purchases) {
+   
+    let welcome = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+    let totalCost = 0;
 
- * EXAMPLE:
-    const purchases = [
-      {
-        ticketType: "discount", // Incorrect
-        entrantType: "adult",
-        extras: ["movie", "terrace"],
+    function printOurPurchaseInfo(price, purchase) {
+      const {ticketType, entrantType, extras} = purchase;
+      let extraType = ` (`;
+
+      let priceBasedOnEntrantType = `${entrantType.replace(entrantType[0],entrantType[0].toUpperCase())} ${ticketType.replace(ticketType[0],ticketType[0].toUpperCase())} Admission: \$${(price/100).toFixed(2)}`;
+      if(extras.length == 0){
+        
+        return priceBasedOnEntrantType + `\n`;
       }
-    ]
-    purchaseTickets(tickets, purchases);
-    //> "Ticket type 'discount' cannot be found."
- */
-function purchaseTickets(ticketData, purchases) {}
+      else{
+        for(let i = 0; i < extras.length; i++) {
+          if(i == extras.length -1) {
+  
+            extraType = extraType + '' + extras[i].replace(extras[i][0], extras[i][0].toUpperCase()) + ' Access)\n';
+            break;
+          };
+          extraType = extraType + '' + extras[i].replace(extras[i][0], extras[i][0].toUpperCase()) + ' Access, ';
+        };
+        return priceBasedOnEntrantType + '' + extraType;
+      };
+    };
+    
+    for(let purchase of purchases) {
+      let price = calculateTicketPrice(ticketData, purchase);
+      if(typeof(price) == "string") {
+        return price;
+      };
+      welcome = welcome + printOurPurchaseInfo(price, purchase);
+      totalCost += price;
+    };
+    console.log(welcome)
+    welcome = welcome + `-------------------------------------------\n` + `TOTAL: \$${(totalCost/100).toFixed(2)}`;
+    console.log(welcome)
+    return welcome;
+  }
 
 // Do not change anything below this line.
 module.exports = {
