@@ -5,7 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
-const exampleDinosaurData = require("../data/dinosaurs");
+const exampleDinosaurData = require('../data/dinosaurs');
 // Do not change the line above.
 
 /**
@@ -22,8 +22,19 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  let longestDinosaur = {};
+  function heightInFeet(dinosaurs) {
+    return dinosaurs.lengthInMeters * 3.281;
+  }
 
+  let maxDinosaurHeight = Math.max(heightInFeet);
+
+  if (maxDinosaurHeight === heightInFeet) {
+    longestDinosaur[`${dinosaurs.name}`] = `${heightInFeet}`;
+  }
+  return longestDinosaur;
+}
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -44,8 +55,18 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let dinosaurInfo = `A dinosaur with an ID of '${id}' cannot be found.`;
 
+  for (const dinosaur of dinosaurs) {
+    let { dinosaurId, name, pronunciation, info, period, mya } = dinosaur;
+    let millionYearsAgo = mya.slice(-1);
+    if (dinosaurId === id) {
+      dinosaurInfo = `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${millionYearsAgo} million years ago.`;
+    }
+  }
+  return dinosaurInfo;
+}
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -71,10 +92,23 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
-
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinoAlive = [];
+  for (const dinosaur of dinosaurs) {
+    for (const millionYA of dinosaur.mya) {
+      if (millionYA === mya) {
+        if (key === key) {
+          dinoAlive.push(value);
+        } else {
+          dinoAlive.push(dinosaur.dinosaurId);
+        }
+      }
+    }
+  }
+  return dinoAlive;
+}
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
-  getDinosaursAliveMya,
+  getDinosaursAliveMya
 };

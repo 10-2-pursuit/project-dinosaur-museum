@@ -1,3 +1,5 @@
+const { general, membership } = require('../data/tickets');
+
 /*
   Do not change the line below. If you'd like to run code from this file, you may use the `exampleTicketData` variable below to gain access to tickets data. This data is pulled from the `data/tickets.js` file.
 
@@ -5,7 +7,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
-const exampleTicketData = require("../data/tickets");
+const exampleTicketData = require('../data/tickets').default;
 // Do not change the line above.
 
 /**
@@ -35,7 +37,7 @@ const exampleTicketData = require("../data/tickets");
     };
     calculateTicketPrice(tickets, ticketInfo);
     //> 3000
- *  
+ *
  * EXAMPLE:
  *  const ticketInfo = {
       ticketType: "membership",
@@ -54,15 +56,70 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
-
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let totalCost = 0;
+  for (const ticketinfo of ticketData) {
+    switch ((ticketData, ticketInfo)) {
+      case general:
+      case priceInCents.child:
+        totalCost += 2000;
+        break;
+      case general:
+      case priceInCents.adult:
+        totalCost += 3000;
+        break;
+      case general:
+      case priceInCents.senior:
+        totalCost += 2500;
+        break;
+      case membership:
+      case priceInCents.child:
+        totalCost += 1500;
+        break;
+      case membership:
+      case priceInCents.adult:
+        totalCost += 2800;
+        break;
+      case membership:
+      case priceInCents.senior:
+        totalCost += 2300;
+      case extras.movie:
+      case priceInCents.child:
+      case priceInCents.adult:
+      case priceInCents.senior:
+        totalCost += 1000;
+        break;
+      case extras.education:
+      case priceInCents.child:
+        totalCost += 1000;
+        break;
+      case extras.education:
+      case priceInCents.adult:
+      case priceInCents.senior:
+        totalCost += 1200;
+        break;
+      case extras.terrace:
+      case priceInCents.child:
+        totalCost += 500;
+        break;
+      case extras.terrace:
+      case priceInCents.adult:
+      case priceInCents.senior:
+        totalCost += 1000;
+      default:
+        totalCost = 'Invalid Ticket Information';
+        break;
+    }
+  }
+  return totalCost;
+}
 /**
  * purchaseTickets()
  * ---------------------
  * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
  *
  * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the previous function.
- * 
+ *
  * NOTE: Pay close attention to the format in the examples below and tests. You will need to have the same format to get the tests to pass.
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
@@ -114,5 +171,5 @@ function purchaseTickets(ticketData, purchases) {}
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
-  purchaseTickets,
+  purchaseTickets
 };
