@@ -101,7 +101,7 @@ const foundDinosaur = dinosaurs.find((dinosaur) => dinosaur.dinosaurId === id);
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
- filteredDinosaurs = forEach(dinosaurs)
+ filteredDinosaurs = forEach(dinosaurs);
 
 
 
